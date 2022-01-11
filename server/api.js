@@ -6,11 +6,9 @@
 | This file defines the routes for your server.
 |
 */
-
 const express = require("express");
 
-// import models so we can interact with the database
-const User = require("./models/user");
+const animationsRouter = require("./api/animations");
 
 // import authentication library
 const auth = require("./auth");
@@ -41,6 +39,8 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+router.use("/animations", animationsRouter);
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
