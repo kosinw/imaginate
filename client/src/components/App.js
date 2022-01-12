@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
+import NavBar from "./modules/NavBar.js";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import useUser from "../hooks/useUser";
@@ -14,8 +15,9 @@ const App = () => {
 
   return (
     <>
+      <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
       <Router>
-        <Skeleton path="/" userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
+        <Skeleton path="/" />
         <NotFound default />
       </Router>
     </>
