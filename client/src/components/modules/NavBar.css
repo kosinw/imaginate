@@ -8,29 +8,33 @@
 .NavBar-left {
   display: flex;
   justify-content: flex-start;
-  align-self: flex-end;
+  align-self: flex-start;
+  align-items: center;
   gap: var(--xl);
 }
 
 .NavBar-center {
   display: flex;
   align-self: center;
+  justify-content: center;
+  align-items: center;
   gap: var(--xl);
 }
 
 .NavBar-right {
   display: flex;
   justify-content: flex-end;
-  align-self: flex-end;
+  align-items: center;
   gap: var(--xl);
 }
 
 .NavBar-title {
+  display: flex;
   color: var(--white);
   font-size: 1.5em;
   font-weight: bold;
   text-decoration: none;
-  align-self: center;
+  align-items: center;
 }
 
 .NavBar-link {
