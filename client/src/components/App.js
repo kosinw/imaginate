@@ -6,6 +6,7 @@ import Skeleton from "./pages/Skeleton.js";
 import useUser from "../hooks/useUser";
 
 import "../utilities.css";
+import "./App.css";
 
 /**
  * Define the "App" component
@@ -16,7 +17,7 @@ const App = () => {
   return (
     <>
       <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
-      <Router>
+      <Router className="App-view">
         <Skeleton path="/" />
         <NotFound default />
       </Router>
