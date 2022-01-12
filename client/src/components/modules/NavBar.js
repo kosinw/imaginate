@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@reach/router";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
 
 import "./NavBar.css";
@@ -12,7 +13,12 @@ const GOOGLE_CLIENT_ID = "753689922635-os8bde4plqrgt60mt3bor7f5kumnjbti.apps.goo
 const NavBar = ({ userId, handleLogin, handleLogout }) => {
   return (
     <nav className="NavBar-container">
-      <div className="NavBar-title">Imaginate</div>
+      <Link className="NavBar-title" to="/">
+        Imaginate
+      </Link>
+      <Link className="NavBar-profile" to="/profile">
+        Profile
+      </Link>
       {userId ? (
         <GoogleLogout
           className="NavBar-login"
