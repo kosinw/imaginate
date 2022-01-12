@@ -1,0 +1,5 @@
+.App-view {
+  max-width: 960px;
+  padding: var(--m) var(--m);
+  margin: auto;
+}
