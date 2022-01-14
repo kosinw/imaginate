@@ -1,0 +1,36 @@
+.SingleAnimation-container {
+  border: 2px;
+  border-color: var(--darkgrey);
+  border-style: solid;
+  display: flex;
+  flex-flow: column;
+}
+
+.SingleAnimation-thumbnail {
+  margin: auto;
+}
+
+.SingleAnimation-title {
+  font-size: 0.8em;
+  padding: var(--xs);
+  border: 1px;
+  border-color: var(--darkgrey);
+  border-style: hidden;
+  border-top: solid;
+}
+
+.SingleAnimation-info-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+
+.SingleAnimation-author {
+  font-size: 0.8em;
+  padding: 0 var(--xs);
+}
+
+.SingleAnimation-score {
+  font-size: 0.8em;
+  padding: 0 var(--xs);
+}
