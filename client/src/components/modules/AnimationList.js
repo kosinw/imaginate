@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "@reach/router";
 import axios from "axios";
 
+import SingleAnimation from "../modules/SingleAnimation";
+
 /**
- * Renders a user's list of animations (or all if not provided)
+ * Renders a user's list of animations (or all if id not provided)
  *
  * Proptypes
  * @param {string} userId - user id of author
@@ -29,13 +30,7 @@ const AnimationList = (props) => {
   const hasAnimations = animations.length !== 0;
   if (hasAnimations) {
     animationsList = animations.map((animation) => {
-      const profileLink = "/profile/" + animation.creator._id;
-      return (
-        <div>
-          <h3>{animation._id}</h3>
-          <Link to={profileLink}>{animation.creator.name}</Link>
-        </div>
-      );
+      return <SingleAnimation animation={animation} />;
     });
   } else {
     animationsList = <div>No animations</div>;
