@@ -3,6 +3,8 @@ import axios from "axios";
 
 import SingleAnimation from "../modules/SingleAnimation";
 
+import "./AnimationList.css";
+
 /**
  * Renders a user's list of animations (or all if id not provided)
  *
@@ -39,7 +41,7 @@ const AnimationList = (props) => {
   return (
     <>
       <h2>Animations</h2>
-      {animationsList}
+      <div className="AnimationList-container">{animationsList}</div>
     </>
   );
 };

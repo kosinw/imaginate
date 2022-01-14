@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "@reach/router";
 
+import "./SingleAnimation.css";
+
 const THUMBNAIL_WIDTH = 144;
 const THUMBNAIL_HEIGHT = 108;
 
@@ -16,17 +18,20 @@ import thumbnail from "../../public/test-thumbnail.png";
 const SingleAnimation = ({ animation }) => {
   const profileLink = "/profile/" + animation.creator._id;
   return (
-    <div classname="SingleAnimation-container">
+    <div className="SingleAnimation-container">
       <img
-        classname="SingleAnimation-thumbnail"
+        className="SingleAnimation-thumbnail"
         src={thumbnail}
         width={THUMBNAIL_WIDTH}
         height={THUMBNAIL_HEIGHT}
       />
-      <h3 classname="SingleAnimation-title">{animation._id}</h3>
-      <Link classname="SingleAnimation-author" to={profileLink}>
-        {animation.creator.name}
-      </Link>
+      <h3 className="SingleAnimation-title">{animation._id}</h3>
+      <div className="SingleAnimation-info-container">
+        <Link className="SingleAnimation-author" to={profileLink}>
+          {animation.creator.name}
+        </Link>
+        <p className="SingleAnimation-score">Score: {animation.score}</p>
+      </div>
     </div>
   );
 };
