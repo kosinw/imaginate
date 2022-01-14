@@ -20,7 +20,7 @@ const App = () => {
       <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
       <Router className="App-view">
         <Skeleton path="/" />
-        <Profile path="/profile" />
+        <Profile path="/profile/:userId" />
         <NotFound default />
       </Router>
     </>
