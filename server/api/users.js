@@ -6,9 +6,11 @@ const router = express.Router();
 
 router.get("/:userId/animations", (req, res) => {
   const { userId } = req.params;
-  Animations.find({ creator: userId }).then((animations) => {
-    return res.status(200).json(animations);
-  });
+  Animations.find({ creator: userId })
+    .populate("creator")
+    .then((animations) => {
+      return res.status(200).json(animations);
+    });
 });
 
 router.get("/:userId", (req, res) => {

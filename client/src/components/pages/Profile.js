@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 
+import AnimationList from "../modules/AnimationList";
+
 /**
  * Renders a user's profile
  *
@@ -23,6 +25,7 @@ const Profile = (props) => {
         <div>
           <h1>{profileName}</h1>
           <p>This is {profileName}'s profile.</p>
+          <AnimationList userId={props.userId} />
         </div>
       ) : (
         <div>
