@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Router } from "@reach/router";
 import NavBar from "./modules/NavBar.js";
 import NotFound from "./pages/NotFound.js";
-import Skeleton from "./pages/Skeleton.js";
+import Index from "./pages/Index";
 import Profile from "./pages/Profile.js";
 import useUser from "../hooks/useUser";
 
@@ -19,7 +19,7 @@ const App = () => {
     <>
       <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
       <Router className="App-view">
-        <Skeleton path="/" />
+        <Index path="/" />
         <Profile path="/profile/:userId" />
         <NotFound default />
       </Router>

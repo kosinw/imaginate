@@ -1,7 +1,5 @@
-const express = require("express");
-const Animation = require("../models/animation");
-
-const router = express.Router();
+const router = require('express').Router();
+const Animation = require('../models/animation');
 
 // TODO(kosi): Add filtering options (query strings)
 router.get("/", async (req, res) => {
