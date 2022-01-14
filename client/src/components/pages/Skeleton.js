@@ -2,6 +2,7 @@ import React from "react";
 
 import "../../utilities.css";
 import "./Skeleton.css";
+import AnimationList from "../modules/AnimationList";
 
 const Skeleton = ({ userId }) => {
   return (
@@ -22,6 +23,8 @@ const Skeleton = ({ userId }) => {
       </ul>
       <h2>How to go from this skeleton to our actual app</h2>
       <a href="http://weblab.to/get-started">Check out this getting started guide</a>
+
+      <AnimationList />
     </>
   );
 };
