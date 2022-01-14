@@ -1,11 +1,17 @@
 import React from "react";
 import axios from "axios";
 
-const Profile = () => {
+/**
+ * Renders a user's profile
+ *
+ * Proptypes
+ * @param {string} userId - user id of profile
+ */
+const Profile = (props) => {
   const [profileName, setProfileName] = React.useState(null);
 
   React.useEffect(() => {
-    axios.get("/api/whoami").then((response) => {
+    axios.get("/api/users/" + props.userId).then((response) => {
       const profileName = response.data.name;
       setProfileName(profileName);
     });
@@ -16,7 +22,7 @@ const Profile = () => {
       {profileName ? (
         <div>
           <h1>{profileName}</h1>
-          <p>Welcome to your profile!</p>
+          <p>This is {profileName}'s profile.</p>
         </div>
       ) : (
         <div>

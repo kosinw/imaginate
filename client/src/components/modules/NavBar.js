@@ -11,6 +11,7 @@ const GOOGLE_CLIENT_ID = "753689922635-os8bde4plqrgt60mt3bor7f5kumnjbti.apps.goo
  * The navigation bar at the top of all pages.
  */
 const NavBar = ({ userId, handleLogin, handleLogout }) => {
+  const profileLink = "/profile/" + userId;
   return (
     <nav className="NavBar-container">
       <div className="Navbar-left">
@@ -24,17 +25,20 @@ const NavBar = ({ userId, handleLogin, handleLogout }) => {
       </div>
 
       <div className="NavBar-right">
-        <Link className="NavBar-link" to="/profile">
-          Profile
-        </Link>
         {userId ? (
-          <GoogleLogout
-            className="NavBar-login"
-            clientId={GOOGLE_CLIENT_ID}
-            buttonText="Logout"
-            onLogoutSuccess={handleLogout}
-            onFailure={(err) => console.log(err)}
-          />
+          <div>
+            <Link className="NavBar-link" to={profileLink}>
+              Profile
+            </Link>
+
+            <GoogleLogout
+              className="NavBar-login"
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Logout"
+              onLogoutSuccess={handleLogout}
+              onFailure={(err) => console.log(err)}
+            />
+          </div>
         ) : (
           <GoogleLogin
             className="NavBar-login"
