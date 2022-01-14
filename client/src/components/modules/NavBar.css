@@ -5,14 +5,40 @@
   justify-content: space-between;
 }
 
-.NavBar-title {
-  color: var(--white);
-  font-size: 1.5em;
+.NavBar-left {
   display: flex;
-  justify-self: flex-start;
+  justify-content: flex-start;
+  align-self: flex-start;
+  align-items: center;
+  gap: var(--xl);
 }
 
-.NavBar-login {
+.NavBar-center {
   display: flex;
-  justify-self: flex-end;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  gap: var(--xl);
+}
+
+.NavBar-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--xl);
+}
+
+.NavBar-title {
+  display: flex;
+  color: var(--white);
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  align-items: center;
+}
+
+.NavBar-link {
+  font-size: 1.2em;
+  color: var(--white);
+  text-decoration: none;
 }
