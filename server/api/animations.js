@@ -1,13 +1,24 @@
 const router = require('express').Router();
 const Animation = require('../models/animation');
+const Frame = require('../models/frame');
+const User = require('../models/user');
 
 // TODO(kosi): Add filtering options (query strings)
 router.get("/", async (req, res) => {
-  Animation.find({})
-    .populate("creator")
-    .then((animations) => {
-      return res.status(200).json(animations);
+  const animations = await Animation.find({})
+    .lean()
+    .populate({
+      path: "creator",
+      model: User,
+      select: "name"
+    })
+    .populate({
+      path: "frames",
+      model: Frame,
+      select: "data",
     });
+
+  return res.status(200).json(animations);
 });
 
 router.get("/:animationId", async (req, res) => {

@@ -1,30 +1,37 @@
 import React from "react";
+import axios from "axios";
 import tw, { styled } from "twin.macro";
 
-const DebugBox = styled.div(() => [
-  tw`border-solid`,
-  tw`border-black`,
-  tw`border-4`,
-  tw`bg-gray-500`,
-  tw`text-white`,
-  tw`inline-flex`,
-  tw`items-center`,
-  tw`justify-center`,
-  tw`rounded-sm`,
-  'box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);',
-  'aspect-ratio: 16 / 9;'
-]);
+import AnimationPreview from "../modules/common/AnimationPreview";
+
+// TODO(kosi): Replace this with an actual webm.
+const parseAnimationData = (animation) => {
+  return animation.frames[0].data;
+}
 
 const IndexCardGridView = () => {
+  const [animations, setAnimations] = React.useState([]);
+
+  React.useEffect(() => {
+    (async () => {
+      const animations = await axios.get("/api/animations/")
+        .catch(error => {
+          // TODO(kosi): Error handling
+          return;
+        });
+      setAnimations(animations.data);
+    })();
+  }, []);
   return (
-    <div tw="grid grid-cols-1 gap-y-8 md:(grid-cols-2 gap-x-6 gap-y-12) lg:(grid-cols-3)">
-      {[...Array(25)].map((x) => <DebugBox key={x} />)}
+    <div tw="grid grid-cols-1 gap-y-8 md:(grid-cols-2 gap-x-6 gap-y-12) lg:(grid-cols-4)">
+      {animations.map(animation => <AnimationPreview data={parseAnimationData(animation)} />)}
     </div>
   );
 }
 
 const StyledInput = styled.input(() => [
-  tw`border-2`,
+  tw`border-b-2`,
+  tw`focus:outline-none`,
   tw`px-2`,
   tw`py-1.5`,
   tw`text-lg`,

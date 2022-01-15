@@ -8,6 +8,9 @@ const connect = () => {
   // TODO change database name to the name you chose
   const databaseName = "imaginate";
 
+  // enable virtuals
+  mongoose.set("toJSON", { virtuals: true });
+
   // connect to mongodb
   mongoose
     .connect(mongoConnectionURL, {

@@ -15,7 +15,7 @@ const NavBar = ({ userId, handleLogin, handleLogout }) => {
   return (
     <nav className="NavBar-container">
       <div className="Navbar-left">
-        <p className="NavBar-link">Discover</p>
+        <Link to="/" className="NavBar-link">Discover</Link>
       </div>
 
       <div className="NavBar-center">
@@ -26,7 +26,7 @@ const NavBar = ({ userId, handleLogin, handleLogout }) => {
 
       <div className="NavBar-right">
         {userId ? (
-          <div>
+          <div style={{'display': 'flex', 'height': '100%'}}>
             <Link className="NavBar-link" to={profileLink}>
               Profile
             </Link>

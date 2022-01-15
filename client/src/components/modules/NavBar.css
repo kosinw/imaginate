@@ -42,4 +42,8 @@
   color: var(--white);
   text-decoration: none;
   padding: 0 var(--xl);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

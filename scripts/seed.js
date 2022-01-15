@@ -34,7 +34,7 @@ async function seedFrames(users, n = 5) {
   for (let i = 0; i < n; ++i) {
     const user = sampleSize(users, 1)[0];
 
-    const width = 128, height = 128;
+    const width = 640, height = 360;
     
     const frame = new Frame({
       user: user,

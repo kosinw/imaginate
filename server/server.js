@@ -20,13 +20,10 @@ const session = require("express-session"); // library that stores info about ea
 const connect = require("./database"); // module to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
 
-const api = require("./api");
-const auth = require("./auth");
-
 connect();
 
-// enable virtuals
-mongoose.set("toJSON", { virtuals: true });
+const api = require("./api");
+const auth = require("./auth");
 
 // create a new express server
 const app = express();
