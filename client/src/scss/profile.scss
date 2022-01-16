@@ -1,3 +1,10 @@
+.AnimationList-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  justify-content: center;
+}
+
 .SingleAnimation-container {
   border: 2px;
   border-color: var(--darkgrey);

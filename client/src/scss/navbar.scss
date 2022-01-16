@@ -1,6 +1,6 @@
 .NavBar-container {
-  padding: var(--s) var(--m);
-  background-color: var(--primary);
+  padding: 8px 16px;
+  background-color: #396dff;
   display: flex;
   justify-content: space-between;
 }
@@ -10,7 +10,7 @@
   justify-content: flex-start;
   align-self: flex-start;
   align-items: center;
-  gap: var(--xl);
+  gap: 32px;
 }
 
 .NavBar-center {
@@ -18,19 +18,19 @@
   align-self: center;
   justify-content: center;
   align-items: center;
-  gap: var(--xl);
+  gap: 32px;
 }
 
 .NavBar-right {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: var(--xl);
+  gap: 32px;
 }
 
 .NavBar-title {
   display: flex;
-  color: var(--white);
+  color: #ffffff;
   font-size: 1.5em;
   font-weight: bold;
   text-decoration: none;
@@ -39,9 +39,9 @@
 
 .NavBar-link {
   font-size: 1.2em;
-  color: var(--white);
+  color: #ffffff;
   text-decoration: none;
-  padding: 0 var(--xl);
+  padding: 0 32px;
   display: inline-flex;
   justify-content: center;
   align-items: center;

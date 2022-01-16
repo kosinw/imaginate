@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import SingleAnimation from "../modules/SingleAnimation";
+import SingleAnimation from "./SingleAnimation";
 
-import "./AnimationList.css";
+// import "./AnimationList.css";
 
 /**
  * Renders a user's list of animations (or all if id not provided)

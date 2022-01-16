@@ -55,7 +55,8 @@ class AuthController {
     next();
   }
 
-  static ensureLoggedIn(req, res, next) {
+  // Use this as a route middleware to ensure user is authenticated.
+  static guard(req, res, next) {
     if (!req.user) {
       return res.status(401).send({ err: "not logged in" });
     }

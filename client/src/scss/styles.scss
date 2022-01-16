@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+// import preflight styles
+@use "_preflight";
+
+// import domain-specific styles
+@use "navbar";
+@use "common"; // note this is for common components that don't fall under a domain
+@use "index";
+@use "profile";
