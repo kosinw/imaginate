@@ -3,8 +3,12 @@ import axios from "axios";
 
 import AnimationPreview from "../modules/index/AnimationPreview";
 
-const parseAnimationData = (animation) => {
-  return animation.frames[0].data;
+const previewProps = (animation) => {
+  return {
+    uri: animation.frames[0].data,
+    count: animation.score,
+    name: animation.creator.name
+  }
 }
 
 const IndexCardGridView = () => {
@@ -16,9 +20,10 @@ const IndexCardGridView = () => {
       setAnimations(animations.data);
     })();
   }, []);
+
   return (
     <div className="IndexCardGridView">
-      {animations.map(animation => <AnimationPreview data={parseAnimationData(animation)} />)}
+      {animations.map(animation => <AnimationPreview {...previewProps(animation)} />)}
     </div>
   );
 }

@@ -1,12 +1,29 @@
 
 import React from "react";
+import { HiArrowSmUp } from "react-icons/hi";
+
+import Identicon from "../../Identicon";
 
 // TODO(kosi): Replace this with a webm preview instead of static image.
-const AnimationPreview = ({ data }) => {
+const AnimationPreview = ({ uri, name, count }) => {
   return (
-    <div className="AnimationPreview">
-      <img className="thumbnail" src={data} tw="object-cover" />
-    </div>
+    <figure className="AnimationPreview">
+      <img className="thumbnail" src={uri} tw="object-cover" />
+      <div className="info-container">
+        <figcaption className="caption-container">
+          <Identicon className="caption-icon" size={24} value={name} />
+          <span className="caption-title">{name}</span>
+        </figcaption>
+        <div className="upvote-container">
+          <button type="button" aria-label="Upvote" className="upvote-button">
+            <HiArrowSmUp />
+          </button>
+          <span className="upvote-count">
+            {count}
+          </span>
+        </div>
+      </div>
+    </figure>
   );
 }
 
