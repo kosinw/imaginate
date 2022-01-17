@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import AnimationPreview from "../index/AnimationPreview";
+import AnimationPreview from "../AnimationPreview";
 
 const previewProps = (animation) => {
   return {

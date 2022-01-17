@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import AnimationPreview from "../modules/index/AnimationPreview";
+import AnimationPreview from "../modules/AnimationPreview";
 
 const previewProps = (animation) => {
   return {

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@reach/router";
 import { HiArrowSmUp } from "react-icons/hi";
 
-import Identicon from "../../Identicon";
+import Identicon from "../Identicon";
 
 // TODO(kosi): Replace this with a webm preview instead of static image.
 const AnimationPreview = ({ uri, name, profileId, count }) => {
