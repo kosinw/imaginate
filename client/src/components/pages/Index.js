@@ -1,13 +1,14 @@
 import React from "react";
 import axios from "axios";
 
-import AnimationPreview from "../modules/index/AnimationPreview";
+import AnimationPreview from "../modules/AnimationPreview";
 
 const previewProps = (animation) => {
   return {
     uri: animation.frames[0].data,
     count: animation.score,
     name: animation.creator.name,
+    profileId: animation.creator._id,
   };
 };
 
