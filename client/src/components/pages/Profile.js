@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
 
-import AnimationList from "../modules/profile/AnimationList";
+// import AnimationList from "../modules/profile/AnimationList";
+import ProfileCardGridView from "../modules/profile/ProfileCardGridView";
 
 /**
  * Renders a user's profile
@@ -24,8 +25,8 @@ const Profile = (props) => {
       {profileName ? (
         <div>
           <h1>{profileName}</h1>
-          <p>This is {profileName}'s profile.</p>
-          <AnimationList userId={props.userId} />
+          {/* <AnimationList userId={props.userId} /> */}
+          <ProfileCardGridView userId={props.userId} />
         </div>
       ) : (
         <div>

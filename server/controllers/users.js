@@ -1,5 +1,6 @@
 const User = require("../models/user.js");
 const Animation = require("../models/animation");
+const Frame = require("../models/frame");
 
 class UsersController {
   static async get(id) {
@@ -11,7 +12,11 @@ class UsersController {
     const animations = await Animation.find({ creator: id })
       .populate({
         path: "creator",
-        model: User
+        model: User,
+      })
+      .populate({
+        path: "frames",
+        model: Frame,
       });
 
     return animations;
