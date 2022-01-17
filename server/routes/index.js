@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| api.js -- server routes
+| routes/index.js -- server routes
 |--------------------------------------------------------------------------
 |
 | This file defines the routes for your server.
@@ -8,27 +8,11 @@
 */
 const router = require("express").Router();
 
-const animations = require("./api/animations");
-const users = require("./api/users");
-
-// import authentication library
+const animations = require("./animations");
+const users = require("./users");
 const auth = require("./auth");
 
-router.post("/login", auth.login);
-router.post("/logout", auth.logout);
-router.get("/whoami", (req, res) => {
-  if (!req.user) {
-    // not logged in
-    return res.send({});
-  }
-
-  res.send(req.user);
-});
-
-// |------------------------------|
-// | write your API methods below!|
-// |------------------------------|
-
+router.use("/", auth);
 router.use("/animations", animations);
 router.use("/users", users);
 

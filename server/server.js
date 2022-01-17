@@ -22,8 +22,8 @@ const path = require("path"); // provide utilities for working with file and dir
 
 connect();
 
-const api = require("./api");
-const auth = require("./auth");
+const routes = require("./routes");
+const AuthController = require("./controllers/auth");
 
 // create a new express server
 const app = express();
@@ -41,10 +41,10 @@ app.use(
 );
 
 // this checks if the user is logged in, and populates "req.user"
-app.use(auth.populateCurrentUser);
+app.use(AuthController.populateCurrentUser);
 
 // connect user-defined routes
-app.use("/api", api);
+app.use("/api", routes);
 
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "@reach/router";
 
-import "./SingleAnimation.css";
+// import "./SingleAnimation.css";
 
 const THUMBNAIL_WIDTH = 144;
 const THUMBNAIL_HEIGHT = 108;
 
 // TODO: generate thumbnail from animation, include as src
-import thumbnail from "../../public/test-thumbnail.png";
+import thumbnail from "../../../public/test-thumbnail.png";
 
 /**
  * Renders a single animation as part of a list

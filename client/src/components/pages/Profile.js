@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import AnimationList from "../modules/AnimationList";
+import AnimationList from "../modules/profile/AnimationList";
 
 /**
  * Renders a user's profile

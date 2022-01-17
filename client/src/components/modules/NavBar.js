@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "@reach/router";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
 
-import "./NavBar.css";
-
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "753689922635-os8bde4plqrgt60mt3bor7f5kumnjbti.apps.googleusercontent.com";
 
@@ -15,18 +13,22 @@ const NavBar = ({ userId, handleLogin, handleLogout }) => {
   return (
     <nav className="NavBar-container">
       <div className="Navbar-left">
-        <Link to="/" className="NavBar-link">Discover</Link>
-      </div>
-
-      <div className="NavBar-center">
         <Link className="NavBar-title" to="/">
           Imaginate
         </Link>
+        <Link to="/" className="NavBar-link">
+          Discover
+        </Link>
+        {userId ? (
+          <Link to="/create" className="NavBar-link">
+            Create
+          </Link>
+        ) : null}
       </div>
 
       <div className="NavBar-right">
         {userId ? (
-          <div style={{'display': 'flex', 'height': '100%'}}>
+          <div style={{ display: "flex", height: "100%" }}>
             <Link className="NavBar-link" to={profileLink}>
               Profile
             </Link>

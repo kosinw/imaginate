@@ -1,28 +1,29 @@
 import React from 'react';
-import { get, post } from '../utilities';
+import axios from 'axios';
 
 const useUser = () => {
   const [userId, setUserId] = React.useState(null);
 
   React.useEffect(() => {
-    get("/api/whoami").then((user) => {
+    (async () => {
+      const { data: user } = await axios.get("/api/whoami");
+
       if (user._id) {
         setUserId(user._id);
       }
-    });
+    })();
   }, []);
 
-  const handleLogin = (res) => {
+  const handleLogin = async (res) => {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
-    post("/api/login", { token: userToken }).then((user) => {
-      setUserId(user._id);
-    });
+    const { data: user } = await axios.post("/api/login", { token: userToken });
+    setUserId(user._id)
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setUserId(undefined);
-    post("/api/logout");
+    await axios.post("/api/logout");
   };
 
   return {

@@ -1,59 +1,47 @@
 import React from "react";
 import axios from "axios";
-import tw, { styled } from "twin.macro";
 
-import AnimationPreview from "../modules/common/AnimationPreview";
+import AnimationPreview from "../modules/index/AnimationPreview";
 
-// TODO(kosi): Replace this with an actual webm.
-const parseAnimationData = (animation) => {
-  return animation.frames[0].data;
-}
+const previewProps = (animation) => {
+  return {
+    uri: animation.frames[0].data,
+    count: animation.score,
+    name: animation.creator.name,
+  };
+};
 
 const IndexCardGridView = () => {
   const [animations, setAnimations] = React.useState([]);
 
   React.useEffect(() => {
     (async () => {
-      const animations = await axios.get("/api/animations/")
-        .catch(error => {
-          // TODO(kosi): Error handling
-          return;
-        });
-      setAnimations(animations.data);
+      const animations = await axios.get("/api/animations/");
+      const animationData = animations.data.filter((animation) => animation.frames.length > 0);
+      setAnimations(animationData);
     })();
   }, []);
+
   return (
-    <div tw="grid grid-cols-1 gap-y-8 md:(grid-cols-2 gap-x-6 gap-y-12) lg:(grid-cols-4)">
-      {animations.map(animation => <AnimationPreview data={parseAnimationData(animation)} />)}
+    <div className="IndexCardGridView">
+      {animations.map((animation) => (
+        <AnimationPreview {...previewProps(animation)} />
+      ))}
     </div>
   );
-}
-
-const StyledInput = styled.input(() => [
-  tw`border-b-2`,
-  tw`focus:outline-none`,
-  tw`px-2`,
-  tw`py-1.5`,
-  tw`text-lg`,
-  tw`placeholder:text-black`,
-  tw`placeholder:font-bold`,
-  tw`rounded-sm`,
-  tw`font-mono`,
-  tw`border-black`,
-  tw`border-solid`
-]);
+};
 
 const IndexSearchView = () => {
   return (
-    <div tw="py-16 flex items-center justify-center">
-      <StyledInput placeholder="Search..." />
+    <div className="IndexSearchView">
+      <input className="searchbar" placeholder="Search..." />
     </div>
-  )
+  );
 };
 
-const Index = ({ userId }) => {
+const Index = () => {
   return (
-    <div tw="container mx-auto">
+    <div className="Index">
       <IndexSearchView />
       <IndexCardGridView />
     </div>

@@ -1,0 +1,29 @@
+.CreateAnimationForm-form {
+  display: flex;
+  flex-flow: column;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.CreateAnimationForm-input {
+  margin: 16px 8px;
+  background-color: #d4d4d4;
+  padding: 4px;
+}
+
+.CreateAnimationForm-submit {
+  background-color: #396dff;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 1em;
+  padding: 8px 16px;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  align-items: flex-end;
+  width: max-content;
+  cursor: pointer;
+}
