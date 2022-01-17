@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const FrameSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   data: { type: String, required: true },
 });
 

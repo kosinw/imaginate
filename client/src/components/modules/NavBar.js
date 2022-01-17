@@ -19,6 +19,11 @@ const NavBar = ({ userId, handleLogin, handleLogout }) => {
         <Link to="/" className="NavBar-link">
           Discover
         </Link>
+        {userId ? (
+          <Link to="/create" className="NavBar-link">
+            Create
+          </Link>
+        ) : null}
       </div>
 
       <div className="NavBar-right">

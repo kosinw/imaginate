@@ -1,6 +1,6 @@
-const Animation = require('../models/animation');
-const Frame = require('../models/frame');
-const User = require('../models/user');
+const Animation = require("../models/animation");
+const Frame = require("../models/frame");
+const User = require("../models/user");
 
 class AnimationsController {
   static async getAll() {
@@ -21,7 +21,7 @@ class AnimationsController {
     const animation = await Animation.findOne({ _id: id })
       .populate({
         path: "creator",
-        model: User
+        model: User,
       })
       .populate({
         path: "frames",
@@ -30,6 +30,22 @@ class AnimationsController {
 
     return animation;
   }
+
+  static async createAnimation(animationObj) {
+    const animation = new Animation(animationObj);
+    const savedAnimation = await animation.save();
+    return savedAnimation;
+  }
+
+  static async addFrame(animationId, frameObj) {
+    const frame = new Frame(frameObj);
+    const savedFrame = await frame.save();
+    const animation = await this.get(animationId);
+    animation.updateTime = Date.now();
+    animation.frames.push(savedFrame._id);
+    const savedAnimation = await animation.save();
+    return savedAnimation;
+  }
 }
 
-module.exports = AnimationsController
+module.exports = AnimationsController;

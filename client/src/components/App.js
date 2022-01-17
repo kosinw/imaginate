@@ -3,6 +3,8 @@ import { Router } from "@reach/router";
 import NavBar from "./modules/NavBar.js";
 import NotFound from "./pages/NotFound.js";
 import Index from "./pages/Index";
+import Editor from "./pages/Editor";
+import NewAnimation from "./pages/NewAnimation";
 import Profile from "./pages/Profile.js";
 import useUser from "../hooks/useUser";
 
@@ -19,6 +21,8 @@ const App = () => {
       <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
       <Router className="container">
         <Index path="/" />
+        <NewAnimation path="/create" />
+        <Editor path="/animation/:animationId/edit" />
         <Profile path="/profile/:userId" />
         <NotFound default />
       </Router>
