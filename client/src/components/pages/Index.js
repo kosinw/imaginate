@@ -8,6 +8,7 @@ const previewProps = (animation) => {
     uri: animation.frames[0].data,
     count: animation.score,
     name: animation.creator.name,
+    profileId: animation.creator._id,
   };
 };
 

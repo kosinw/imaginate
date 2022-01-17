@@ -24,7 +24,7 @@ const Profile = (props) => {
     <div>
       {profileName ? (
         <div>
-          <h1>{profileName}</h1>
+          <h1>{profileName}'s Profile</h1>
           {/* <AnimationList userId={props.userId} /> */}
           <ProfileCardGridView userId={props.userId} />
         </div>
