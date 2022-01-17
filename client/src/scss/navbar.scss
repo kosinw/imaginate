@@ -7,6 +7,7 @@
 
 .NavBar-left {
   display: flex;
+  flex-flow: row;
   justify-content: flex-start;
   align-self: flex-start;
   align-items: center;
@@ -23,17 +24,20 @@
 
 .NavBar-right {
   display: flex;
+  flex-flow: row;
   justify-content: flex-end;
   align-items: center;
   gap: 32px;
 }
 
 .NavBar-title {
-  display: flex;
+  display: inline-flex;
   color: #ffffff;
   font-size: 1.5em;
   font-weight: bold;
   text-decoration: none;
+  padding: 0 32px;
+  justify-content: center;
   align-items: center;
 }
 

@@ -13,18 +13,17 @@ const NavBar = ({ userId, handleLogin, handleLogout }) => {
   return (
     <nav className="NavBar-container">
       <div className="Navbar-left">
-        <Link to="/" className="NavBar-link">Discover</Link>
-      </div>
-
-      <div className="NavBar-center">
         <Link className="NavBar-title" to="/">
           Imaginate
+        </Link>
+        <Link to="/" className="NavBar-link">
+          Discover
         </Link>
       </div>
 
       <div className="NavBar-right">
         {userId ? (
-          <div style={{'display': 'flex', 'height': '100%'}}>
+          <div style={{ display: "flex", height: "100%" }}>
             <Link className="NavBar-link" to={profileLink}>
               Profile
             </Link>
