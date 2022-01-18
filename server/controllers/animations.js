@@ -31,20 +31,32 @@ class AnimationsController {
     return animation;
   }
 
-  static async createAnimation(animationObj) {
-    const animation = new Animation(animationObj);
-    const savedAnimation = await animation.save();
-    return savedAnimation;
+  static async create({ creator, framerate, resolution }) {
+    const animation = new Animation({
+      creator,
+      framerate,
+      resolution,
+      frames: [],
+      upvoters: []
+    });
+
+    await animation.save();
+
+    return animation;
   }
 
-  static async addFrame(animationId, frameObj) {
-    const frame = new Frame(frameObj);
-    const savedFrame = await frame.save();
-    const animation = await this.get(animationId);
+  static async insertFrame({ id, data, user }) {
+    const animation = await AnimationsController.get(id);
+
+    const frame = new Frame({ user, data });
+    await frame.save();
+
+    animation.frames.push(frame);
     animation.updateTime = Date.now();
-    animation.frames.push(savedFrame._id);
-    const savedAnimation = await animation.save();
-    return savedAnimation;
+
+    await animation.save();
+
+    return animation;
   }
 }
 

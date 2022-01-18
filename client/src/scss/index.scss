@@ -113,14 +113,9 @@
       justify-content: center;
       color: c.$slate;
 
-      & > * + * {
-        margin-left: 0.125rem;
-      }
-
-      .upvote-count {
-        text-align: center;
-        display: inline-flex;
-        align-items: center;
+      &:hover {
+        color: c.$red;
+        border-color: c.$red;
       }
 
       .upvote-button {
@@ -128,13 +123,19 @@
         align-items: center;
         justify-content: center;
         // border-radius: 0.375rem;
-        // border: 1px solid c.$slate-300;
+        // border: 1px solid c.$slate;
         width: 1.5rem;
         height: 1.5rem;
 
-        &:hover {
+        &.active {
           color: c.$red;
           border-color: c.$red;
+        }
+
+        .upvote-count {
+          text-align: center;
+          display: inline-flex;
+          align-items: center;
         }
       }
     }

@@ -1,19 +1,12 @@
 import React from "react";
 import axios from "axios";
 
-import AnimationPreview from "../modules/AnimationPreview";
-
-const previewProps = (animation) => {
-  return {
-    uri: animation.frames[0].data,
-    count: animation.score,
-    name: animation.creator.name,
-    profileId: animation.creator._id,
-  };
-};
+import useUser from '../../hooks/useUser';
+import AnimationPreview from "../modules/index/AnimationPreview";
 
 const IndexCardGridView = () => {
   const [animations, setAnimations] = React.useState([]);
+  const { userId } = useUser();
 
   React.useEffect(() => {
     (async () => {
@@ -25,9 +18,12 @@ const IndexCardGridView = () => {
 
   return (
     <div className="IndexCardGridView">
-      {animations.map((animation) => (
-        <AnimationPreview {...previewProps(animation)} />
-      ))}
+      {animations.map(animation =>
+        <AnimationPreview
+          key={animation._id}
+          userId={userId}
+          animation={animation}
+        />)}
     </div>
   );
 };
