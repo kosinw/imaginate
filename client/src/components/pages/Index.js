@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 import useUser from '../../hooks/useUser';
-import AnimationPreview from "../modules/index/AnimationPreview";
+import AnimationPreview from "../modules/AnimationPreview";
 
 const IndexCardGridView = () => {
   const [animations, setAnimations] = React.useState([]);

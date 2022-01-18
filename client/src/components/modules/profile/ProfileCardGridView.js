@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useUser from "../../../hooks/useUser";
 
 import AnimationPreview from "../AnimationPreview";
 
@@ -14,6 +15,7 @@ const previewProps = (animation) => {
 
 const ProfileCardGridView = (props) => {
   const [animations, setAnimations] = useState([]);
+  const { userId } = useUser();
 
   useEffect(() => {
     (async () => {
@@ -26,7 +28,7 @@ const ProfileCardGridView = (props) => {
   return (
     <div className="IndexCardGridView">
       {animations.map((animation) => (
-        <AnimationPreview {...previewProps(animation)} />
+        <AnimationPreview userId={userId} animation={animation} />
       ))}
     </div>
   );

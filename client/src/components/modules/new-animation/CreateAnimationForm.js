@@ -7,7 +7,15 @@ const CreateAnimationForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const body = { title: title };
+    // TODO(kosi): Remove these hard coded values and add them to the form.
+    const body = {
+      title: title,
+      framerate: 12,
+      resolution: {
+        width: 640,
+        height: 360
+      }
+    };
     axios.post("/api/animations", body).then((response) => {
       navigate(`/animation/${response.data._id}/edit`);
     });

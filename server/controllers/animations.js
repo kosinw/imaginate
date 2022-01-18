@@ -31,13 +31,14 @@ class AnimationsController {
     return animation;
   }
 
-  static async create({ creator, framerate, resolution }) {
+  static async create({ creator, framerate, resolution, title }) {
     const animation = new Animation({
       creator,
       framerate,
+      title,
       resolution,
       frames: [],
-      upvoters: []
+      upvoters: [creator]
     });
 
     await animation.save();
