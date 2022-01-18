@@ -4,17 +4,19 @@ import axios from "axios";
 
 const CreateAnimationForm = () => {
   const [title, setTitle] = useState("");
+  const [framerate, setFramerate] = useState("");
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // TODO(kosi): Remove these hard coded values and add them to the form.
     const body = {
       title: title,
-      framerate: 12,
+      framerate: framerate,
       resolution: {
-        width: 640,
-        height: 360
-      }
+        width: width,
+        height: height,
+      },
     };
     axios.post("/api/animations", body).then((response) => {
       navigate(`/animation/${response.data._id}/edit`);
@@ -30,6 +32,33 @@ const CreateAnimationForm = () => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+        />
+      </label>
+      <label>
+        Framerate (fps):
+        <input
+          className="CreateAnimationForm-input"
+          type="text"
+          value={framerate}
+          onChange={(e) => setFramerate(e.target.value)}
+        />
+      </label>
+      <label>
+        Width (px):
+        <input
+          className="CreateAnimationForm-input"
+          type="text"
+          value={width}
+          onChange={(e) => setWidth(e.target.value)}
+        />
+      </label>
+      <label>
+        Height (px):
+        <input
+          className="CreateAnimationForm-input"
+          type="text"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
         />
       </label>
       <input className="CreateAnimationForm-submit" type="submit" value="Submit" />

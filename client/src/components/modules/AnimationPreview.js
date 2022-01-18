@@ -11,7 +11,9 @@ const AnimationPreview = ({ animation, userId }) => {
 
   return (
     <figure className="AnimationPreview">
-      <img className="thumbnail" src={animation.thumbnail} />
+      <Link to={`/animation/${animation._id}`}>
+        <img className="thumbnail" src={animation.thumbnail} />
+      </Link>
       <div className="info-container">
         <figcaption className="caption-container">
           <Identicon className="caption-icon" size={24} value={animation.creator.name} />
@@ -23,11 +25,10 @@ const AnimationPreview = ({ animation, userId }) => {
           <button
             type="button"
             aria-label="Upvote"
-            className={classnames({ "upvote-button": true, "active": active })}>
+            className={classnames({ "upvote-button": true, active: active })}
+          >
             <HiArrowSmUp />
-            <span className="upvote-count">
-              {animation.score}
-            </span>
+            <span className="upvote-count">{animation.score}</span>
           </button>
         </div>
       </div>
