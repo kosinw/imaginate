@@ -3,13 +3,18 @@ import { navigate } from "@reach/router";
 // import axios from "axios";
 import Sketch from "react-p5";
 
+import WeightTool from "./WeightTool";
+
 let cnv;
+let p5Instance;
 
 const AnimationEditor = ({ animation, insertFrame }) => {
   const setup = (p5, parent) => {
+    p5Instance = p5;
     cnv = p5.createCanvas(640, 360).parent(parent);
     cnv.id("sketch-editor");
     p5.background(255);
+    p5.strokeWeight(1);
   };
 
   const draw = (p5) => {
@@ -34,8 +39,13 @@ const AnimationEditor = ({ animation, insertFrame }) => {
     })
   }
 
+  const handleWeight = (weight) => {
+    p5Instance.strokeWeight(weight);
+  };
+
   return (
     <div className="AnimationEditor-container">
+      <WeightTool handleWeight={handleWeight} />
       <Sketch className="AnimationEditor-sketch" setup={setup} draw={draw} />
       <button className="AnimationEditor-submit" onClick={save}>
         Save
