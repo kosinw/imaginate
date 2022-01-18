@@ -1,0 +1,18 @@
+.UpvoteButton {
+  &:hover {
+    @apply text-red-500;
+  }
+
+  @apply text-slate-600;
+  @apply flex items-center justify-center;
+  @apply w-6 h-6;
+
+  &.UpvoteButton--active {
+    @apply text-red-500;
+  }
+
+  .UpvoteButton__counter {
+    @apply text-center;
+    @apply inline-flex items-center;
+  }
+}

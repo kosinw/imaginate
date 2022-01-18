@@ -1,33 +1,7 @@
 @use "config" as c;
 
 .App {
-  .container {
-    padding: 16px;
-  }
-}
-
-.container {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-
-  @include c.sm {
-    max-width: c.$sm;
-  }
-
-  @include c.md {
-    max-width: c.$md;
-  }
-
-  @include c.lg {
-    max-width: c.$lg;
-  }
-
-  @include c.xl {
-    max-width: c.$xl;
-  }
-
-  @include c.xl2 {
-    max-width: c.$xl2;
-  }
+  // .container {
+  //   padding: 16px;
+  // }
 }

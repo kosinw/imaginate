@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import useUser from '../../hooks/useUser';
+import useUser from '../../lib/hooks/useUser';
 import AnimationPreview from "../modules/AnimationPreview";
 
 const IndexCardGridView = () => {
@@ -28,20 +28,21 @@ const IndexCardGridView = () => {
   );
 };
 
-const IndexSearchView = () => {
+const IndexHeader = () => {
   return (
-    <div className="IndexSearchView">
-      <input className="searchbar" placeholder="Search..." />
+    <div className="IndexHeader">
+      <h1 className="IndexHeader__h1">Discover</h1>
+      <h2 className="IndexHeader__h2">Discover the most popular animations.</h2>
     </div>
-  );
-};
+  )
+}
 
 const Index = () => {
   return (
-    <div className="Index">
-      <IndexSearchView />
+    <main className="Index">
+      <IndexHeader />
       <IndexCardGridView />
-    </div>
+    </main>
   );
 };
 

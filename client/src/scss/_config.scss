@@ -16,35 +16,3 @@ $font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe 
 $font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
 $font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
-/// Mixins
-// Based on https://tailwindcss.com/docs/container
-@mixin sm {
-  @media (min-width: $sm) {
-    @content;
-  }
-}
-
-@mixin md {
-  @media (min-width: $md) {
-    @content;
-  }
-}
-
-@mixin lg {
-  @media (min-width: $lg) {
-    @content;
-  }
-}
-
-@mixin xl {
-  @media (min-width: $xl) {
-    @content;
-  }
-}
-
-@mixin xl2 {
-  @media (min-width: $xl2) {
-    @content;
-  }
-}

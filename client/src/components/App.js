@@ -5,9 +5,9 @@ import NotFound from "./pages/NotFound.js";
 import Index from "./pages/Index";
 import Animation from "./pages/Animation";
 import Editor from "./pages/Editor";
+import Watch from "./pages/Watch";
 import NewAnimation from "./pages/NewAnimation";
 import Profile from "./pages/Profile.js";
-import useUser from "../hooks/useUser";
 
 import "../scss/styles.scss";
 
@@ -15,17 +15,16 @@ import "../scss/styles.scss";
  * Define the "App" component
  */
 const App = () => {
-  const { handleLogin, handleLogout, userId } = useUser();
-
   return (
     <main className="App">
-      <NavBar userId={userId} handleLogin={handleLogin} handleLogout={handleLogout} />
-      <Router className="container">
+      <NavBar />
+      <Router className="container mx-auto p-4">
         <Index path="/" />
         <NewAnimation path="/create" />
         <Animation path="/animation/:animationId" />
         <Editor path="/animation/:animationId/edit" />
         <Profile path="/profile/:userId" />
+        <Watch path="/watch/:id" />
         <NotFound default />
       </Router>
     </main>

@@ -1,0 +1,80 @@
+.AnimationPlayer {
+  @apply w-full;
+  @apply border-4 border-black;
+  @apply mt-4;
+  @apply flex flex-col;
+  @apply rounded-md;
+}
+
+.AnimationThumbnail {
+  @apply aspect-video w-full;
+
+  &:hover {
+    @apply cursor-pointer;
+  }
+
+  .AnimationThumbnail__image {
+    @apply w-full object-cover;
+  }
+}
+
+.AnimationCanvas {
+  @apply aspect-video w-full;
+}
+
+.AnimationPlayerControls {
+  @apply bg-slate-100;
+  @apply flex flex-row;
+  @apply p-1.5 px-3.5;
+  @apply text-slate-500;
+
+
+  .AnimationPlayerControls__play {
+    @apply align-middle;
+
+    &:hover {
+      @apply text-red-500;
+    }
+  }
+
+  .AnimationPlayerControls__loop {
+    @apply align-middle;
+
+    &:hover {
+      @apply text-red-500;
+    }
+  }
+
+  .AnimationPlayerControls__swap {
+    @apply align-middle;
+
+    &:hover {
+      @apply text-red-500;
+    }
+  }
+
+  .AnimationPlayerControls__left {
+    @apply flex-auto;
+  }
+
+  .AnimationPlayerControls__right {
+    @apply space-x-2;
+    @apply flex flex-row;
+  }
+}
+
+.AnimationProgress {
+  @apply h-1 w-full;
+  @apply bg-zinc-300;
+
+  &:hover {
+    @apply h-3 -mt-2;
+    @apply cursor-pointer;
+  }
+
+  .AnimationProgress__played {
+    @apply h-full;
+    @apply bg-red-500;
+    @apply block;
+  }
+}

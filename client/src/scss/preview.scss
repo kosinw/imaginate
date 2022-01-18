@@ -1,0 +1,61 @@
+.AnimationPreview {
+  @apply border-4 border-black;
+  @apply bg-white;
+  @apply flex flex-col items-center justify-center;
+  @apply rounded-sm;
+
+  &:hover {
+    @apply cursor-pointer;
+    @apply outline-2 outline outline-red-500;
+  }
+
+  .thumbnail {
+    @apply object-cover;
+    @apply aspect-video;
+    @apply border-b-4 border-solid border-inherit;
+  }
+
+  .info-container {
+    @apply p-2;
+    @apply w-full;
+    @apply flex flex-row;
+    @apply text-black;
+    @apply text-sm;
+
+    .caption-container {
+      @apply flex flex-row flex-auto items-center;
+      @apply space-x-2;
+
+      .caption-icon {
+        @apply inline;
+      }
+
+      .caption-title {
+        @apply align-middle;
+      }
+    }
+
+    .upvote-container {
+      @apply flex flex-row justify-center;
+      @apply text-slate-600;
+
+      &:hover {
+        @apply text-red-500;
+      }
+
+      .upvote-button {
+        @apply flex items-center justify-center;
+        @apply w-6 h-6;
+
+        &.active {
+          @apply text-red-500;
+        }
+
+        .upvote-count {
+          @apply text-center;
+          @apply inline-flex items-center;
+        }
+      }
+    }
+  }
+}

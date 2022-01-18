@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
+import useUser from "../../lib/hooks/useUser";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "753689922635-os8bde4plqrgt60mt3bor7f5kumnjbti.apps.googleusercontent.com";
@@ -8,7 +9,9 @@ const GOOGLE_CLIENT_ID = "753689922635-os8bde4plqrgt60mt3bor7f5kumnjbti.apps.goo
 /**
  * The navigation bar at the top of all pages.
  */
-const NavBar = ({ userId, handleLogin, handleLogout }) => {
+const NavBar = () => {
+  const { handleLogin, handleLogout, userId } = useUser();
+
   const profileLink = "/profile/" + userId;
   return (
     <nav className="NavBar-container">

@@ -5,9 +5,13 @@
 
 // import domain-specific styles
 @use "navbar";
-@use "common"; // note this is for common components that don't fall under a domain
+@use "common";
 @use "index";
 @use "animation";
 @use "profile";
+@use "watch";
 @use "new-animation";
+@use "preview";
+@use "player";
 @use "editor";
+@use "upvote-button";

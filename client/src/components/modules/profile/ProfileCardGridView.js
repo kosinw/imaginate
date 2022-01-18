@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import useUser from "../../../hooks/useUser";
+import useUser from "../../../lib/hooks/useUser";
 
 import AnimationPreview from "../AnimationPreview";
 
