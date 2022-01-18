@@ -4,6 +4,7 @@ import { navigate } from "@reach/router";
 import Sketch from "react-p5";
 
 import WeightTool from "./WeightTool";
+import BrushPicker from "./BrushPicker";
 
 let cnv;
 let p5Instance;
@@ -43,9 +44,18 @@ const AnimationEditor = ({ animation, insertFrame }) => {
     p5Instance.strokeWeight(weight);
   };
 
+  const handleBrush = (brush) => {
+    if (brush === "Pencil") {
+      p5Instance.noErase();
+    } else if (brush === "Eraser") {
+      p5Instance.erase();
+    }
+  };
+
   return (
     <div className="AnimationEditor-container">
       <WeightTool handleWeight={handleWeight} />
+      <BrushPicker handleBrush={handleBrush} />
       <Sketch className="AnimationEditor-sketch" setup={setup} draw={draw} />
       <button className="AnimationEditor-submit" onClick={save}>
         Save

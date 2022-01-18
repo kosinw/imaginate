@@ -18,7 +18,7 @@ const WeightTool = ({ handleWeight }) => {
           max="64"
           value={weight}
           onChange={handleChange}
-          class="WeightTool-slider"
+          className="WeightTool-slider"
         />
       </label>
     </div>
