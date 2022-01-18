@@ -21,7 +21,7 @@ const Animation = ({ animationId }) => {
     <>
       {animationData ? (
         <div>
-          <h1>{animationData.title || animationData.id}</h1>
+          <h1>{animationData.title || "Untitled"}</h1>
           <AnimationViewer animation={animationData} />
           <p>Created: {parseDate(animationData.creationTime)}</p>
           <p>Last updated: {parseDate(animationData.updateTime)}</p>
