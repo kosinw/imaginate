@@ -1,5 +1,5 @@
 import React from "react";
-import { HiArrowSmUp } from "react-icons/hi";
+import { HiThumbUp } from "react-icons/hi";
 import classnames from "classnames";
 
 import useAnimation from "../../lib/hooks/useAnimation";
@@ -21,12 +21,13 @@ const UpvoteButton = ({ animationId }) => {
       type="button"
       title="Upvote"
       aria-label={userUpvoted ? "Remove upvote" : "Upvote"}
-      className={classnames({
-        "UpvoteButton": true,
-        "UpvoteButton--active": userUpvoted,
-        "disabled:text-gray-400": true
-        })}>
-      <HiArrowSmUp className="w-4 h-4" />
+      className={classnames(
+        "UpvoteButton",
+        "disabled:text-gray-400",
+        "space-x-2",
+        { "UpvoteButton--active": userUpvoted, })}
+    >
+      <HiThumbUp className="w-4 h-4" />
       {!!animation &&
         <span className="UpvoteButon__counter">
           {animation.score}
