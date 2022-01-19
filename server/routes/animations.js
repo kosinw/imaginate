@@ -27,8 +27,8 @@ router.post("/:id", AuthController.guard, async (req, res) => {
   const { id } = req.params;
   const user = req.user._id;
   const { data } = req.body;
-  const frame = await AnimationsController.insertFrame({ id, user, data });
-  return res.status(201).json(frame);
+  const animation = await AnimationsController.insertFrame({ id, user, data });
+  return res.status(201).json(animation);
 });
 
 router.post("/:id/upvote", AuthController.guard, async (req, res) => {
