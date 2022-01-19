@@ -1,13 +1,12 @@
 import React from "react";
-import useSWR from "swr";
-
-import fetcher from "../../lib/fetcher";
 
 import AnimationPlayer from "../modules/watch/AnimationPlayer";
 import PageHeader from "../modules/PageHeader";
 
+import useAnimation from "../../lib/hooks/useAnimation";
+
 const Watch = ({ id }) => {
-  const { data: animation, error } = useSWR(`/api/animations/${id}`, fetcher);
+  const { animation, error } = useAnimation(id);
 
   if (error) {
     return (

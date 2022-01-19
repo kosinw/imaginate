@@ -1,10 +1,11 @@
 import React from "react";
 import Sketch from "react-p5";
+import { navigate } from "@reach/router";
 
 import { TiMediaPlay, TiMediaPause, TiArrowLoop } from "react-icons/ti";
 import { AiOutlineSwap } from 'react-icons/ai';
 import { CgPushRight } from 'react-icons/cg';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { HiChevronLeft, HiChevronRight, HiPencilAlt } from 'react-icons/hi';
 import { useMeasure } from "react-use";
 
 import UpvoteButton from "../UpvoteButton";
@@ -82,7 +83,6 @@ const AnimationCanvas = ({
 
   return (
     <div ref={ref} onClick={onClick} className="AnimationCanvas hover:cursor-pointer">
-      {/* TODO(kosi): Figure out a non hacky way besides just waiting for width and height not to be small. */}
       {width !== 0 && height !== 0 && <Sketch key={width} className="AnimationCanvas__container" preload={preload} setup={setup} draw={draw} />}
     </div>
   );
@@ -101,21 +101,28 @@ const AnimationPlayerControls = ({
   frameByFrameMode,
   frameCount,
   totalFrames,
+  animationId
 }) => {
+  const onEditClick = () => {
+    if (!frameByFrameMode) {
+      navigate(`/animation/${animationId}/edit`)
+    }
+  }
+
   return (
     <div className="AnimationPlayerControls">
       <div className="AnimationPlayerControls__left">
         {!frameByFrameMode ? (
-          <button onClick={onPausePlayClick} className="AnimationPlayerControls__play" title={mode !== "playing" ? "Play" : "Pause"}>
+          <button onClick={onPausePlayClick} className="AnimationPlayerControls__button" title={mode !== "playing" ? "Play" : "Pause"}>
             {mode !== "playing" ? <TiMediaPlay className="w-6 h-6" /> : <TiMediaPause className="w-6 h-6" />}
           </button>
         ) : (
           <>
-            <button onClick={onLeftClick} className="AnimationPlayerControls__play">
+            <button onClick={onLeftClick} className="AnimationPlayerControls__button">
               <HiChevronLeft className="w-6 h-6" />
             </button>
             <span>{Math.floor(frameCount) + 1} / {totalFrames}</span>
-            <button onClick={onRightClick} className="AnimationPlayerControls__play">
+            <button onClick={onRightClick} className="AnimationPlayerControls__button">
               <HiChevronRight className="w-6 h-6" />
             </button>
           </>
@@ -123,11 +130,14 @@ const AnimationPlayerControls = ({
         }
       </div>
       <div className="AnimationPlayerControls__right">
-        <UpvoteButton score={score} active={isUpvoted} />
-        <button onClick={onLoopClick} className="AnimationPlayerControls__loop" title={looping ? "Play once" : "Loop"}>
+        <UpvoteButton animationId={animationId} />
+        <button onClick={onEditClick} className="AnimationPlayerControls__button" title="Edit">
+          <HiPencilAlt className="w-6 h-6" />
+        </button>
+        <button onClick={onLoopClick} className="AnimationPlayerControls__button" title={looping ? "Play once" : "Loop"}>
           {looping ? <TiArrowLoop className="w-6 h-6" /> : <CgPushRight className="w-6 h-6" />}
         </button>
-        <button onClick={onSwapClick} className="AnimationPlayerControls__swap" title="Swap to frame-by-frame mode">
+        <button onClick={onSwapClick} className="AnimationPlayerControls__button" title="Swap to frame-by-frame mode">
           <AiOutlineSwap className="w-6 h-6" />
         </button>
       </div>
@@ -263,6 +273,7 @@ const AnimationPlayer = ({ animation }) => {
         totalFrames={totalFrames}
         onLeftClick={onLeftClick}
         onRightClick={onRightClick}
+        animationId={animation._id}
       />
     </div>
   );

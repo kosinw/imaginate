@@ -31,4 +31,11 @@ router.post("/:id", AuthController.guard, async (req, res) => {
   return res.status(201).json(frame);
 });
 
+router.post("/:id/upvote", AuthController.guard, async (req, res) => {
+  const user = req.user._id;
+  const { id } = req.params;
+  const result = await AnimationsController.toggleUpvote({ user, id });
+  return res.status(201).json(result);
+});
+
 module.exports = router;
