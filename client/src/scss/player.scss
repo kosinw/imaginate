@@ -29,23 +29,7 @@
   @apply text-slate-500;
 
 
-  .AnimationPlayerControls__play {
-    @apply align-middle;
-
-    &:hover {
-      @apply text-red-500;
-    }
-  }
-
-  .AnimationPlayerControls__loop {
-    @apply align-middle;
-
-    &:hover {
-      @apply text-red-500;
-    }
-  }
-
-  .AnimationPlayerControls__swap {
+  .AnimationPlayerControls__button {
     @apply align-middle;
 
     &:hover {
@@ -61,7 +45,7 @@
   }
 
   .AnimationPlayerControls__right {
-    @apply space-x-2;
+    @apply space-x-4;
     @apply flex flex-row;
   }
 }
@@ -69,6 +53,7 @@
 .AnimationProgress {
   @apply h-1 w-full;
   @apply bg-zinc-300;
+  @apply flex flex-row;
 
   &:hover {
     @apply h-3 -mt-2;

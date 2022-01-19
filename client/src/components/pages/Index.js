@@ -19,7 +19,6 @@ const IndexCardGridView = () => {
       {animations.map(animation =>
         <AnimationPreview
           key={animation._id}
-          userId={userId}
           animation={animation}
         />)}
     </div>

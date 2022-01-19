@@ -19,40 +19,50 @@ const NavBar = () => {
         <Link className="NavBar-title" to="/">
           Imaginate
         </Link>
-        <Link to="/" className="NavBar-link">
+        {/* <Link to="/" className="NavBar-link">
           Discover
-        </Link>
-        {userId ? (
+        </Link> */}
+        {/* {userId ? (
           <Link to="/create" className="NavBar-link">
             Create
           </Link>
-        ) : null}
+        ) : null} */}
       </div>
 
       <div className="NavBar-right">
-        {userId ? (
-          <div style={{ display: "flex", height: "100%" }}>
-            <Link className="NavBar-link" to={profileLink}>
-              Profile
-            </Link>
+        <div style={{ display: "flex", height: "100%" }}>
+          <Link className="NavBar-link" to={"/search"}>
+            Search
+          </Link>
+          {userId ? (
+            <>
+              <Link className="NavBar-link" to={profileLink}>
+                Profile
+              </Link>
 
-            <GoogleLogout
+              <Link to="/create" className="NavBar-link">
+                Create
+              </Link>
+
+              <GoogleLogout
+                className="NavBar-login"
+                clientId={GOOGLE_CLIENT_ID}
+                buttonText="Logout"
+                onLogoutSuccess={handleLogout}
+                onFailure={(err) => console.log(err)}
+              />
+
+            </>
+          ) : (
+            <GoogleLogin
               className="NavBar-login"
               clientId={GOOGLE_CLIENT_ID}
-              buttonText="Logout"
-              onLogoutSuccess={handleLogout}
+              buttonText="Login"
+              onSuccess={handleLogin}
               onFailure={(err) => console.log(err)}
             />
-          </div>
-        ) : (
-          <GoogleLogin
-            className="NavBar-login"
-            clientId={GOOGLE_CLIENT_ID}
-            buttonText="Login"
-            onSuccess={handleLogin}
-            onFailure={(err) => console.log(err)}
-          />
-        )}
+          )}
+        </div>
       </div>
     </nav>
   );
