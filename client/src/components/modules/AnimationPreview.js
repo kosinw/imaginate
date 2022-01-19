@@ -4,10 +4,17 @@ import { Link, navigate } from "@reach/router";
 import Identicon from "./Identicon";
 import UpvoteButton from "./UpvoteButton";
 
-const AnimationPreview = ({ animation}) => {
-  const onPreviewClick = (e) => {
+import useAnimation from "../../lib/hooks/useAnimation";
+
+const AnimationPreview = ({ animationId }) => {
+  const { animation } = useAnimation(animationId);
+
+  const onPreviewClick = () => {
     navigate(`/watch/${animation._id}`);
   };
+
+  // TODO(kosi): Place skeleton loader here
+  if (!animation) return <div>Loading...</div>;
 
   return (
     <div onClick={onPreviewClick} className="AnimationPreview">

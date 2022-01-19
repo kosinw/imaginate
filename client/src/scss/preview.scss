@@ -1,3 +1,15 @@
+.AnimationPreviewGridView {
+  @apply grid grid-cols-1 gap-y-8;
+
+  @screen md {
+    @apply grid-cols-2 gap-x-6 gap-y-12;
+  }
+
+  @screen lg {
+    @apply grid-cols-3;
+  }
+}
+
 .AnimationPreview {
   @apply border-4 border-black;
   @apply bg-white;
