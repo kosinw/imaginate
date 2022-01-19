@@ -3,13 +3,12 @@ import Sketch from "react-p5";
 import { navigate } from "@reach/router";
 
 import { TiMediaPlay, TiMediaPause, TiArrowLoop } from "react-icons/ti";
-import { AiOutlineSwap } from 'react-icons/ai';
 import { CgPushRight } from 'react-icons/cg';
-import { HiChevronLeft, HiChevronRight, HiPencilAlt } from 'react-icons/hi';
-import { useMeasure } from "react-use";
+import { HiChevronLeft, HiChevronRight, HiPencilAlt, HiSwitchHorizontal } from 'react-icons/hi';
+
+import useMeasure from "react-use/lib/useMeasure";
 
 import UpvoteButton from "../UpvoteButton";
-import useUser from "../../../lib/hooks/useUser";
 
 const AnimationThumbnail = ({ thumbnail, onClick }) => {
   return (
@@ -93,8 +92,6 @@ const AnimationPlayerControls = ({
   onPausePlayClick,
   looping,
   onLoopClick,
-  isUpvoted,
-  score,
   onSwapClick,
   onLeftClick,
   onRightClick,
@@ -138,7 +135,7 @@ const AnimationPlayerControls = ({
           {looping ? <TiArrowLoop className="w-6 h-6" /> : <CgPushRight className="w-6 h-6" />}
         </button>
         <button onClick={onSwapClick} className="AnimationPlayerControls__button" title="Swap to frame-by-frame mode">
-          <AiOutlineSwap className="w-6 h-6" />
+          <HiSwitchHorizontal className="w-6 h-6" />
         </button>
       </div>
     </div>
@@ -166,7 +163,7 @@ const AnimationProgress = ({ frameCount, setFrameCount, totalFrames }) => {
 }
 
 const AnimationPlayer = ({ animation }) => {
-  const { thumbnail, score, upvoters } = animation;
+  const { thumbnail } = animation;
   const [mode, setMode] = React.useState("stopped");
 
   const [frameCount, setFrameCount] = React.useState(0);
@@ -175,11 +172,10 @@ const AnimationPlayer = ({ animation }) => {
   const [frameByFrameMode, setFrameByFrameMode] = React.useState(false);
 
   const [looping, setLooping] = React.useState(true);
-  const { userId } = useUser();
-  const isUpvoted = upvoters.includes(userId);
 
   const onThumbnailClick = () => {
     setMode("playing");
+    setFrameCount(0);
   }
 
   const onLoopClick = () => {
@@ -261,10 +257,8 @@ const AnimationPlayer = ({ animation }) => {
         totalFrames={totalFrames}
       />
       <AnimationPlayerControls
-        isUpvoted={isUpvoted}
         frameByFrameMode={frameByFrameMode}
         onSwapClick={onSwapClick}
-        score={score}
         onPausePlayClick={onPausePlayClick}
         onLoopClick={onLoopClick}
         looping={looping}

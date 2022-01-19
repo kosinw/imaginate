@@ -9,6 +9,10 @@
 
   &.UpvoteButton--active {
     @apply text-red-500;
+
+    &:hover {
+      @apply text-red-700;
+    }
   }
 
   .UpvoteButton__counter {
