@@ -1,16 +1,5 @@
-.IndexHeader {
-  .IndexHeader__h1 {
-    @apply text-2xl font-black;
-  }
-
-  .IndexHeader__h2 {
-    @apply text-xl;
-  }
-}
-
 .IndexCardGridView {
   @apply grid grid-cols-1 gap-y-8;
-  @apply pt-4;
 
   @screen md {
     @apply grid-cols-2 gap-x-6 gap-y-12;

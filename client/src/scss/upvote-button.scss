@@ -5,7 +5,7 @@
 
   @apply text-slate-600;
   @apply flex items-center justify-center;
-  @apply w-6 h-6;
+  @apply p-2;
 
   &.UpvoteButton--active {
     @apply text-red-500;

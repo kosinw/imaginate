@@ -2,10 +2,13 @@ import React from "react";
 import { navigate } from "@reach/router";
 import axios from "axios";
 import Sketch from "react-p5";
+import { useSWRConfig } from 'swr';
 
 let cnv;
 
 const AnimationEditor = ({ animationId }) => {
+  const { mutate } = useSWRConfig();
+
   const setup = (p5, parent) => {
     cnv = p5.createCanvas(640, 360).parent(parent);
     cnv.id("sketch-editor");
@@ -24,6 +27,8 @@ const AnimationEditor = ({ animationId }) => {
     axios.post(`/api/animations/${animationId}`, body).then((response) => {
       // TODO: redirect to animation instead of discover
       navigate("/");
+      // NOTE(kosi): Tell the home page to revalidate
+      mutate("/api/animations");
     });
   };
 

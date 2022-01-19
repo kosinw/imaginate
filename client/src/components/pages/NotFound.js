@@ -1,11 +1,12 @@
 import React from "react";
+import PageHeader from "../modules/PageHeader";
 
 const NotFound = () => {
   return (
-    <div>
-      <h1>404 Not Found</h1>
-      <p>The page you requested couldn't be found.</p>
-    </div>
+    <PageHeader
+      title="404"
+      subtitle="How did we get here?"
+    />
   );
 };
 

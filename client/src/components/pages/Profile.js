@@ -1,8 +1,10 @@
 import React from "react";
-import axios from "axios";
+import useSWR from "swr";
 
-// import AnimationList from "../modules/profile/AnimationList";
+import fetcher from "../../lib/fetcher";
+
 import ProfileCardGridView from "../modules/profile/ProfileCardGridView";
+import PageHeader from "../modules/PageHeader";
 
 /**
  * Renders a user's profile
@@ -11,27 +13,22 @@ import ProfileCardGridView from "../modules/profile/ProfileCardGridView";
  * @param {string} userId - user id of profile
  */
 const Profile = (props) => {
-  const [profileName, setProfileName] = React.useState(null);
+  const { data: user, error } = useSWR(`/api/users/${props.userId}`, fetcher);
 
-  React.useEffect(() => {
-    axios.get("/api/users/" + props.userId).then((response) => {
-      const profileName = response.data.name;
-      setProfileName(profileName);
-    });
-  }, []);
+  if (error) { return <div>Failed to load...</div> }
 
   return (
     <div>
-      {profileName ? (
-        <div>
-          <h1>{profileName}'s Profile</h1>
+      {user && user.name ? (
+        <>
+          <PageHeader title="Profile" subtitle={`Currently browsing the page of ${user.name}.`} />
           {/* <AnimationList userId={props.userId} /> */}
           <ProfileCardGridView userId={props.userId} />
-        </div>
+        </>
       ) : (
-        <div>
+        <>
           <h1>Please sign in to view your profile.</h1>
-        </div>
+        </>
       )}
     </div>
   );

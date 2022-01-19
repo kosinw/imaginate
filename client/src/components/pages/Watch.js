@@ -1,21 +1,12 @@
 import React from "react";
-import useSWR from "swr";
-
-import fetcher from "../../lib/fetcher";
 
 import AnimationPlayer from "../modules/watch/AnimationPlayer";
+import PageHeader from "../modules/PageHeader";
 
-const WatchHeader = ({ title, creator }) => {
-  return (
-    <div className="WatchHeader">
-      <h1 className="WatchHeader__h1">Watch</h1>
-      <h2 className="WatchHeader__h2">Currently watching "{title}" by {creator}.</h2>
-    </div>
-  )
-}
+import useAnimation from "../../lib/hooks/useAnimation";
 
 const Watch = ({ id }) => {
-  const { data: animation, error } = useSWR(`/api/animations/${id}`, fetcher);
+  const { animation, error } = useAnimation(id);
 
   if (error) {
     return (
@@ -37,8 +28,8 @@ const Watch = ({ id }) => {
 
   return (
     <main className="Watch">
-      <WatchHeader title={title} creator={creator.name} />
-      <AnimationPlayer {...animation} />
+      <PageHeader title="Watch" subtitle={`Currently watching "${title}" by ${creator.name}.`} />
+      <AnimationPlayer animation={animation} />
     </main>
   );
 };

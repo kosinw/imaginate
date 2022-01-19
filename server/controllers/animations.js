@@ -59,6 +59,20 @@ class AnimationsController {
 
     return animation;
   }
+
+  static async toggleUpvote({ id, user }) {
+    const animation = await AnimationsController.get(id);
+
+    if (animation.upvoters.includes(user)) {
+      animation.upvoters.pull(user);
+      await animation.save();
+      return false;
+    } else {
+      animation.upvoters.push(user);
+      await animation.save();
+      return true;
+    }
+  }
 }
 
 module.exports = AnimationsController;

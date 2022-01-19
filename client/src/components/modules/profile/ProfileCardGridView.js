@@ -28,7 +28,7 @@ const ProfileCardGridView = (props) => {
   return (
     <div className="IndexCardGridView">
       {animations.map((animation) => (
-        <AnimationPreview userId={userId} animation={animation} />
+        <AnimationPreview key={animation._id} userId={userId} animation={animation} />
       ))}
     </div>
   );
