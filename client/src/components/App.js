@@ -3,7 +3,6 @@ import { Router } from "@reach/router";
 import NavBar from "./modules/NavBar.js";
 import NotFound from "./pages/NotFound.js";
 import Index from "./pages/Index";
-import Animation from "./pages/Animation";
 import Editor from "./pages/Editor";
 import Watch from "./pages/Watch";
 import NewAnimation from "./pages/NewAnimation";
@@ -21,7 +20,6 @@ const App = () => {
       <Router className="container mx-auto p-4">
         <Index path="/" />
         <NewAnimation path="/create" />
-        <Animation path="/animation/:animationId" />
         <Editor path="/animation/:animationId/edit" />
         <Profile path="/profile/:userId" />
         <Watch path="/watch/:id" />

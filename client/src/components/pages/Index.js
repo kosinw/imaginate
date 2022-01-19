@@ -1,20 +1,18 @@
 import React from "react";
-import axios from "axios";
+import useSWR from "swr";
 
+import fetcher from '../../lib/fetcher';
 import useUser from '../../lib/hooks/useUser';
+
 import AnimationPreview from "../modules/AnimationPreview";
+import PageHeader from "../modules/PageHeader";
 
 const IndexCardGridView = () => {
-  const [animations, setAnimations] = React.useState([]);
   const { userId } = useUser();
+  const { data: animations, error } = useSWR('/api/animations', fetcher);
 
-  React.useEffect(() => {
-    (async () => {
-      const animations = await axios.get("/api/animations/");
-      const animationData = animations.data.filter((animation) => animation.frames.length > 0);
-      setAnimations(animationData);
-    })();
-  }, []);
+  if (error) return <div className="IndexCardGridView">Failed to load. {error}</div>
+  if (!animations) return <div className="IndexCardGridView">Loading...</div>
 
   return (
     <div className="IndexCardGridView">
@@ -28,19 +26,10 @@ const IndexCardGridView = () => {
   );
 };
 
-const IndexHeader = () => {
-  return (
-    <div className="IndexHeader">
-      <h1 className="IndexHeader__h1">Discover</h1>
-      <h2 className="IndexHeader__h2">Discover the most popular animations.</h2>
-    </div>
-  )
-}
-
 const Index = () => {
   return (
     <main className="Index">
-      <IndexHeader />
+      <PageHeader title="Discover" subtitle="Discover the most popular animations." />
       <IndexCardGridView />
     </main>
   );

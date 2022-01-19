@@ -4,7 +4,8 @@ import Sketch from "react-p5";
 import { TiMediaPlay, TiMediaPause, TiArrowLoop } from "react-icons/ti";
 import { AiOutlineSwap } from 'react-icons/ai';
 import { CgPushRight } from 'react-icons/cg';
-import { useMeasure, useUpdate } from "react-use";
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { useMeasure } from "react-use";
 
 import UpvoteButton from "../UpvoteButton";
 import useUser from "../../../lib/hooks/useUser";
@@ -17,101 +18,116 @@ const AnimationThumbnail = ({ thumbnail, onClick }) => {
   );
 }
 
-let frameData = [];
-let frameCount = 0;
-let elapsedTime = 0;
+let _frameData = [];
 
-const AnimationCanvas = ({ onClick, setProgress, setMode, mode, frames, framerate, looping }) => {
+const AnimationCanvas = ({
+  animation,
+  frameCount,
+  setFrameCount,
+  looping,
+  mode,
+  setMode,
+  frameByFrameMode,
+  onClick
+}) => {
   const [ref, { width, height }] = useMeasure();
-  const update = useUpdate();
-  const delay = (1 / framerate) * 1000; // convert to delay in milliseconds
-
-  React.useEffect(() => {
-    const listener = window.addEventListener('resize', () => {
-      update();
-    })
-
-    return () => {
-      window.removeEventListener('resize', listener);
-    };
-  }, []);
+  const { frames, framerate } = animation;
+  const delay = (1 / framerate) * 1000;
 
   const preload = (p5) => {
-    frameData = [];
-    frameCount = 0;
-    elapsedTime = 0;
+    _frameData = [];
 
     frames.map(frame => {
-      frameData.push(p5.loadImage(frame.data));
+      _frameData.push(p5.loadImage(frame.data));
     })
   }
 
   const setup = (p5, parent) => {
     p5.createCanvas(width, height).parent(parent);
     p5.background(0);
-    p5.frameRate(framerate);
 
     // Resize all frames so that they fill up width of canvas
     // add black bars top and bottom.
-    frameData.map(frame => {
+    _frameData.map(frame => {
       frame.resize(width, 0);
     });
   };
 
   const draw = (p5) => {
+    if (frameCount >= _frameData.length) {
+      if (looping) {
+        setFrameCount(0);
+      } else {
+        setMode("stopped");
+      }
+      return;
+    }
+
     p5.background(0);
 
     // Figure out y position to draw from by taking difference between
     // height of viewport and height of image and then dividing by two.
-    const image = frameData[frameCount];
+    const image = _frameData[Math.floor(frameCount)];
     const y = Math.floor((height - image.height) / 2);
 
     p5.image(image, 0, y);
 
-    setProgress(frameCount / frameData.length);
-
-    if (mode !== "playing") {
+    if (mode !== "playing" || frameByFrameMode) {
       return;
     }
 
-    elapsedTime += p5.deltaTime;
-
-    if (elapsedTime > delay) {
-      elapsedTime = 0;
-      frameCount += 1;
-    }
-
-    if (frameCount >= frameData.length) {
-      if (looping) {
-        frameCount = 0;
-      } else {
-        setMode("stopped");
-      }
-    }
+    const newFrameCount = Math.min(_frameData.length, frameCount + (p5.deltaTime / delay));
+    setFrameCount(newFrameCount);
   }
 
   return (
     <div ref={ref} onClick={onClick} className="AnimationCanvas hover:cursor-pointer">
       {/* TODO(kosi): Figure out a non hacky way besides just waiting for width and height not to be small. */}
-      {width !== 0 && height !== 0 && <Sketch className="AnimationCanvas__container" preload={preload} setup={setup} draw={draw} />}
+      {width !== 0 && height !== 0 && <Sketch key={width} className="AnimationCanvas__container" preload={preload} setup={setup} draw={draw} />}
     </div>
   );
 }
 
-const AnimationPlayerControls = ({ mode, onPausePlayClick, looping, onLoopClick, isUpvoted, score }) => {
+const AnimationPlayerControls = ({
+  mode,
+  onPausePlayClick,
+  looping,
+  onLoopClick,
+  isUpvoted,
+  score,
+  onSwapClick,
+  onLeftClick,
+  onRightClick,
+  frameByFrameMode,
+  frameCount,
+  totalFrames,
+}) => {
   return (
     <div className="AnimationPlayerControls">
       <div className="AnimationPlayerControls__left">
-        <button onClick={onPausePlayClick} className="AnimationPlayerControls__play" title={mode !== "playing" ? "Play" : "Pause"}>
-          {mode !== "playing" ? <TiMediaPlay className="w-6 h-6" /> : <TiMediaPause className="w-6 h-6" />}
-        </button>
+        {!frameByFrameMode ? (
+          <button onClick={onPausePlayClick} className="AnimationPlayerControls__play" title={mode !== "playing" ? "Play" : "Pause"}>
+            {mode !== "playing" ? <TiMediaPlay className="w-6 h-6" /> : <TiMediaPause className="w-6 h-6" />}
+          </button>
+        ) : (
+          <>
+            <button onClick={onLeftClick} className="AnimationPlayerControls__play">
+              <HiChevronLeft className="w-6 h-6" />
+            </button>
+            <span>{Math.floor(frameCount) + 1} / {totalFrames}</span>
+            <button onClick={onRightClick} className="AnimationPlayerControls__play">
+              <HiChevronRight className="w-6 h-6" />
+            </button>
+          </>
+        )
+        }
       </div>
       <div className="AnimationPlayerControls__right">
         <UpvoteButton score={score} active={isUpvoted} />
         <button onClick={onLoopClick} className="AnimationPlayerControls__loop" title={looping ? "Play once" : "Loop"}>
           {looping ? <TiArrowLoop className="w-6 h-6" /> : <CgPushRight className="w-6 h-6" />}
         </button>
-        <button className="AnimationPlayerControls__swap" title="Swap to frame-by-frame mode">
+        <button onClick={onSwapClick} className="AnimationPlayerControls__swap" title="Swap to frame-by-frame mode">
           <AiOutlineSwap className="w-6 h-6" />
         </button>
       </div>
@@ -119,19 +135,18 @@ const AnimationPlayerControls = ({ mode, onPausePlayClick, looping, onLoopClick,
   );
 }
 
-const AnimationProgress = ({ progress }) => {
+const AnimationProgress = ({ frameCount, setFrameCount, totalFrames }) => {
   const onClick = (e) => {
     e.preventDefault();
 
     const location = e.nativeEvent.offsetX;
     const newProgress = location / width;
 
-    if (frameData.length > 0) {
-      frameCount = Math.round(newProgress * frameData.length);
-    }
+    setFrameCount(newProgress * totalFrames);
   };
 
   const [ref, { width }] = useMeasure();
+  const progress = frameCount / totalFrames;
 
   return (
     <div onClick={onClick} ref={ref} className="AnimationProgress">
@@ -140,25 +155,63 @@ const AnimationProgress = ({ progress }) => {
   );
 }
 
-const AnimationPlayer = ({ frames, framerate, thumbnail, score, upvoters }) => {
+const AnimationPlayer = ({ animation }) => {
+  const { thumbnail, score, upvoters } = animation;
   const [mode, setMode] = React.useState("stopped");
-  const [progress, setProgress] = React.useState(0);
+
+  const [frameCount, setFrameCount] = React.useState(0);
+  const totalFrames = animation.frames.length;
+
+  const [frameByFrameMode, setFrameByFrameMode] = React.useState(false);
+
   const [looping, setLooping] = React.useState(true);
   const { userId } = useUser();
   const isUpvoted = upvoters.includes(userId);
 
   const onThumbnailClick = () => {
-    setMode(mode => mode === "stopped" ? "playing" : mode);
+    setMode("playing");
   }
 
   const onLoopClick = () => {
     setLooping(!looping);
   }
 
+  const mod = (n, m) => {
+    return ((n % m) + m) % m;
+  }
+
+  const onSwapClick = () => {
+    setMode("paused");
+    setFrameByFrameMode(!frameByFrameMode);
+  }
+
+  const onLeftClick = () => {
+    const nextFrame = Math.floor(frameCount) - 1;
+
+    if (looping) {
+      setFrameCount(mod(nextFrame, totalFrames));
+      return;
+    }
+
+    setFrameCount(Math.max(nextFrame, 0));
+  }
+
+  const onRightClick = () => {
+    const nextFrame = Math.floor(frameCount) + 1;
+
+    if (looping) {
+      setFrameCount(mod(nextFrame, totalFrames));
+      return;
+    }
+
+    setFrameCount(Math.min(nextFrame, totalFrames - 1));
+  }
+
   const onPausePlayClick = () => {
     switch (mode) {
       case "stopped":
         setMode("playing");
+        setFrameCount(0);
         break;
       case "playing":
         setMode("paused");
@@ -176,13 +229,14 @@ const AnimationPlayer = ({ frames, framerate, thumbnail, score, upvoters }) => {
       default:
         return (
           <AnimationCanvas
-            framerate={framerate}
-            frames={frames}
+            animation={animation}
+            frameCount={frameCount}
+            setFrameCount={setFrameCount}
             looping={looping}
             mode={mode}
-            onClick={onPausePlayClick}
-            setProgress={setProgress}
             setMode={setMode}
+            frameByFrameMode={frameByFrameMode}
+            onClick={onPausePlayClick}
           />
         );
     }
@@ -192,15 +246,23 @@ const AnimationPlayer = ({ frames, framerate, thumbnail, score, upvoters }) => {
     <div className="AnimationPlayer">
       {renderViewport()}
       <AnimationProgress
-        progress={progress}
+        frameCount={frameCount}
+        setFrameCount={setFrameCount}
+        totalFrames={totalFrames}
       />
       <AnimationPlayerControls
         isUpvoted={isUpvoted}
+        frameByFrameMode={frameByFrameMode}
+        onSwapClick={onSwapClick}
         score={score}
         onPausePlayClick={onPausePlayClick}
         onLoopClick={onLoopClick}
         looping={looping}
         mode={mode}
+        frameCount={frameCount}
+        totalFrames={totalFrames}
+        onLeftClick={onLeftClick}
+        onRightClick={onRightClick}
       />
     </div>
   );
