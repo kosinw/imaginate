@@ -55,6 +55,9 @@
 
   .AnimationPlayerControls__left {
     @apply flex-auto;
+    @apply flex flex-row;
+    @apply space-x-2;
+    @apply items-center;
   }
 
   .AnimationPlayerControls__right {

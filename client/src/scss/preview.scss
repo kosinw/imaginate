@@ -32,6 +32,10 @@
 
       .caption-title {
         @apply align-middle;
+
+        &:hover {
+          @apply text-red-500;
+        }
       }
     }
 
