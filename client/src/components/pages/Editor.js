@@ -27,7 +27,7 @@ const Editor = ({ animationId }) => {
   return (
     <main className="Editor">
       <PageHeader title="Editor" subtitle={`Currently editing "${animation.title}" by ${animation.creator.name}.`} />
-      <AnimationEditor insertFrame={insertFrame} animaton={animation} />
+      <AnimationEditor insertFrame={insertFrame} animation={animation} />
     </main>
   );
 };

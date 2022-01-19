@@ -30,7 +30,7 @@ const AnimationEditor = ({ animation, insertFrame }) => {
   const save = () => {
     const canvas = cnv.elt;
     insertFrame(canvas).then(() => {
-      navigate("/");
+      navigate(`/watch/${animation._id}`);
     })
   }
 
