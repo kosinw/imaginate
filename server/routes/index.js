@@ -12,7 +12,7 @@ const animations = require("./animations");
 const users = require("./users");
 const auth = require("./auth");
 
-router.use("/", auth);
+router.use("/auth", auth);
 router.use("/animations", animations);
 router.use("/users", users);
 

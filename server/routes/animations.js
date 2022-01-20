@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const AnimationsController = require("../controllers/animations");
-const AuthController = require("../controllers/auth");
+const AuthMiddleware = require("../middlewares/auth");
 
 // TODO(kosi): Add filtering options (query strings)
 router.get("/", async (req, res) => {
@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   return res.status(200).json(animations);
 });
 
-router.post("/", AuthController.guard, async (req, res) => {
+router.post("/", AuthMiddleware.guard, async (req, res) => {
   const creator = req.user._id;
   const { title, framerate, resolution } = req.body;
   const animation = await AnimationsController.create({ creator, framerate, resolution, title });
@@ -23,7 +23,7 @@ router.get("/:id", async (req, res) => {
 
 // TODO(kosi): Change this to require authentication and read the authenticated
 // users infromation.
-router.post("/:id", AuthController.guard, async (req, res) => {
+router.post("/:id", AuthMiddleware.guard, async (req, res) => {
   const { id } = req.params;
   const user = req.user._id;
   const { data } = req.body;
@@ -31,7 +31,7 @@ router.post("/:id", AuthController.guard, async (req, res) => {
   return res.status(201).json(animation);
 });
 
-router.post("/:id/upvote", AuthController.guard, async (req, res) => {
+router.post("/:id/upvote", AuthMiddleware.guard, async (req, res) => {
   const user = req.user._id;
   const { id } = req.params;
   const result = await AnimationsController.toggleUpvote({ user, id });

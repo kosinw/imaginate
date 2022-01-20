@@ -3,11 +3,11 @@ import { HiThumbUp } from "react-icons/hi";
 import classnames from "classnames";
 
 import useAnimation from "../../lib/hooks/useAnimation";
-import useUser from "../../lib/hooks/useUser";
+import useAuth from "../../lib/hooks/useAuth";
 
 const UpvoteButton = ({ animationId }) => {
   const { userUpvoted, animation, upvote } = useAnimation(animationId);
-  const { userId } = useUser();
+  const { userId } = useAuth();
 
   const onClick = (e) => {
     e.stopPropagation();
