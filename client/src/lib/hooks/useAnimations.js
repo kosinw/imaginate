@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr";
 
-import fetcher from "../fetcher";
+import fetcher from "../utils/fetcher";
 
 const useAnimations = (collection) => {
   const { data: animations, error } = useSWR(collection, fetcher);

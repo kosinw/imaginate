@@ -1,7 +1,7 @@
 import React from "react";
 import useSWR from "swr";
 
-import fetcher from "../../lib/fetcher";
+import fetcher from "../../lib/utils/fetcher";
 
 import PageHeader from "../modules/PageHeader";
 import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";

@@ -3,20 +3,21 @@ import useSWR from "swr";
 import axios from "axios";
 import produce from "immer";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 as uuid } from "uuid";
+import cuid from "cuid";
 
-import fetcher from "../fetcher";
-import useUser from "./useUser";
-import { storage } from "../firebase";
+import fetcher from "../utils/fetcher";
+import { storage } from "../utils/firebase";
+
+import useAuth from "./useAuth";
 
 const useAnimation = (id) => {
   const prefix = `/api/animations/${id}`;
   const { mutate, data, error } = useSWR(prefix, fetcher);
-  const { userId } = useUser();
+  const { userId } = useAuth();
   const [uploading, setUploading] = useState(false);
 
   const insertFrame = async (canvas) => {
-    const imageRef = ref(storage, `frames/${uuid()}.webp`);
+    const imageRef = ref(storage, `frames/${cuid()}.webp`);
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', 1));
 
     setUploading(true);

@@ -19,38 +19,43 @@ const express = require("express"); // backend framework for our node server.
 const session = require("express-session"); // library that stores info about each connected user
 const connect = require("./database"); // module to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
+const morgan = require('morgan');
 
 connect();
 
 const routes = require("./routes");
-const AuthController = require("./controllers/auth");
+const AuthMiddleware = require('./middlewares/auth');
 
 // create a new express server
 const app = express();
+
+// enable logging
+app.use(morgan('dev'));
 
 // allow us to process POST requests
 app.use(express.json());
 
 // set up a session, which will persist login data across requests
-app.use(
-  session({
-    secret: "session-secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+// app.use(
+//   session({
+//     secret: "session-secret",
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 
 // this checks if the user is logged in, and populates "req.user"
-app.use(AuthController.populateCurrentUser);
+app.use(AuthMiddleware.populate);
 
 // connect user-defined routes
 app.use("/api", routes);
+
 
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");
 app.use(express.static(reactPath));
 
-// for all other routes, render index.html and let react router handle it
+// for all other routes, render index.html and let reach router handle it
 app.get("*", (req, res) => {
   res.sendFile(path.join(reactPath, "index.html"));
 });
