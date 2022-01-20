@@ -10,7 +10,6 @@ const BrushPicker = ({ handleBrush }) => {
 
   return (
     <div className="BrushPicker-radiocontainer">
-      Brush: {brush}
       <label>
         <input
           name="brush"

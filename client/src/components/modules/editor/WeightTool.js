@@ -9,18 +9,16 @@ const WeightTool = ({ handleWeight }) => {
   };
 
   return (
-    <div class="WeightTool-slidecontainer">
-      <label>
-        Weight: {weight} px
-        <input
-          type="range"
-          min="1"
-          max="64"
-          value={weight}
-          onChange={handleChange}
-          className="WeightTool-slider"
-        />
-      </label>
+    <div className="WeightTool-slidecontainer">
+      <input
+        type="range"
+        min="1"
+        max="64"
+        value={weight}
+        onChange={handleChange}
+        className="WeightTool-slider"
+      />
+      <label className="WeightTool-label">Weight: {weight} px</label>
     </div>
   );
 };
