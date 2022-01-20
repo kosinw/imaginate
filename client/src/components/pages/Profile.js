@@ -13,10 +13,9 @@ import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";
  * @param {string} userId - user id of profile
  */
 const Profile = ({ userId }) => {
-  const { data: user, error } = useSWR(userId && `/api/users/${userId}`, fetcher);
+  const { data: user } = useSWR(userId && `/api/users/${userId}`, fetcher);
 
   // TODO(kosi): Input spinner + skeleton cards.
-  if (error) { return <div>Failed to load...</div> }
   if (!user) { return <div>Loading...</div> }
 
   return (

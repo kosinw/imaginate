@@ -20,7 +20,7 @@ const App = () => {
       <Router className="container mx-auto p-4">
         <Index path="/" />
         <NewAnimation path="/create" />
-        <Editor path="/animation/:animationId/edit" />
+        <Editor path="/edit/:animationId" />
         <Profile path="/profile/:userId" />
         <Watch path="/watch/:id" />
         <NotFound default />

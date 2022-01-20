@@ -8,6 +8,7 @@ import { HiChevronLeft, HiChevronRight, HiPencilAlt, HiSwitchHorizontal } from '
 
 import useMeasure from "react-use/lib/useMeasure";
 
+import useAuth from "../../../lib/hooks/useAuth";
 import UpvoteButton from "../UpvoteButton";
 
 const AnimationThumbnail = ({ thumbnail, onClick }) => {
@@ -100,9 +101,11 @@ const AnimationPlayerControls = ({
   totalFrames,
   animationId
 }) => {
+  const { userId } = useAuth();
+
   const onEditClick = () => {
     if (!frameByFrameMode) {
-      navigate(`/animation/${animationId}/edit`)
+      navigate(`/edit/${animationId}`);
     }
   }
 
@@ -128,9 +131,11 @@ const AnimationPlayerControls = ({
       </div>
       <div className="AnimationPlayerControls__right">
         <UpvoteButton animationId={animationId} />
-        <button onClick={onEditClick} className="AnimationPlayerControls__button" title="Edit">
-          <HiPencilAlt className="w-6 h-6" />
-        </button>
+        {userId &&
+          <button onClick={onEditClick} className="AnimationPlayerControls__button" title="Edit">
+            <HiPencilAlt className="w-6 h-6" />
+          </button>
+        }
         <button onClick={onLoopClick} className="AnimationPlayerControls__button" title={looping ? "Play once" : "Loop"}>
           {looping ? <TiArrowLoop className="w-6 h-6" /> : <CgPushRight className="w-6 h-6" />}
         </button>

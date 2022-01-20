@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "@reach/router";
-import GoogleLogin, { GoogleLogout } from "react-google-login";
+// import GoogleLogin, { GoogleLogout } from "react-google-login";
 import useAuth from "../../lib/hooks/useAuth";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
-const GOOGLE_CLIENT_ID = "753689922635-os8bde4plqrgt60mt3bor7f5kumnjbti.apps.googleusercontent.com";
+// const GOOGLE_CLIENT_ID = "753689922635-os8bde4plqrgt60mt3bor7f5kumnjbti.apps.googleusercontent.com";
 
 /**
  * The navigation bar at the top of all pages.

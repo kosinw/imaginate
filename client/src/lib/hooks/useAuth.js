@@ -8,7 +8,7 @@ import axios from "axios";
 
 const useAuth = () => {
   const [token, setToken] = useState(null);
-  const { data: userId, mutate } = useSWR(["/api/auth/me", token], fetcher);
+  const { data: userId, error } = useSWR(token ? ["/api/auth/me", token] : null, fetcher);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -19,7 +19,6 @@ const useAuth = () => {
       } else {
         setToken(null);
         axios.defaults.headers.common["Authorization"] = undefined;
-        mutate(false, false);
       }
     });
 
@@ -38,6 +37,7 @@ const useAuth = () => {
 
   return {
     userId,
+    error,
     googleSignIn,
     googleSignOut
   };

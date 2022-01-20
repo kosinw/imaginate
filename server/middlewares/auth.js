@@ -1,3 +1,5 @@
+const Boom = require('@hapi/boom');
+
 const admin = require('../firebase');
 const User = require('../models/user');
 
@@ -35,10 +37,10 @@ class AuthMiddleware {
 
   static guard(req, res, next) {
     if (!req.user) {
-      return res.status(401).send({ err: "not logged in" });
+      next(Boom.unauthorized("Token authentication required. Include `Authorization` header with request."));
     }
 
-    next();
+    next()
   }
 }
 

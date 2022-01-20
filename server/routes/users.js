@@ -2,14 +2,18 @@ const express = require("express");
 const router = express.Router();
 const UsersController = require("../controllers/users");
 
-router.get("/:id/animations", async (req, res) => {
-  const { id } = req.params;
-  return res.status(200).json(await UsersController.getAnimations(id));
-});
+const { asyncMiddleware } = require('../middlewares/error');
 
-router.get("/:id", async (req, res) => {
+router.get("/:id/animations", asyncMiddleware(async (req, res, next) => {
   const { id } = req.params;
-  return res.status(200).json(await UsersController.get(id))
-});
+  const animations = await UsersController.getAnimations(id);
+  return res.status(200).json(animations);
+}));
+
+router.get("/:id", asyncMiddleware(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await UsersController.get(id);
+  return res.status(200).json(user);
+}));
 
 module.exports = router;

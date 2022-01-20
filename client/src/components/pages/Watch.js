@@ -6,15 +6,7 @@ import PageHeader from "../modules/PageHeader";
 import useAnimation from "../../lib/hooks/useAnimation";
 
 const Watch = ({ id }) => {
-  const { animation, error } = useAnimation(id);
-
-  if (error) {
-    return (
-      <div className="Watch">
-        Failed to load...
-      </div>
-    )
-  }
+  const { animation } = useAnimation(id);
 
   if (!animation) {
     return (

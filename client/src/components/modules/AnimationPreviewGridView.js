@@ -4,9 +4,8 @@ import AnimationPreview from "./AnimationPreview";
 import useAnimations from "../../lib/hooks/useAnimations";
 
 const AnimationPreviewGridView = ({ resource }) => {
-  const { animations, error } = useAnimations(resource);
+  const { animations } = useAnimations(resource);
 
-  if (error) return <div className="AnimationPreviewGridView">Failed to load.</div>
   if (!animations) return <div className="AnimationPreviewGridView">Loading...</div>
 
   return (

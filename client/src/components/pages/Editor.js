@@ -6,15 +6,7 @@ import AnimationEditor from "../modules/editor/AnimationEditor";
 import PageHeader from "../modules/PageHeader";
 
 const Editor = ({ animationId }) => {
-  const { animation, error, insertFrame } = useAnimation(animationId);
-
-  if (error) {
-    return (
-      <div className="Watch">
-        Failed to load...
-      </div>
-    )
-  }
+  const { animation, insertFrame } = useAnimation(animationId);
 
   if (!animation) {
     return (
