@@ -22,7 +22,7 @@ const App = () => {
         <Index path="/" />
         <NewAnimation path="/create" />
         <Edit path="/edit/:animationId" />
-        <Fork path="/animation/:animationId/fork/:frameCount" />
+        <Fork path="/fork/:animationId/:frameCount" />
         <Profile path="/profile/:userId" />
         <Watch path="/watch/:id" />
         <NotFound default />

@@ -126,7 +126,7 @@ const AnimationPlayerControls = ({
   };
 
   const onForkClick = () => {
-    navigate(`/animation/${animationId}/fork/${Math.floor(frameCount)}`);
+    navigate(`/fork/${animationId}/${Math.floor(frameCount)}`);
   };
 
   return (
@@ -160,12 +160,21 @@ const AnimationPlayerControls = ({
       </div>
       <div className="AnimationPlayerControls__right">
         <UpvoteButton animationId={animationId} />
-        {userId &&
+        {userId && 
+        <>
           <button onClick={onEditClick} className="AnimationPlayerControls__button" title="Edit">
             <HiPencilAlt className="w-6 h-6" />
           </button>
+          <button onClick={onForkClick} className="AnimationPlayerControls__button" title="Fork">
+            <CgGitFork className="w-6 h-6" />
+          </button>
+        </>
         }
-        <button onClick={onLoopClick} className="AnimationPlayerControls__button" title={looping ? "Play once" : "Loop"}>
+        <button
+          onClick={onLoopClick}
+          className="AnimationPlayerControls__button"
+          title={looping ? "Play once" : "Loop"}
+        >
           {looping ? <TiArrowLoop className="w-6 h-6" /> : <CgPushRight className="w-6 h-6" />}
         </button>
         <button
