@@ -12,6 +12,14 @@ class AnimationsController {
       .populate({
         path: "frames",
         model: Frame,
+      })
+      .populate({
+        path: "parent",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        model: Animation,
       });
 
     return animations;
@@ -26,19 +34,28 @@ class AnimationsController {
       .populate({
         path: "frames",
         model: Frame,
+      })
+      .populate({
+        path: "parent",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        model: Animation,
       });
 
     return animation;
   }
 
-  static async create({ creator, framerate, resolution, title }) {
+  static async create({ creator, framerate, resolution, title, frames, parent }) {
     const animation = new Animation({
       creator,
       framerate,
       title,
       resolution,
-      frames: [],
-      upvoters: [creator]
+      frames,
+      parent,
+      upvoters: [creator],
     });
 
     await animation.save();

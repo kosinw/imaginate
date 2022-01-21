@@ -11,8 +11,15 @@ router.get("/", asyncMiddleware(async (req, res, next) => {
 
 router.post("/", AuthMiddleware.guard, asyncMiddleware(async (req, res, next) => {
   const creator = req.user._id;
-  const { title, framerate, resolution } = req.body;
-  const animation = await AnimationsController.create({ creator, framerate, resolution, title });
+  const { title, framerate, resolution, frames, parent } = req.body;
+  const animation = await AnimationsController.create({
+    creator,
+    framerate,
+    resolution,
+    title,
+    frames,
+    parent,
+  });
   return res.status(201).json(animation);
 }));
 

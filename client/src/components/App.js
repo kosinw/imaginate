@@ -4,6 +4,7 @@ import NavBar from "./modules/NavBar.js";
 import NotFound from "./pages/NotFound.js";
 import Index from "./pages/Index";
 import Edit from "./pages/Edit";
+import Fork from "./pages/Fork";
 import Watch from "./pages/Watch";
 import NewAnimation from "./pages/NewAnimation";
 import Profile from "./pages/Profile.js";
@@ -21,6 +22,7 @@ const App = () => {
         <Index path="/" />
         <NewAnimation path="/create" />
         <Edit path="/edit/:animationId" />
+        <Fork path="/animation/:animationId/fork/:frameCount" />
         <Profile path="/profile/:userId" />
         <Watch path="/watch/:id" />
         <NotFound default />

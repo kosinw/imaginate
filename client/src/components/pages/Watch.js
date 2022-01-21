@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@reach/router";
 
 import AnimationPlayer from "../modules/watch/AnimationPlayer";
 import PageHeader from "../modules/PageHeader";
@@ -9,11 +10,7 @@ const Watch = ({ id }) => {
   const { animation } = useAnimation(id);
 
   if (!animation) {
-    return (
-      <div className="Watch">
-        Loading...
-      </div>
-    );
+    return <div className="Watch">Loading...</div>;
   }
 
   const { title, creator } = animation;
@@ -21,6 +18,11 @@ const Watch = ({ id }) => {
   return (
     <main className="Watch">
       <PageHeader title="Watch" subtitle={`Currently watching "${title}" by ${creator.name}.`} />
+      {animation.parent ? (
+        <Link to={`/watch/${animation.parent._id}`}>
+          Parent: "{animation.parent.title}" by {animation.parent.creator.name}
+        </Link>
+      ) : null}
       <AnimationPlayer animation={animation} />
     </main>
   );
