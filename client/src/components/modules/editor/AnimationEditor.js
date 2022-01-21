@@ -61,8 +61,8 @@ const AnimationEditor = ({ animation, insertFrame }) => {
     <div className="AnimationEditor-container">
       <Sketch className="AnimationEditor-sketch" setup={setup} draw={draw} />
       <div className="AnimationEditor-tools-container">
-        <WeightTool handleWeight={handleWeight} />
         <BrushPicker handleBrush={handleBrush} />
+        <WeightTool handleWeight={handleWeight} />
         <ColorPicker handleColor={handleColor} />
         <button className="AnimationEditor-submit" onClick={save}>
           Save

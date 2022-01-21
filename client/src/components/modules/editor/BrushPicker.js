@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { HiPencil } from "react-icons/hi";
+import { BsEraserFill } from "react-icons/bs";
 
 const BrushPicker = ({ handleBrush }) => {
   const [brush, setBrush] = useState("Pencil");
@@ -10,7 +12,7 @@ const BrushPicker = ({ handleBrush }) => {
 
   return (
     <div className="BrushPicker-radiocontainer">
-      <label>
+      <label className="BrushPicker-option">
         <input
           name="brush"
           type="radio"
@@ -19,9 +21,9 @@ const BrushPicker = ({ handleBrush }) => {
           onChange={handleChange}
           defaultChecked
         />
-        Pencil
+        <HiPencil className="BrushPicker-label" />
       </label>
-      <label>
+      <label className="BrushPicker-option">
         <input
           name="brush"
           type="radio"
@@ -29,7 +31,7 @@ const BrushPicker = ({ handleBrush }) => {
           className="BrushPicker-radio"
           onChange={handleChange}
         />
-        Eraser
+        <BsEraserFill className="BrushPicker-label" />
       </label>
     </div>
   );

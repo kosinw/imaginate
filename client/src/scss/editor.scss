@@ -46,6 +46,16 @@
   gap: 4px;
 }
 
+.BrushPicker-option {
+  display: flex;
+  flex-flow: row;
+  gap: 4px;
+}
+
+.BrushPicker-label {
+  font-size: 1.5em;
+}
+
 .WeightTool-slidecontainer {
   display: flex;
   flex-flow: column;
