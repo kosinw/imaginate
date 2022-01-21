@@ -7,6 +7,7 @@ const ColorPicker = ({ pallete, handleColor }) => {
   const [color, setColor] = useState("#000000");
   const defaultPallete = [
     "#000000",
+    "#FFFFFF",
     "#B80000",
     "#DB3E00",
     "#FCCB00",
