@@ -19,7 +19,7 @@ const CreateAnimationForm = () => {
       },
     };
     axios.post("/api/animations", body).then((response) => {
-      navigate(`/animation/${response.data._id}/edit`);
+      navigate(`/edit/${response.data._id}/`);
     });
   };
 

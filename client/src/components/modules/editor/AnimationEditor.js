@@ -1,7 +1,8 @@
 import React from "react";
 import { navigate } from "@reach/router";
-// import axios from "axios";
 import Sketch from "react-p5";
+
+import useMeasure from "react-use/lib/useMeasure";
 
 import WeightTool from "./WeightTool";
 import BrushPicker from "./BrushPicker";
@@ -9,32 +10,51 @@ import ColorPicker from "./ColorPicker";
 
 let cnv;
 let p5Instance;
+let _frameData = [];
+
+let _buffer;
 
 const AnimationEditor = ({ animation, insertFrame }) => {
+  // TODO(kosi): Change this hard coding of frameCount to actually selecting it
+  const { frames } = animation;
+  const { width, height } = animation.resolution;
+  const [frameCount] = React.useState(animation.frames.length);
+  const [onionSkin] = React.useState(true);
+
+  const preload = (p5) => {
+    _frameData = frames.map(frame => p5.loadImage(frame.data));
+  }
+
   const setup = (p5, parent) => {
     p5Instance = p5;
-    cnv = p5.createCanvas(640, 360).parent(parent);
+    cnv = p5.createCanvas(width, height).parent(parent);
     cnv.id("sketch-editor");
-    p5.background(255);
+    _buffer = p5.createGraphics(width, height);
+    _buffer.background(255, 255, 255, 0);
     p5.stroke(0);
     p5.strokeWeight(1);
   };
 
   const draw = (p5) => {
-    if (p5.mouseIsPressed === true) {
-      p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+    p5.background(255);
+
+    if (onionSkin && frameCount > 0) {
+      const frame = _frameData[frameCount - 1];
+      p5.tint(255, 128);
+      p5.image(frame, 0, 0, width, height);
+      p5.tint(255, 255);
     }
+
+    if (p5.mouseIsPressed === true) {
+      _buffer.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+    }
+
+    p5.image(_buffer, 0, 0);
   };
 
-  // const save = () => {
-  //   const body = { data: cnv.elt.toDataURL() };
-  //   axios.post(`/api/animations/${animation._id}`, body).then((response) => {
-  //     // TODO: redirect to animation instead of discover
-  //     navigate("/");
-  //   });
-  // };
-
   const save = () => {
+    p5Instance.background(255);
+    p5Instance.image(_buffer, 0, 0);
     const canvas = cnv.elt;
     insertFrame(canvas).then(() => {
       navigate(`/watch/${animation._id}`);
@@ -42,24 +62,24 @@ const AnimationEditor = ({ animation, insertFrame }) => {
   };
 
   const handleWeight = (weight) => {
-    p5Instance.strokeWeight(weight);
+    _buffer.strokeWeight(weight);
   };
 
   const handleBrush = (brush) => {
     if (brush === "Pencil") {
-      p5Instance.noErase();
+      _buffer.noErase();
     } else if (brush === "Eraser") {
-      p5Instance.erase();
+      _buffer.erase();
     }
   };
 
   const handleColor = (color) => {
-    p5Instance.stroke(color);
+    _buffer.stroke(color);
   };
 
   return (
-    <div className="AnimationEditor-container">
-      <Sketch className="AnimationEditor-sketch" setup={setup} draw={draw} />
+    <div className="AnimationEditor-container aspect-video hover:cursor-crosshair">
+      <Sketch className="AnimationEditor-sketch" preload={preload} setup={setup} draw={draw} />
       <div className="AnimationEditor-tools-container">
         <BrushPicker handleBrush={handleBrush} />
         <WeightTool handleWeight={handleWeight} />

@@ -22,8 +22,6 @@ router.get("/:id", asyncMiddleware(async (req, res, next) => {
   return res.status(200).json(animation);
 }));
 
-// TODO(kosi): Change this to require authentication and read the authenticated
-// users infromation.
 router.post("/:id", AuthMiddleware.guard, asyncMiddleware(async (req, res, next) => {
   const { id } = req.params;
   const user = req.user._id;

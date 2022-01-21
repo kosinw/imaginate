@@ -5,6 +5,14 @@
   gap: 16px;
 }
 
+.Edit {
+  @apply mx-auto;
+
+  @screen lg {
+    @apply max-w-4xl;
+  }
+}
+
 .AnimationEditor-sketch #sketch-editor {
   outline: 2px solid #d4d4d4;
 }

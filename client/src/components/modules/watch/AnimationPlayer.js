@@ -20,6 +20,7 @@ const AnimationThumbnail = ({ thumbnail, onClick }) => {
 }
 
 let _frameData = [];
+let _p5;
 
 const AnimationCanvas = ({
   animation,
@@ -35,6 +36,12 @@ const AnimationCanvas = ({
   const { frames, framerate } = animation;
   const delay = (1 / framerate) * 1000;
 
+  React.useLayoutEffect(() => {
+    if (!!_p5) {
+      _p5.resizeCanvas(width, height);
+    }
+  }, [width, height]);
+
   const preload = (p5) => {
     _frameData = [];
 
@@ -44,6 +51,7 @@ const AnimationCanvas = ({
   }
 
   const setup = (p5, parent) => {
+    _p5 = p5;
     p5.createCanvas(width, height).parent(parent);
     p5.background(0);
 
