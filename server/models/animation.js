@@ -8,10 +8,11 @@ const AnimationSchema = new mongoose.Schema({
   framerate: { type: Number, required: true },
   resolution: {
     width: { type: Number, required: true },
-    height: { type: Number, required: true }
+    height: { type: Number, required: true },
   },
-  frames: [{ type: mongoose.Schema.Types.ObjectId, ref: "frame", required: true }],
+  frames: [{ type: mongoose.Schema.Types.ObjectId, ref: "frame", default: [], required: true }],
   upvoters: [{ type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }],
+  parent: { type: mongoose.Schema.Types.ObjectId, ref: "animation" },
 });
 
 AnimationSchema.virtual("score").get(function () {
