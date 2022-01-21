@@ -29,3 +29,40 @@
   align-items: flex-end;
   width: max-content;
 }
+
+.AnimationEditor-tools-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
+  gap: 16px;
+  width: fit-content;
+  margin: auto;
+  align-items: center;
+}
+
+.BrushPicker-radiocontainer {
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+}
+
+.BrushPicker-option {
+  display: flex;
+  flex-flow: row;
+  gap: 4px;
+}
+
+.BrushPicker-label {
+  font-size: 1.5em;
+}
+
+.WeightTool-slidecontainer {
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+.WeightTool-label {
+  margin: auto;
+}
