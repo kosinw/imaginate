@@ -1,14 +1,8 @@
 .AnimationPlayer {
-  @apply w-full;
-  @apply border-4 border-black;
-  @apply mt-4;
   @apply flex flex-col;
-  @apply rounded-md;
 }
 
 .AnimationThumbnail {
-  @apply aspect-video w-full;
-
   &:hover {
     @apply cursor-pointer;
   }
@@ -19,50 +13,97 @@
 }
 
 .AnimationCanvas {
-  @apply aspect-video w-full;
+  @apply w-full;
+  @apply aspect-[16/9];
+  @apply hover:cursor-pointer;
+}
+
+.AnimationCanvas--Skeleton {
+  @apply bg-secondary-600;
+  @apply rounded-md;
+  @apply animate-pulse;
+  @apply hover:cursor-default;
+}
+
+.AnimationCanvas__container canvas {
+  @apply rounded-md;
 }
 
 .AnimationPlayerControls {
-  @apply bg-slate-100;
   @apply flex flex-row;
-  @apply px-3.5;
-  @apply text-slate-500;
+  @apply justify-between;
+}
 
+.AnimationPlayerControls__group {
+  @apply flex flex-row;
+  @apply items-center;
 
-  .AnimationPlayerControls__button {
-    @apply align-middle;
-
-    &:hover {
-      @apply text-red-500;
-    }
-  }
-
-  .AnimationPlayerControls__left {
+  &.AnimationPlayerControls__group--left {
     @apply flex-auto;
-    @apply flex flex-row;
+  }
+
+  &.AnimationPlayerControls__group--right {
     @apply space-x-2;
-    @apply items-center;
-  }
-
-  .AnimationPlayerControls__right {
-    @apply space-x-4;
-    @apply flex flex-row;
   }
 }
 
-.AnimationProgress {
-  @apply h-1 w-full;
-  @apply bg-zinc-300;
+.AnimationPlayerControls__button {
+  @apply text-primary;
+  
+  &:disabled {
+    @apply text-secondary-500;
+  }
+}
+
+.AnimationPlayerControls__icon {
+  @apply w-8 h-8;
+  @apply fill-current;
+}
+
+.AnimationPlayerControls__subgroup {
   @apply flex flex-row;
+  @apply items-center justify-center;
+  @apply space-x-2;
+}
 
-  &:hover {
-    @apply h-3 -mt-2;
-    @apply cursor-pointer;
-  }
+.AnimationPlayerControls__text {
+  @apply text-foreground;
+  @apply text-center;
+  @apply align-middle;
+  @apply font-public;
+  @apply text-base;
+  @apply font-bold;
+  @apply w-20;
 
-  .AnimationProgress__played {
-    @apply h-full;
-    @apply bg-red-500;
-    @apply block;
+  &.AnimationPlayerControls__text--disabled {
+    @apply text-secondary-500;
   }
 }
+
+// .AnimationPlayerControls {
+//   @apply bg-slate-100;
+//   @apply flex flex-row;
+//   @apply px-3.5;
+//   @apply text-slate-500;
+
+
+//   .AnimationPlayerControls__button {
+//     @apply align-middle;
+
+//     &:hover {
+//       @apply text-red-500;
+//     }
+//   }
+
+//   .AnimationPlayerControls__left {
+//     @apply flex-auto;
+//     @apply flex flex-row;
+//     @apply space-x-2;
+//     @apply items-center;
+//   }
+
+//   .AnimationPlayerControls__right {
+//     @apply space-x-4;
+//     @apply flex flex-row;
+//   }
+// }

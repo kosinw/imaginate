@@ -1,0 +1,31 @@
+.Slider {
+  @apply py-2;
+  @apply touch-none;
+  @apply hover:cursor-pointer;
+}
+
+.Slider__bar {
+  @apply bg-secondary-600;
+  @apply relative w-full;
+  @apply h-[5px];
+  @apply rounded-md;
+}
+
+.Slider__handle, .Slider__progress {
+  @apply absolute;
+}
+
+.Slider__progress {
+  @apply h-[5px];
+  @apply rounded-md;
+  @apply bg-primary;
+}
+
+.Slider__handle {
+  @apply border-[3px] border-background;
+  @apply bg-primary;
+  @apply ml-[-8px] mt-[-5px];
+  @apply w-4 h-4;
+  @apply cursor-pointer;
+  @apply outline-none rounded-full;
+}

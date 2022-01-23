@@ -1,7 +1,54 @@
-.Watch {
-  @apply mx-auto;
+.Page--Watch {
+  @apply flex flex-row;
+  @apply space-x-4;
+}
 
-  @screen lg {
-    @apply max-w-4xl;
+.Watch__section.Watch__section--left {
+  @apply w-full;
+  @apply max-w-none;
+  @apply lg:max-w-screen-md;
+  @apply flex flex-col;
+}
+
+.Watch__info {
+  @apply flex flex-row;
+  @apply py-8;
+}
+
+.Watch__title {
+  @apply font-medium;
+  @apply text-lg;
+  @apply font-poppins;
+  @apply flex-auto;
+}
+
+.Watch__link {
+  @apply text-primary;
+
+ &:hover {
+    @apply text-red-600;
+  }
+}
+
+.Watch__ButtonGroup {
+  @apply flex flex-row;
+  @apply space-x-4;
+}
+
+.TagsGroup {
+  @apply flex flex-row;
+  @apply flex-wrap;
+  @apply space-x-2;
+}
+
+.Tag {
+  @apply text-sm;
+  @apply rounded-lg;
+  @apply px-2;
+  @apply h-6;
+  @apply inline-flex items-center justify-center;
+  
+  &:hover {
+    @apply cursor-pointer;
   }
 }

@@ -1,23 +1,15 @@
 import React from "react";
 import Sketch from "react-p5";
-import { navigate } from "@reach/router";
+import classnames from "classnames";
 
-import { TiMediaPlay, TiMediaPause, TiArrowLoop } from "react-icons/ti";
-import { CgPushRight, CgGitFork } from "react-icons/cg";
-import { HiChevronLeft, HiChevronRight, HiPencilAlt, HiSwitchHorizontal } from "react-icons/hi";
+import { BsPlayFill, BsPauseFill } from "react-icons/bs";
+import { HiFastForward, HiRewind, HiCog } from "react-icons/hi";
+import { CgRepeat, CgPushRight } from "react-icons/cg";
 
-import useMeasure from "react-use/lib/useMeasure";
+import { calculateFrame } from "../../../lib/utils/aspect";
 
-import useAuth from "../../../lib/hooks/useAuth";
 import UpvoteButton from "../UpvoteButton";
-
-const AnimationThumbnail = ({ thumbnail, onClick }) => {
-  return (
-    <div onClick={onClick} className="AnimationThumbnail">
-      <img src={thumbnail} className="AnimationThumbnail__image" />
-    </div>
-  );
-};
+import Slider from "../Slider";
 
 let _frameData = [];
 let _p5;
@@ -26,24 +18,38 @@ const AnimationCanvas = ({
   animation,
   frameCount,
   setFrameCount,
+  setPaused,
   looping,
-  mode,
-  setMode,
-  frameByFrameMode,
+  paused,
   onClick,
 }) => {
-  const [ref, { width, height }] = useMeasure();
+  const { width: frameWidth, height: frameHeight } = animation.resolution;
+  const sketchWrapper = React.useRef(null);
+  const [loading, setLoading] = React.useState(true);
+  const scaleFactor = 9 / 16;
   const { frames, framerate } = animation;
   const delay = (1 / framerate) * 1000;
 
   React.useLayoutEffect(() => {
-    if (!!_p5) {
-      _p5.resizeCanvas(width, height);
+    const resizeCanvas = () => {
+      const rect = sketchWrapper.current.getBoundingClientRect();
+      if (!!_p5) {
+        _p5.resizeCanvas(rect.width, rect.width * scaleFactor);
+      }
+    };
+
+    resizeCanvas();
+
+    window.addEventListener('resize', resizeCanvas);
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
     }
-  }, [width, height]);
+  }, []);
 
   const preload = (p5) => {
     _frameData = [];
+    _p5 = p5;
 
     frames.map((frame) => {
       _frameData.push(p5.loadImage(frame.data));
@@ -51,23 +57,22 @@ const AnimationCanvas = ({
   };
 
   const setup = (p5, parent) => {
-    _p5 = p5;
-    p5.createCanvas(width, height).parent(parent);
+    setLoading(false);
+    const rect = sketchWrapper.current.getBoundingClientRect();
+    p5.createCanvas(rect.width, rect.width * scaleFactor).parent(parent);
     p5.background(0);
-
-    // Resize all frames so that they fill up width of canvas
-    // add black bars top and bottom.
-    _frameData.map((frame) => {
-      frame.resize(width, 0);
-    });
   };
 
   const draw = (p5) => {
+    const { width, height } = sketchWrapper.current.getBoundingClientRect();
+    let _paused = false;
+
     if (frameCount >= _frameData.length) {
       if (looping) {
-        setFrameCount(0);
+        setFrameCount(frameCount - _frameData.length);
       } else {
-        setMode("stopped");
+        setPaused(true);
+        _paused = true;
       }
       return;
     }
@@ -77,11 +82,11 @@ const AnimationCanvas = ({
     // Figure out y position to draw from by taking difference between
     // height of viewport and height of image and then dividing by two.
     const image = _frameData[Math.floor(frameCount)];
-    const y = Math.floor((height - image.height) / 2);
+    const { virtualWidth, virtualHeight, x, y } = calculateFrame(frameWidth, frameHeight, width, height);
+    image.resize(virtualWidth, virtualHeight);
+    p5.image(image, x, y);
 
-    p5.image(image, 0, y);
-
-    if (mode !== "playing" || frameByFrameMode) {
+    if (paused || _paused) {
       return;
     }
 
@@ -90,232 +95,164 @@ const AnimationCanvas = ({
   };
 
   return (
-    <div ref={ref} onClick={onClick} className="AnimationCanvas hover:cursor-pointer">
-      {width !== 0 && height !== 0 && (
-        <Sketch
-          key={width}
-          className="AnimationCanvas__container"
-          preload={preload}
-          setup={setup}
-          draw={draw}
-        />
-      )}
+    <div
+      ref={sketchWrapper}
+      onClick={onClick}
+      className={classnames("AnimationCanvas", { "AnimationCanvas--Skeleton": loading })}
+    >
+      <Sketch
+        className="AnimationCanvas__container"
+        preload={preload}
+        setup={setup}
+        draw={draw}
+      />
     </div>
   );
 };
 
-const AnimationPlayerControls = ({
-  mode,
-  onPausePlayClick,
-  looping,
-  onLoopClick,
-  onSwapClick,
-  onLeftClick,
-  onRightClick,
-  frameByFrameMode,
-  frameCount,
-  totalFrames,
-  animationId,
-}) => {
-  const { userId } = useAuth();
 
-  const onEditClick = () => {
-    if (!frameByFrameMode) {
-      navigate(`/edit/${animationId}`);
-    }
-  };
-
-  const onForkClick = () => {
-    navigate(`/fork/${animationId}/${Math.floor(frameCount)}`);
-  };
+const AnimationPlayerControls = (props) => {
+  const { onPlayClicked } = props;
+  const { onNextFrameClicked, onPrevFrameClicked } = props;
+  const { onLoopClicked } = props;
+  const { paused, looping } = props;
+  const { currentFrame, totalFrames } = props;
+  const { animationId } = props;
 
   return (
     <div className="AnimationPlayerControls">
-      <div className="AnimationPlayerControls__left">
-        {!frameByFrameMode ? (
-          <button
-            onClick={onPausePlayClick}
-            className="AnimationPlayerControls__button"
-            title={mode !== "playing" ? "Play" : "Pause"}
-          >
-            {mode !== "playing" ? (
-              <TiMediaPlay className="w-6 h-6" />
-            ) : (
-              <TiMediaPause className="w-6 h-6" />
-            )}
+      <div className="AnimationPlayerControls__group AnimationPlayerControls__group--left">
+        <button title={paused ? "Play" : "Pause"} onClick={onPlayClicked} className="AnimationPlayerControls__button">
+          {paused ?
+            <BsPlayFill className="AnimationPlayerControls__icon" /> :
+            <BsPauseFill className="AnimationPlayerControls__icon" />
+          }
+        </button>
+        <div className="AnimationPlayerControls__subgroup">
+          <button title="Next Frame" disabled={!paused} onClick={onPrevFrameClicked} className="AnimationPlayerControls__button">
+            <HiRewind className="AnimationPlayerControls__icon" />
           </button>
-        ) : (
-          <>
-            <button onClick={onLeftClick} className="AnimationPlayerControls__button">
-              <HiChevronLeft className="w-6 h-6" />
-            </button>
-            <span>
-              {Math.floor(frameCount) + 1} / {totalFrames}
-            </span>
-            <button onClick={onRightClick} className="AnimationPlayerControls__button">
-              <HiChevronRight className="w-6 h-6" />
-            </button>
-          </>
-        )}
+          <span className={classnames("AnimationPlayerControls__text", { "AnimationPlayerControls__text--disabled": !paused })}>
+            {`${currentFrame} / ${totalFrames}`}
+          </span>
+          <button title="Previous Frame" disabled={!paused} onClick={onNextFrameClicked} className="AnimationPlayerControls__button">
+            <HiFastForward className="AnimationPlayerControls__icon" />
+          </button>
+        </div>
       </div>
-      <div className="AnimationPlayerControls__right">
-        <UpvoteButton animationId={animationId} />
-        {userId && 
-        <>
-          <button onClick={onEditClick} className="AnimationPlayerControls__button" title="Edit">
-            <HiPencilAlt className="w-6 h-6" />
-          </button>
-          <button onClick={onForkClick} className="AnimationPlayerControls__button" title="Fork">
-            <CgGitFork className="w-6 h-6" />
-          </button>
-        </>
-        }
-        <button
-          onClick={onLoopClick}
-          className="AnimationPlayerControls__button"
-          title={looping ? "Play once" : "Loop"}
-        >
-          {looping ? <TiArrowLoop className="w-6 h-6" /> : <CgPushRight className="w-6 h-6" />}
+      <div className="AnimationPlayerControls__group AnimationPlayerControls__group--right">
+        <button title={looping ? "Loop" : "Play Once"} onClick={onLoopClicked} className="AnimationPlayerControls__button">
+          {looping ?
+            <CgRepeat className="AnimationPlayerControls__icon" /> :
+            <CgPushRight className="AnimationPlayerControls__icon" />
+          }
         </button>
-        <button
-          onClick={onSwapClick}
-          className="AnimationPlayerControls__button"
-          title="Swap to frame-by-frame mode"
-        >
-          <HiSwitchHorizontal className="w-6 h-6" />
+        <button title="Settings" className="AnimationPlayerControls__button">
+          <HiCog className="AnimationPlayerControls__icon" />
         </button>
+        <UpvoteButton className="AnimationPlayerControls__button" animationId={animationId} />
       </div>
     </div>
   );
 };
 
-const AnimationProgress = ({ frameCount, setFrameCount, totalFrames }) => {
-  const onClick = (e) => {
-    e.preventDefault();
-
-    const location = e.nativeEvent.offsetX;
-    const newProgress = location / width;
-
-    setFrameCount(newProgress * totalFrames);
-  };
-
-  const [ref, { width }] = useMeasure();
-  const progress = frameCount / totalFrames;
-
-  return (
-    <div onClick={onClick} ref={ref} className="AnimationProgress">
-      <span style={{ width: `${progress * 100}%` }} className="AnimationProgress__played"></span>
-    </div>
-  );
+AnimationPlayerControls.defaultProps = {
+  onPlayClicked: function () { },
+  onNextFrameClicked: function () { },
+  onPrevFrameClicked: function () { },
+  onLoopClicked: function () { },
+  currentFrame: 1,
+  totalFrames: 1,
+  paused: true,
+  looping: true,
+  animationId: null
 };
 
-const AnimationPlayer = ({ animation }) => {
-  const { thumbnail } = animation;
-  const [mode, setMode] = React.useState("stopped");
-
+const AnimationPlayer = ({ animation, onFrameChanged }) => {
+  const [paused, setPaused] = React.useState(true);
+  const prevPausedRef = React.useRef(null);
   const [frameCount, setFrameCount] = React.useState(0);
-  const totalFrames = animation.frames.length;
-
-  const [frameByFrameMode, setFrameByFrameMode] = React.useState(false);
-
   const [looping, setLooping] = React.useState(true);
+  const [wasPlaying, setWasPlaying] = React.useState(false);
 
-  const onThumbnailClick = () => {
-    setMode("playing");
-    setFrameCount(0);
-  };
+  const numDigits = Math.max(3, animation.frames.length.toString().length);
 
-  const onLoopClick = () => {
-    setLooping(!looping);
-  };
+  const currentFrame = `${Math.min(animation.frames.length - 1, Math.floor(frameCount)) + 1}`.padStart(numDigits, '0');
+  const totalFrames = `${animation.frames.length}`.padStart(numDigits, '0');
 
-  const mod = (n, m) => {
-    return ((n % m) + m) % m;
-  };
+  // NOTE(kosi): Hack to basically have linear play start from beginning.
+  React.useEffect(() => {
+    const prevPaused = prevPausedRef.current;
 
-  const onSwapClick = () => {
-    setMode("paused");
-    setFrameByFrameMode(!frameByFrameMode);
-  };
-
-  const onLeftClick = () => {
-    const nextFrame = Math.floor(frameCount) - 1;
-
-    if (looping) {
-      setFrameCount(mod(nextFrame, totalFrames));
-      return;
+    if (prevPaused && !paused && !looping && frameCount >= animation.frames.length - 0.1) {
+      setFrameCount(0);
     }
 
-    setFrameCount(Math.max(nextFrame, 0));
-  };
+    prevPausedRef.current = paused;
+  }, [paused]);
 
-  const onRightClick = () => {
-    const nextFrame = Math.floor(frameCount) + 1;
-
-    if (looping) {
-      setFrameCount(mod(nextFrame, totalFrames));
-      return;
+  React.useEffect(() => {
+    if (!!onFrameChanged) {
+      onFrameChanged(frameCount);
     }
+  }, [frameCount]);
 
-    setFrameCount(Math.min(nextFrame, totalFrames - 1));
-  };
 
-  const onPausePlayClick = () => {
-    switch (mode) {
-      case "stopped":
-        setMode("playing");
-        setFrameCount(0);
-        break;
-      case "playing":
-        setMode("paused");
-        break;
-      case "paused":
-        setMode("playing");
-        break;
-    }
-  };
+  const moveFrame = (amount) => {
+    const loop = (min, max, val) => Math.max(min, (val + max) % max);
+    const clamp = (min, max, val) => Math.max(min, Math.min(max - 1, val));
 
-  const renderViewport = () => {
-    switch (mode) {
-      case "stopped":
-        return <AnimationThumbnail onClick={onThumbnailClick} thumbnail={thumbnail} />;
-      default:
-        return (
-          <AnimationCanvas
-            animation={animation}
-            frameCount={frameCount}
-            setFrameCount={setFrameCount}
-            looping={looping}
-            mode={mode}
-            setMode={setMode}
-            frameByFrameMode={frameByFrameMode}
-            onClick={onPausePlayClick}
-          />
-        );
+    const fn = looping ? loop : clamp;
+
+    const nearestFrame = Math.min(frameCount);
+    setFrameCount(fn(0, animation.frames.length, nearestFrame + amount));
+
+    if (!looping && amount > 0 && nearestFrame >= animation.frames.length - 1) {
+      setFrameCount(animation.frames.length);
     }
   };
 
   return (
     <div className="AnimationPlayer">
-      {renderViewport()}
-      <AnimationProgress
+      <AnimationCanvas
+        animation={animation}
         frameCount={frameCount}
         setFrameCount={setFrameCount}
-        totalFrames={totalFrames}
+        setPaused={setPaused}
+        looping={looping}
+        paused={paused}
+        onClick={() => setPaused(!paused)} />
+      <Slider
+        onBeforeChange={() => { if (!paused) { setWasPlaying(true); setPaused(true); } }}
+        onAfterChange={() => { if (wasPlaying) { setWasPlaying(false); setPaused(false); } }}
+        onChange={(value) => setFrameCount((value / 100) * totalFrames)}
+        value={frameCount / totalFrames * 100}
+        className="my-2"
       />
       <AnimationPlayerControls
+        onPlayClicked={() => setPaused(!paused)}
+        onLoopClicked={() => setLooping(!looping)}
+        onPrevFrameClicked={() => moveFrame(-1)}
+        onNextFrameClicked={() => moveFrame(+1)}
+        paused={paused}
+        looping={looping}
+        currentFrame={currentFrame}
+        totalFrames={totalFrames}
+        animationId={animation._id}
+      />
+      {/* <AnimationPlayerControls
         frameByFrameMode={frameByFrameMode}
         onSwapClick={onSwapClick}
-        onPausePlayClick={onPausePlayClick}
+        // onPausePlayClick={onPausePlayClick}
         onLoopClick={onLoopClick}
         looping={looping}
-        mode={mode}
+        paused={paused}
         frameCount={frameCount}
         totalFrames={totalFrames}
         onLeftClick={onLeftClick}
         onRightClick={onRightClick}
         animationId={animation._id}
-      />
+      /> */}
     </div>
   );
 };

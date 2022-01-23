@@ -1,0 +1,40 @@
+.Page--Index__header {
+  @apply flex;
+  @apply flex-row;
+  @apply justify-between;
+  @apply items-center;
+  @apply mb-7;
+  @apply h-5;
+}
+
+.Page--Index__title {
+  @apply font-poppins;
+  @apply text-base;
+  @apply font-bold;
+}
+
+.Paginator {
+  @apply h-7;
+  @apply rounded-xl;
+  @apply bg-secondary-600;
+  @apply p-4;
+  @apply flex flex-row;
+  @apply justify-between;
+  @apply items-center;
+  @apply space-x-4;
+  @apply font-public;
+  @apply font-bold;
+}
+
+.Paginator__content {
+  @apply select-none;
+}
+
+.Paginator__icon {
+  @apply inline-block;
+  @apply select-none;
+
+  &:disabled {
+    @apply opacity-30;
+  }
+}

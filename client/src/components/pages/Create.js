@@ -3,7 +3,7 @@ import React from "react";
 import CreateAnimationForm from "../modules/new-animation/CreateAnimationForm";
 import PageHeader from "../modules/PageHeader";
 
-const NewAnimation = () => {
+const Create = () => {
   return (
     <main className="NewAnimation">
       <PageHeader title="Create" subtitle="Get ready to create your newest animation!" />
@@ -12,4 +12,4 @@ const NewAnimation = () => {
   );
 };
 
-export default NewAnimation;
+export default Create;

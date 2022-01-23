@@ -1,77 +1,61 @@
 .AnimationPreviewGridView {
-  @apply grid grid-cols-1 gap-y-8;
-
-  @screen md {
-    @apply grid-cols-2 gap-x-6 gap-y-12;
-  }
-
-  @screen lg {
-    @apply grid-cols-3;
-  }
+  @apply grid;
+  @apply grid-cols-2;
+  @apply md:grid-cols-3;
+  @apply lg:grid-cols-4;
+  @apply gap-4;
 }
 
 .AnimationPreview {
-  @apply border-4 border-black;
-  @apply bg-white;
-  @apply flex flex-col items-center justify-center;
-  @apply rounded-sm;
+  @apply space-y-2;
+}
+
+.AnimationPreview__thumbnail {
+  @apply pb-[56.25%];
+  @apply w-full;
+  @apply bg-no-repeat bg-contain bg-center;
+  @apply bg-black;
+  @apply rounded-md;
+  @apply overflow-hidden;
+  @apply hover:outline hover:outline-1 hover:outline-primary;
+}
+
+.AnimationPreview__info {
+  @apply flex flex-row;
+  @apply justify-between;
+}
+
+.AnimationPreview__creator {
+  @apply font-public;
+  @apply text-sm;
 
   &:hover {
-    @apply cursor-pointer;
-    @apply outline-2 outline outline-red-500;
+    @apply text-primary;
   }
+}
 
-  .thumbnail {
-    @apply object-cover;
-    @apply aspect-video;
-    @apply border-b-4 border-solid border-inherit;
-  }
+/// START SKELETON ///
 
-  .info-container {
-    @apply p-2;
-    @apply w-full;
-    @apply flex flex-row;
-    @apply text-black;
-    @apply text-sm;
+.AnimationPreview.AnimationPreview--Skeleton {
+  @apply animate-pulse;
+}
 
-    .caption-container {
-      @apply flex flex-row flex-auto items-center;
-      @apply space-x-2;
+.AnimationPreview__thumbnail.AnimationPreview__thumbnail--Skeleton {
+  @apply bg-secondary-600;
+}
 
-      .caption-icon {
-        @apply inline;
-      }
+.AnimationPreview__info.AnimationPreview__info--Skeleton {
+  @apply h-4;
+}
 
-      .caption-title {
-        @apply align-middle;
+.AnimationPreview__creator.AnimationPreview__creator--Skeleton {
+  @apply w-16;
+  @apply rounded-full;
+  @apply bg-secondary-600;
+}
 
-        &:hover {
-          @apply text-red-500;
-        }
-      }
-    }
-
-    .upvote-container {
-      @apply flex flex-row justify-center;
-      @apply text-slate-600;
-
-      &:hover {
-        @apply text-red-500;
-      }
-
-      .upvote-button {
-        @apply flex items-center justify-center;
-        @apply w-6 h-6;
-
-        &.active {
-          @apply text-red-500;
-        }
-
-        .upvote-count {
-          @apply text-center;
-          @apply inline-flex items-center;
-        }
-      }
-    }
-  }
+.AnimationPreview__button.AnimationPreview__button--Skeleton {
+  @apply w-8;
+  @apply rounded-full;
+  @apply bg-secondary-600;
 }

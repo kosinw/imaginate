@@ -5,13 +5,16 @@
 
 // import domain-specific styles
 @use "navbar";
-@use "common";
-@use "animation";
-@use "profile";
+@use "header";
+@use "app";
+
+@use "index";
 @use "watch";
-@use "new-animation";
 @use "fork";
+@use "editor";
+@use "create";
+
 @use "preview";
 @use "player";
-@use "editor";
 @use "upvote-button";
+@use "slider";

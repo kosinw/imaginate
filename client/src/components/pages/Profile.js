@@ -2,8 +2,6 @@ import React from "react";
 import useSWR from "swr";
 
 import fetcher from "../../lib/utils/fetcher";
-
-import PageHeader from "../modules/PageHeader";
 import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";
 
 /**
@@ -19,8 +17,12 @@ const Profile = ({ userId }) => {
   if (!user) { return <div>Loading...</div> }
 
   return (
-    <main className="Profile">
-      <PageHeader title="Profile" subtitle={`Currently browsing the page of ${user.name}.`} />
+    <main className="Page Page--Index">
+      <div className="Page--Index__header">
+        <h1 className="Page--Index__title">
+          Currently browsing <span className="text-primary">{user.name}'s</span> profile page.
+        </h1>
+      </div>
       <AnimationPreviewGridView resource={`/api/users/${userId}/animations`} />
     </main>
   );

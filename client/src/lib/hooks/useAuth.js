@@ -13,7 +13,7 @@ const useAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!!user) {
-        const _token = await user.getIdToken();
+        const _token = await user.getIdToken(true);
         axios.defaults.headers.common["Authorization"] = `Bearer ${_token}`;
         setToken(_token);
       } else {
@@ -37,6 +37,7 @@ const useAuth = () => {
 
   return {
     userId,
+    loggedIn: !!userId && !error,
     error,
     googleSignIn,
     googleSignOut

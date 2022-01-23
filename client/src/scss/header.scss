@@ -1,0 +1,58 @@
+.Header {
+  @apply py-16;
+  @apply flex;
+
+  @apply flex-col;
+  @apply space-y-6;
+
+  @apply sm:flex-row;
+  @apply sm:space-y-0;
+}
+
+.Header__item {
+  @apply flex;
+
+  &.Header__item--left {
+    @apply flex-auto flex-col;
+  }
+
+  &.Header__item--right {
+    @apply flex-row;
+  }
+}
+
+.Header__link {
+  @apply text-primary;
+}
+
+.Header__title {
+  @apply font-archivo;
+  @apply tracking-tight;
+  @apply text-lg;
+  @apply select-none;
+}
+
+.Header__subtitle {
+  @apply font-poppins;
+  @apply tracking-normal;
+  @apply text-base;
+}
+
+.Header__navigation-items {
+  @apply flex flex-row;
+  @apply items-center;
+  @apply space-x-6;
+  @apply md:space-x-8;
+  @apply font-poppins;
+  @apply text-base;
+  @apply sm:text-sm;
+}
+
+.Header__navigation-item {
+  @apply inline-flex;
+
+  &:hover {
+    @apply text-primary;
+    @apply cursor-pointer;
+  }
+}

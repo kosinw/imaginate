@@ -17,16 +17,15 @@ const useAnimation = (id) => {
   const [uploading, setUploading] = useState(false);
 
   const insertFrame = async (canvas) => {
+    mutate();
+
     const imageRef = ref(storage, `frames/${cuid()}.webp`);
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', 1));
 
     setUploading(true);
     const snapshot = await uploadBytes(imageRef, blob)
     const imageUrl = await getDownloadURL(snapshot.ref);
-
     const animation = await axios.post(prefix, { data: imageUrl });
-    mutate();
-
     setUploading(false);
 
     return animation;

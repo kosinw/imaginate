@@ -1,0 +1,38 @@
+.App {
+  @apply mx-auto;
+  @apply min-h-screen;
+  @apply px-8;
+  @apply pb-8;
+  @apply font-poppins;
+
+  @apply max-w-none;
+  @apply md:max-w-screen-md;
+  @apply lg:max-w-screen-xl;
+}
+
+.ButtonWithIcon {
+  @apply border-primary border rounded-md;
+  @apply font-public;
+  @apply px-3;
+  @apply py-1;
+  @apply text-base;
+  @apply flex flex-row;
+  @apply space-x-2;
+  @apply items-center;
+  @apply text-primary;
+
+  &:disabled {
+    @apply border-secondary-500;
+    @apply text-secondary-500;
+  }
+
+  &:hover:enabled {
+    @apply bg-primary;
+    @apply text-foreground;
+  }
+}
+
+.ButtonWithIcon__icon {
+  @apply w-4;
+  @apply h-4;
+}

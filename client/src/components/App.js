@@ -1,26 +1,29 @@
 import React from "react";
 import { Router } from "@reach/router";
-import NavBar from "./modules/NavBar.js";
-import NotFound from "./pages/NotFound.js";
+import Header from "./modules/Header";
+import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
 import Edit from "./pages/Edit";
 import Fork from "./pages/Fork";
 import Watch from "./pages/Watch";
-import NewAnimation from "./pages/NewAnimation";
-import Profile from "./pages/Profile.js";
+import Create from "./pages/Create";
+import Profile from "./pages/Profile";
+
+import "@fontsource/archivo-black";
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/700.css";
+import "@fontsource/public-sans/400.css";
+import "@fontsource/public-sans/700.css";
 
 import "../scss/styles.scss";
 
-/**
- * Define the "App" component
- */
 const App = () => {
   return (
     <main className="App">
-      <NavBar />
-      <Router className="container mx-auto p-4">
+      <Header />
+      <Router>
         <Index path="/" />
-        <NewAnimation path="/create" />
+        <Create path="/create" />
         <Edit path="/edit/:animationId" />
         <Fork path="/fork/:animationId/:frameCount" />
         <Profile path="/profile/:userId" />

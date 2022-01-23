@@ -1,32 +1,31 @@
 import React from "react";
-import { Link, navigate } from "@reach/router";
+import { Link } from "@reach/router";
 
-import Identicon from "./Identicon";
 import UpvoteButton from "./UpvoteButton";
 
-import useAnimation from "../../lib/hooks/useAnimation";
-
-const AnimationPreview = ({ animationId }) => {
-  const { animation } = useAnimation(animationId);
-
-  const onPreviewClick = () => {
-    navigate(`/watch/${animation._id}`);
-  };
-
-  // TODO(kosi): Place skeleton loader here
-  if (!animation) return <div>Loading...</div>;
-
+export const AnimationPreviewSkeleton = () => {
   return (
-    <div onClick={onPreviewClick} className="AnimationPreview">
-      <img className="thumbnail" src={animation.thumbnail} />
-      <div className="info-container">
-        <Link onClick={e => e.stopPropagation()} to={`/profile/${animation.creator._id}`} className="caption-container">
-          <Identicon className="caption-icon" size={24} value={animation.creator.name} />
-          <span className="caption-title">{animation.creator.name}</span>
+    <div className="AnimationPreview AnimationPreview--Skeleton">
+      <div className="AnimationPreview__thumbnail AnimationPreview__thumbnail--Skeleton" />
+      <div className="AnimationPreview__info AnimationPreview__info--Skeleton">
+        <div className="AnimationPreview__creator AnimationPreview__creator--Skeleton" />
+        <div className="AnimationPreview__button AnimationPreview__button--Skeleton" />
+      </div>
+    </div>
+  );
+};
+
+const AnimationPreview = ({ animation }) => {
+  return (
+    <div className="AnimationPreview">
+      <Link className="AnimationPreview__thumbnail-container" to={`/watch/${animation._id}`}>
+        <div className="AnimationPreview__thumbnail" style={{ backgroundImage: `url(${animation.thumbnail})` }} />
+      </Link>
+      <div className="AnimationPreview__info">
+        <Link className="AnimationPreview__creator" to={`/profile/${animation.creator._id}`}>
+          {animation.creator.name}
         </Link>
-        <div className="upvote-container">
-          <UpvoteButton animationId={animation._id} />
-        </div>
+        <UpvoteButton className="AnimationPreview__button" animationId={animation._id} />
       </div>
     </div>
   );
