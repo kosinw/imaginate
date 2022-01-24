@@ -1,0 +1,66 @@
+.ActivityFeed {
+  @apply flex flex-col;
+  @apply space-y-6;
+  @apply select-none;
+}
+
+.ActivityFeedItem {
+  @apply flex flex-row;
+  @apply space-x-6;
+  @apply w-full;
+  @apply px-4 pb-6;
+  @apply border-b-[0.4px] border-secondary-500;
+}
+
+.ActivityFeedItem__section {
+  &.ActivityFeedItem__section--left {
+    @apply flex-shrink-0;
+  }
+
+  &.ActivityFeedItem__section--right {
+    @apply flex-auto;
+    @apply flex flex-col;
+    @apply space-y-1;
+  }
+}
+
+.ActivityFeedItem__icon {
+  @apply w-10 h-10;
+}
+
+.ActivityFeedItem__header {
+  @apply flex flex-row;
+}
+
+.ActivityFeedItem__author {
+  @apply flex-auto;
+  @apply font-poppins;
+  @apply font-bold;
+  @apply text-base;
+
+  a:hover {
+    @apply text-primary;
+  }
+}
+
+.ActivityFeedItem__time {
+  @apply font-bold;
+  @apply font-poppins;
+  @apply text-sm;
+}
+
+.ActivityFeedItem__description {
+  @apply w-full;
+  @apply select-text;
+}
+
+.ActivityFeedItem__text {
+  @apply opacity-80;
+  @apply text-sm;
+  @apply font-normal;
+}
+
+.ActivityFeedItem__link {
+  @apply text-primary;
+  @apply hover:text-red-700;
+}

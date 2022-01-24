@@ -3,7 +3,12 @@ import classnames from "classnames";
 import { Link, navigate } from "@reach/router";
 
 import AnimationPlayer from "../modules/watch/AnimationPlayer";
+import ActivityFeed from "../modules/watch/ActivityFeed";
 import ButtonWithIcon from "../modules/ButtonWithIcon";
+import Spinner from "../modules/Spinner";
+import DeleteDialog from "../modules/dialog/DeleteDialog";
+import ForkDialog from "../modules/dialog/ForkDialog";
+
 import useAnimation from "../../lib/hooks/useAnimation";
 import useAuth from "../../lib/hooks/useAuth";
 
@@ -11,12 +16,15 @@ import { HiPencilAlt, HiTrash } from "react-icons/hi";
 import { CgGitFork } from "react-icons/cg";
 
 const Watch = ({ id }) => {
-  const { animation } = useAnimation(id);
+  const { animation, deleteAnimation } = useAnimation(id);
   const { userId } = useAuth();
   const [frame, setFrame] = React.useState(0);
+  const [openDelete, setOpenDelete] = React.useState(false);
+  const [openFork, setOpenFork] = React.useState(false);
+  const [defaultFrame, setDefaultFrame] = React.useState(0);
 
   if (!animation) {
-    return <div className="Watch">Loading...</div>;
+    return <div className="Page Page--Loading"><Spinner /></div>;
   }
 
   const owner = userId === animation.creator._id;
@@ -24,11 +32,15 @@ const Watch = ({ id }) => {
   const ButtonGroup = () => {
     const roundedFrame = Math.min(animation.frames.length - 1, Math.floor(frame));
 
+    React.useEffect(() => {
+      setDefaultFrame(roundedFrame);
+    }, [roundedFrame]);
+
     return (
       <div className="Watch__ButtonGroup">
-        <ButtonWithIcon onClick={() => navigate(`/edit/${animation._id}`)} Icon={HiPencilAlt} disabled={!owner} text="Edit" />
-        <ButtonWithIcon onClick={() => navigate(`/fork/${animation._id}/${roundedFrame}`)} Icon={CgGitFork} disabled={!userId} text="Fork" />
-        <ButtonWithIcon Icon={HiTrash} disabled={!owner} text="Delete" />
+        <ButtonWithIcon onClick={() => navigate(`/edit/${animation._id}`)} Icon={HiPencilAlt} disabled={!userId} text="Edit" />
+        <ButtonWithIcon onClick={() => setOpenFork(true)} Icon={CgGitFork} disabled={!userId} text="Fork" />
+        <ButtonWithIcon onClick={() => setOpenDelete(true)} Icon={HiTrash} disabled={!owner} text="Delete" />
       </div>
     );
   }
@@ -80,6 +92,22 @@ const Watch = ({ id }) => {
           {/* <TagsGroup tags={tags} /> */}
         </div>
       </section>
+      <section className="Watch__section Watch__section--right">
+        <ActivityFeed animationId={animation._id} />
+      </section>
+      <>
+        <DeleteDialog
+          onDelete={() => deleteAnimation()}
+          open={openDelete}
+          setOpen={setOpenDelete}
+        />
+        <ForkDialog
+          defaultFrame={defaultFrame}
+          onFork={() => { }}
+          open={openFork}
+          setOpen={setOpenFork}
+        />
+      </>
     </main>
   );
 };

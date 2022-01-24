@@ -1,17 +1,28 @@
 .Page--Watch {
-  @apply flex flex-row;
-  @apply space-x-4;
+  @apply flex flex-col;
+  @apply space-y-6;
+  @apply lg:flex-row;
+  @apply lg:space-x-4;
+  @apply lg:space-y-0;
 }
 
 .Watch__section.Watch__section--left {
   @apply w-full;
   @apply max-w-none;
   @apply lg:max-w-screen-md;
+  @apply flex-shrink-0;
   @apply flex flex-col;
 }
 
+.Watch__section.Watch__section--right {
+  @apply w-full;
+  @apply pr-8;
+}
+
 .Watch__info {
-  @apply flex flex-row;
+  @apply flex-col;
+  @apply space-y-4;
+  @apply flex md:flex-row md:space-y-0;
   @apply py-8;
 }
 
