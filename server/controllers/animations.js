@@ -118,7 +118,8 @@ class AnimationsController {
       id: animation.creator._id,
       title: animation.title,
       name: animation.creator.name,
-      time: animation.creationTime
+      time: animation.creationTime,
+      animationId: animation._id
     }];
 
     while (!!animation.parent) {
@@ -127,7 +128,8 @@ class AnimationsController {
         id: animation.creator._id,
         title: animation.title,
         name: animation.creator.name,
-        time: animation.creationTime
+        time: animation.creationTime,
+        animationId: animation._id
       });
     }
 

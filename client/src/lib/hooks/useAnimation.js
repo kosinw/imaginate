@@ -32,6 +32,31 @@ const useAnimation = (id) => {
     return animation;
   }
 
+  const forkAnimation = async (values) => {
+    const { title, frame } = values;
+    const parent = data;
+
+    const body = {
+      title: title,
+      framerate: parent.framerate,
+      resolution: parent.resolution,
+      parent: parent._id,
+      frames: parent.frames.slice(0, parseInt(frame)),
+    };
+
+    await toast.promise(
+      axios
+        .post("/api/animations", body)
+        .then((response) => { mutate(); return response; })
+        .then((response) => navigate(`/edit/${response.data._id}`)),
+      {
+        loading: 'Forking animation...',
+        success: <b>Animation successfully forked!</b>,
+        error: <b>There was an error while forking this animation.</b>
+      }
+    )
+  };
+
   const updateUpvoters = (animation, userId) => {
     return produce(animation, draft => {
       if (draft.upvoters.includes(userId)) {
@@ -54,10 +79,10 @@ const useAnimation = (id) => {
 
   const deleteAnimation = async () => {
     mutate(null, false);
-    toast.promise(
+    await toast.promise(
       axios.delete(prefix).then(() => mutate()).then(() => navigate("/")),
       {
-        loading: 'Deleting...',
+        loading: 'Deleting animation...',
         success: <b>Animation deleted!</b>,
         error: <b>There was an error while deleting your animation.</b>
       }
@@ -71,7 +96,8 @@ const useAnimation = (id) => {
     error,
     uploading,
     insertFrame,
-    deleteAnimation
+    deleteAnimation,
+    forkAnimation
   };
 }
 

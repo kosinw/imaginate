@@ -25,7 +25,7 @@ const AnimationPreview = ({ animation }) => {
         <Link className="AnimationPreview__creator" to={`/profile/${animation.creator._id}`}>
           {animation.creator.name}
         </Link>
-        <UpvoteButton className="AnimationPreview__button" animationId={animation._id} />
+        <UpvoteButton small className="AnimationPreview__button" animationId={animation._id} />
       </div>
     </div>
   );

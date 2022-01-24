@@ -4,16 +4,13 @@ import useAnimation from "../../lib/hooks/useAnimation";
 
 import AnimationEditor from "../modules/editor/AnimationEditor";
 import PageHeader from "../modules/PageHeader";
+import Spinner from "../modules/Spinner";
 
 const Edit = ({ animationId }) => {
   const { animation, insertFrame } = useAnimation(animationId);
 
   if (!animation) {
-    return (
-      <div className="Edit">
-        Loading...
-      </div>
-    );
+    return <div className="Page Page--Loading"><Spinner /></div>;
   }
 
   return (

@@ -2,14 +2,12 @@ import React from "react";
 import { Link } from "@reach/router";
 import useSWR from "swr";
 import produce from "immer";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "../../../lib/utils/day";
 
 import Identicon from "../Identicon";
 
-const ActivityFeedItem = ({ id, name, time, from, title, fromTitle }) => {
+const ActivityFeedItem = ({ id, name, time, from, title, fromTitle, animationId }) => {
   const profileURL = `/profile/${id}`;
-  dayjs.extend(relativeTime);
   const timeAgo = dayjs(time).fromNow(true);
 
   return (
@@ -31,14 +29,14 @@ const ActivityFeedItem = ({ id, name, time, from, title, fromTitle }) => {
         <div className="ActivityFeedItem__description">
           {!!from ?
             <p className="ActivityFeedItem__text">
-              Forked "{title}" from{" "}
+              Forked <Link to={`/watch/${animationId}`} className="ActivityFeedItem__link">"{title}"</Link> from{" "}
               <Link to={profileURL} className="ActivityFeedItem__link">
                 {from}'s
               </Link>
               {" "}"{fromTitle}"
             </p> :
             <p className="ActivityFeedItem__text">
-              Created "{title}"
+              Created <Link className="ActivityFeedItem__link" to={`/watch/${animationId}`}>"{title}"</Link>
             </p>
           }
         </div>
