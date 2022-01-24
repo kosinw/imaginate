@@ -20,5 +20,7 @@ AnimationSchema.virtual("thumbnail").get(function () {
   return this.frames.length > 0 ? this.frames[0].data : null;
 });
 
+AnimationSchema.index({ title: "text" });
+
 // compile model from schema
 module.exports = mongoose.model("animation", AnimationSchema);

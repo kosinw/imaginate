@@ -71,6 +71,74 @@ class AnimationsController {
     return animations;
   }
 
+  static async getSearch(search) {
+    const animations = await Animation.find({ $text: { $search: search } })
+      .populate({
+        path: "creator",
+        model: User,
+      })
+      .populate({
+        path: "frames",
+        model: Frame,
+      })
+      .populate({
+        path: "parent",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        model: Animation,
+      });
+
+    return animations;
+  }
+
+  static async getSearchByScoreDescending(search) {
+    const animations = await Animation.find({ $text: { $search: search } })
+      .populate({
+        path: "creator",
+        model: User,
+      })
+      .populate({
+        path: "frames",
+        model: Frame,
+      })
+      .populate({
+        path: "parent",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        model: Animation,
+      })
+      .sort("-score");
+
+    return animations;
+  }
+
+  static async getSearchByLatest(search) {
+    const animations = await Animation.find({ $text: { $search: search } })
+      .populate({
+        path: "creator",
+        model: User,
+      })
+      .populate({
+        path: "frames",
+        model: Frame,
+      })
+      .populate({
+        path: "parent",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        model: Animation,
+      })
+      .sort("-updateTime");
+
+    return animations;
+  }
+
   static async get(id) {
     const animation = await Animation.findOne({ _id: id })
       .populate({

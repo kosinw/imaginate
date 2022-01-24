@@ -7,10 +7,16 @@ router.get(
   "/",
   asyncMiddleware(async (req, res, next) => {
     let animations = {};
-    if (req.query.order === "score") {
+    if (req.query.order === "score" && !req.query.search) {
       animations = await AnimationsController.getAllByScoreDescending();
-    } else if (req.query.order === "latest") {
+    } else if (req.query.order === "latest" && !req.query.search) {
       animations = await AnimationsController.getAllByLatest();
+    } else if (req.query.order === "score" && req.query.search) {
+      animations = await AnimationsController.getSearchByScoreDescending(req.query.search);
+    } else if (req.query.order === "latest" && req.query.search) {
+      animations = await AnimationsController.getSearchByLatest(req.query.search);
+    } else if (req.query.search) {
+      animations = await AnimationsController.getSearch(req.query.search);
     } else {
       animations = await AnimationsController.getAll();
     }
