@@ -25,6 +25,52 @@ class AnimationsController {
     return animations;
   }
 
+  static async getAllByScoreDescending() {
+    const animations = await Animation.find({})
+      .populate({
+        path: "creator",
+        model: User,
+      })
+      .populate({
+        path: "frames",
+        model: Frame,
+      })
+      .populate({
+        path: "parent",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        model: Animation,
+      })
+      .sort("-score");
+
+    return animations;
+  }
+
+  static async getAllByLatest() {
+    const animations = await Animation.find({})
+      .populate({
+        path: "creator",
+        model: User,
+      })
+      .populate({
+        path: "frames",
+        model: Frame,
+      })
+      .populate({
+        path: "parent",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        model: Animation,
+      })
+      .sort("-updateTime");
+
+    return animations;
+  }
+
   static async get(id) {
     const animation = await Animation.findOne({ _id: id })
       .populate({
@@ -56,6 +102,7 @@ class AnimationsController {
       frames,
       parent,
       upvoters: [creator],
+      score: 1,
     });
 
     await animation.save();
@@ -82,10 +129,12 @@ class AnimationsController {
 
     if (animation.upvoters.includes(user)) {
       animation.upvoters.pull(user);
+      animation.score -= 1;
       await animation.save();
       return false;
     } else {
       animation.upvoters.push(user);
+      animation.score += 1;
       await animation.save();
       return true;
     }

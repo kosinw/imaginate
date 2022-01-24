@@ -12,11 +12,8 @@ const AnimationSchema = new mongoose.Schema({
   },
   frames: [{ type: mongoose.Schema.Types.ObjectId, ref: "frame", default: [], required: true }],
   upvoters: [{ type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }],
+  score: { type: Number, default: 0, required: true },
   parent: { type: mongoose.Schema.Types.ObjectId, ref: "animation" },
-});
-
-AnimationSchema.virtual("score").get(function () {
-  return this.upvoters.length;
 });
 
 AnimationSchema.virtual("thumbnail").get(function () {

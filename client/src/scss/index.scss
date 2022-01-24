@@ -13,6 +13,14 @@
   @apply font-bold;
 }
 
+.Page--Index__options {
+  @apply flex;
+  @apply flex-row;
+  @apply justify-between;
+  @apply items-center;
+  @apply space-x-4;
+}
+
 .Paginator {
   @apply h-7;
   @apply rounded-xl;
@@ -37,4 +45,31 @@
   &:disabled {
     @apply opacity-30;
   }
+}
+
+.SortPicker-container {
+  @apply flex flex-row;
+  gap: 4px;
+}
+
+.SortPicker-select {
+  @apply h-7;
+  @apply rounded-xl;
+  @apply bg-secondary-600;
+  @apply p-4;
+  @apply font-public;
+  @apply font-bold;
+  color: white;
+  // TODO: for some reason text does not appear in box
+}
+
+.SortPicker-option {
+  @apply h-7;
+  @apply rounded-xl;
+  @apply bg-secondary-600;
+  @apply p-4;
+  @apply font-public;
+  @apply font-bold;
+  color: white;
+  // TODO: for some reason text does not appear in box
 }
