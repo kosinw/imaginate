@@ -51,6 +51,14 @@ router.get(
   })
 );
 
+router.put("/:id", AuthMiddleware.guard, asyncMiddleware(async (req, res, next) => {
+  const { id } = req.params;
+  const user = req.user._id;
+  const body = req.body;
+  const animation = await AnimationsController.updateSettings({ id, user, body });
+  return res.status(200).json(animation);
+}));
+
 router.post(
   "/:id",
   AuthMiddleware.guard,

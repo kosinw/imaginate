@@ -77,6 +77,32 @@ const useAnimation = (id) => {
     }
   };
 
+  const updateSettings = async (values) => {
+    const { title, framerate } = values;
+
+    const _update = produce(draft => {
+      draft.title = title;
+      draft.framerate = framerate;
+      return draft;
+    });
+
+    mutate(_update(data), false);
+
+    const body = {
+      title: data.title,
+      framerate: data.framerate
+    };
+
+    await toast.promise(
+      axios.put(prefix, body).then(() => mutate()),
+      {
+        loading: 'Updating animation...',
+        success: <b>Animation updated!</b>,
+        error: <b>There was an error while updating your animation.</b>
+      }
+    );
+  };
+
   const deleteAnimation = async () => {
     mutate(null, false);
     await toast.promise(
@@ -97,7 +123,8 @@ const useAnimation = (id) => {
     uploading,
     insertFrame,
     deleteAnimation,
-    forkAnimation
+    forkAnimation,
+    updateSettings
   };
 }
 

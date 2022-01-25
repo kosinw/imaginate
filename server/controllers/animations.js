@@ -229,6 +229,24 @@ class AnimationsController {
     }
   }
 
+  static async updateSettings({ id, user, body }) {
+    const animation = await AnimationsController.get(id);
+
+    if (!animation.creator._id.equals(user)) {
+      throw Boom.forbidden("User not authorized to update this animation.");
+    }
+
+    const { title, framerate } = body;
+
+    animation.title = title;
+    animation.framerate = framerate;
+    animation.updateTime = Date.now();
+
+    await animation.save();
+
+    return animation;
+  }
+
   static async getHistory({ id }) {
     let animation = await AnimationsController.getLean(id);
     const result = [{

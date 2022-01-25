@@ -15,7 +15,7 @@ import { HiPencilAlt, HiTrash } from "react-icons/hi";
 import { CgGitFork } from "react-icons/cg";
 
 const Watch = ({ id }) => {
-  const { animation, deleteAnimation, forkAnimation } = useAnimation(id);
+  const { animation, deleteAnimation, forkAnimation, updateSettings } = useAnimation(id);
   const { userId } = useAuth();
   const [frame, setFrame] = React.useState(0);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -47,7 +47,7 @@ const Watch = ({ id }) => {
   return (
     <main className="Page Page--Watch">
       <section className="Watch__section Watch__section--left">
-        <AnimationPlayer onFrameChanged={(value) => setFrame(value)} animation={animation} />
+        <AnimationPlayer owner={owner} updateSettings={updateSettings} onFrameChanged={(value) => setFrame(value)} animation={animation} />
         <div className="Watch__info">
           <h4 className="Watch__title">
             "{animation.title}"{" "}by{" "}

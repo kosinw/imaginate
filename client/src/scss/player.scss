@@ -58,6 +58,10 @@
 .AnimationPlayerControls__icon {
   @apply w-8 h-8;
   @apply fill-current;
+
+  &:hover {
+    @apply text-red-700;
+  }
 }
 
 .AnimationPlayerControls__subgroup {

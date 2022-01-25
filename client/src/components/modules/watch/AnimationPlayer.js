@@ -9,6 +9,7 @@ import { CgRepeat, CgPushRight } from "react-icons/cg";
 import { calculateFrame } from "../../../lib/utils/aspect";
 
 import UpvoteButton from "../UpvoteButton";
+import UpdateDialog from "../dialog/UpdateDialog";
 import Slider from "../Slider";
 
 let _frameData = [];
@@ -131,7 +132,7 @@ const AnimationCanvas = ({
 
 const AnimationPlayerControls = (props) => {
   const { onPlayClicked } = props;
-  const { onNextFrameClicked, onPrevFrameClicked } = props;
+  const { onNextFrameClicked, onPrevFrameClicked, onSettingsClicked } = props;
   const { onLoopClicked } = props;
   const { paused, looping } = props;
   const { currentFrame, totalFrames } = props;
@@ -165,7 +166,7 @@ const AnimationPlayerControls = (props) => {
             <CgPushRight className="AnimationPlayerControls__icon" />
           }
         </button>
-        <button title="Settings" className="AnimationPlayerControls__button">
+        <button onClick={onSettingsClicked} title="Settings" className="AnimationPlayerControls__button">
           <HiCog className="AnimationPlayerControls__icon" />
         </button>
         <UpvoteButton className="AnimationPlayerControls__button" animationId={animationId} />
@@ -179,6 +180,7 @@ AnimationPlayerControls.defaultProps = {
   onNextFrameClicked: function () { },
   onPrevFrameClicked: function () { },
   onLoopClicked: function () { },
+  onSettingsClicked: function () {},
   currentFrame: 1,
   totalFrames: 1,
   paused: true,
@@ -186,11 +188,12 @@ AnimationPlayerControls.defaultProps = {
   animationId: null
 };
 
-const AnimationPlayer = ({ animation, onFrameChanged }) => {
+const AnimationPlayer = ({ animation, owner, onFrameChanged, updateSettings }) => {
   const [paused, setPaused] = React.useState(true);
   const [frameCount, setFrameCount] = React.useState(0);
   const [looping, setLooping] = React.useState(false);
   const [wasPlaying, setWasPlaying] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const prevPaused = usePrevious(paused);
 
   const numDigits = Math.max(3, animation.frames.length.toString().length);
@@ -226,34 +229,49 @@ const AnimationPlayer = ({ animation, onFrameChanged }) => {
   };
 
   return (
-    <div className="AnimationPlayer">
-      <AnimationCanvas
-        animation={animation}
-        frameCount={frameCount}
-        setFrameCount={setFrameCount}
-        setPaused={setPaused}
-        looping={looping}
-        paused={paused}
-        onClick={() => setPaused(!paused)} />
-      <Slider
-        onBeforeChange={() => { if (!paused) { setWasPlaying(true); setPaused(true); } }}
-        onAfterChange={() => { if (wasPlaying) { setWasPlaying(false); setPaused(false); } }}
-        onChange={(value) => setFrameCount((value / 100) * totalFrames)}
-        value={frameCount / totalFrames * 100}
-        className="my-2"
+    <>
+      <div className="AnimationPlayer">
+        <AnimationCanvas
+          animation={animation}
+          frameCount={frameCount}
+          setFrameCount={setFrameCount}
+          setPaused={setPaused}
+          looping={looping}
+          paused={paused}
+          onClick={() => setPaused(!paused)} />
+        <Slider
+          onBeforeChange={() => { if (!paused) { setWasPlaying(true); setPaused(true); } }}
+          onAfterChange={() => { if (wasPlaying) { setWasPlaying(false); setPaused(false); } }}
+          onChange={(value) => setFrameCount((value / 100) * totalFrames)}
+          value={frameCount / totalFrames * 100}
+          className="my-2"
+        />
+        <AnimationPlayerControls
+          onPlayClicked={() => setPaused(!paused)}
+          onLoopClicked={() => setLooping(!looping)}
+          onPrevFrameClicked={() => moveFrame(-1)}
+          onNextFrameClicked={() => moveFrame(+1)}
+          onSettingsClicked={() => setOpen(true)}
+          paused={paused}
+          looping={looping}
+          currentFrame={currentFrame}
+          totalFrames={totalFrames}
+          animationId={animation._id}
+        />
+      </div>
+      <UpdateDialog
+        open={open}
+        setOpen={setOpen}
+        disabled={!owner}
+        onSubmit={(values) => updateSettings(values).then(() => setOpen(false))}
+        defaultValues={{
+          title: animation.title,
+          framerate: animation.framerate,
+          width: animation.resolution.width,
+          height: animation.resolution.height
+        }}
       />
-      <AnimationPlayerControls
-        onPlayClicked={() => setPaused(!paused)}
-        onLoopClicked={() => setLooping(!looping)}
-        onPrevFrameClicked={() => moveFrame(-1)}
-        onNextFrameClicked={() => moveFrame(+1)}
-        paused={paused}
-        looping={looping}
-        currentFrame={currentFrame}
-        totalFrames={totalFrames}
-        animationId={animation._id}
-      />
-    </div>
+    </>
   );
 };
 
