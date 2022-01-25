@@ -2,6 +2,8 @@ const Animation = require("../models/animation");
 const Frame = require("../models/frame");
 const User = require("../models/user");
 
+const Boom = require("@hapi/boom");
+
 class AnimationsController {
   static async getAll() {
     const animations = await Animation.find({})
@@ -23,6 +25,17 @@ class AnimationsController {
       });
 
     return animations;
+  }
+
+  static async delete({ id, user }) {
+    const animation = await AnimationsController.getLean(id);
+
+    if (!animation.creator._id.equals(user)) {
+      console.log(animation.creator, user);
+      throw Boom.forbidden("User not authorized to delete this animation.");
+    }
+
+    await Animation.deleteOne({ _id: id });
   }
 
   static async getAllByScoreDescending() {
@@ -161,6 +174,14 @@ class AnimationsController {
     return animation;
   }
 
+  static async getLean(id) {
+    return await Animation.findOne({ _id: id })
+      .populate({
+        path: "creator",
+        model: User
+      });
+  }
+
   static async create({ creator, framerate, resolution, title, frames, parent }) {
     const animation = new Animation({
       creator,
@@ -206,6 +227,30 @@ class AnimationsController {
       await animation.save();
       return true;
     }
+  }
+
+  static async getHistory({ id }) {
+    let animation = await AnimationsController.getLean(id);
+    const result = [{
+      id: animation.creator._id,
+      title: animation.title,
+      name: animation.creator.name,
+      time: animation.creationTime,
+      animationId: animation._id
+    }];
+
+    while (!!animation.parent) {
+      animation = await AnimationsController.getLean(animation.parent);
+      result.push({
+        id: animation.creator._id,
+        title: animation.title,
+        name: animation.creator.name,
+        time: animation.creationTime,
+        animationId: animation._id
+      });
+    }
+
+    return result;
   }
 }
 

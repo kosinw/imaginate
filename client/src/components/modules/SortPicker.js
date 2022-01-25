@@ -10,7 +10,7 @@ const SortPicker = ({ handleSortChange }) => {
 
   return (
     <div className="SortPicker-container">
-      Order:
+      <label>Order:</label>
       <select className="SortPicker-select" onChange={handleChange}>
         <option className="SortPicker-option" value="score">
           Score

@@ -10,6 +10,10 @@
   @apply lg:max-w-screen-xl;
 }
 
+input {
+  @apply text-background;
+}
+
 .ButtonWithIcon {
   @apply border-primary border rounded-md;
   @apply font-public;
@@ -20,6 +24,7 @@
   @apply space-x-2;
   @apply items-center;
   @apply text-primary;
+  @apply max-h-[32px];
 
   &:disabled {
     @apply border-secondary-500;
@@ -35,4 +40,9 @@
 .ButtonWithIcon__icon {
   @apply w-4;
   @apply h-4;
+}
+
+.Page--Loading {
+  @apply flex items-center justify-center;
+  @apply h-full min-h-[60vh];
 }

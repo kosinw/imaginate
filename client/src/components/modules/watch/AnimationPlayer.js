@@ -12,7 +12,16 @@ import UpvoteButton from "../UpvoteButton";
 import Slider from "../Slider";
 
 let _frameData = [];
+let _frameBuffer;
 let _p5;
+
+function usePrevious(value) {
+  const ref = React.useRef();
+  React.useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 const AnimationCanvas = ({
   animation,
@@ -60,12 +69,17 @@ const AnimationCanvas = ({
     setLoading(false);
     const rect = sketchWrapper.current.getBoundingClientRect();
     p5.createCanvas(rect.width, rect.width * scaleFactor).parent(parent);
+    _frameBuffer = p5.createGraphics(frameWidth, frameHeight);
     p5.background(0);
   };
 
   const draw = (p5) => {
     const { width, height } = sketchWrapper.current.getBoundingClientRect();
     let _paused = false;
+
+    if (_frameData.length === 0) {
+      return;
+    }
 
     if (frameCount >= _frameData.length) {
       if (looping) {
@@ -77,14 +91,16 @@ const AnimationCanvas = ({
       return;
     }
 
-    p5.background(0);
+    const image = _frameData[Math.floor(frameCount)];
+
+    // NOTE(kosi): Maybe slight performance gain from not having to clear screen each time?
+    // _frameBuffer.background(0);
+    _frameBuffer.image(image, 0, 0, frameWidth, frameHeight);
 
     // Figure out y position to draw from by taking difference between
     // height of viewport and height of image and then dividing by two.
-    const image = _frameData[Math.floor(frameCount)];
     const { virtualWidth, virtualHeight, x, y } = calculateFrame(frameWidth, frameHeight, width, height);
-    image.resize(virtualWidth, virtualHeight);
-    p5.image(image, x, y);
+    p5.image(_frameBuffer, x, y, virtualWidth, virtualHeight);
 
     if (paused || _paused) {
       return;
@@ -96,10 +112,12 @@ const AnimationCanvas = ({
 
   return (
     <div
+      key={animation.frames.length}
       ref={sketchWrapper}
       onClick={onClick}
       className={classnames("AnimationCanvas", { "AnimationCanvas--Skeleton": loading })}
     >
+      <div id="p5_loading" />
       <Sketch
         className="AnimationCanvas__container"
         preload={preload}
@@ -170,25 +188,20 @@ AnimationPlayerControls.defaultProps = {
 
 const AnimationPlayer = ({ animation, onFrameChanged }) => {
   const [paused, setPaused] = React.useState(true);
-  const prevPausedRef = React.useRef(null);
   const [frameCount, setFrameCount] = React.useState(0);
-  const [looping, setLooping] = React.useState(true);
+  const [looping, setLooping] = React.useState(false);
   const [wasPlaying, setWasPlaying] = React.useState(false);
+  const prevPaused = usePrevious(paused);
 
   const numDigits = Math.max(3, animation.frames.length.toString().length);
-
   const currentFrame = `${Math.min(animation.frames.length - 1, Math.floor(frameCount)) + 1}`.padStart(numDigits, '0');
   const totalFrames = `${animation.frames.length}`.padStart(numDigits, '0');
 
   // NOTE(kosi): Hack to basically have linear play start from beginning.
   React.useEffect(() => {
-    const prevPaused = prevPausedRef.current;
-
     if (prevPaused && !paused && !looping && frameCount >= animation.frames.length - 0.1) {
       setFrameCount(0);
     }
-
-    prevPausedRef.current = paused;
   }, [paused]);
 
   React.useEffect(() => {
@@ -240,19 +253,6 @@ const AnimationPlayer = ({ animation, onFrameChanged }) => {
         totalFrames={totalFrames}
         animationId={animation._id}
       />
-      {/* <AnimationPlayerControls
-        frameByFrameMode={frameByFrameMode}
-        onSwapClick={onSwapClick}
-        // onPausePlayClick={onPausePlayClick}
-        onLoopClick={onLoopClick}
-        looping={looping}
-        paused={paused}
-        frameCount={frameCount}
-        totalFrames={totalFrames}
-        onLeftClick={onLeftClick}
-        onRightClick={onRightClick}
-        animationId={animation._id}
-      /> */}
     </div>
   );
 };

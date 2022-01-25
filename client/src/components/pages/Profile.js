@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import useSWR from "swr";
 
-import fetcher from "../../lib/utils/fetcher";
 import SortPicker from "../modules/SortPicker";
 import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";
 
@@ -12,7 +11,7 @@ import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";
  * @param {string} userId - user id of profile
  */
 const Profile = ({ userId }) => {
-  const { data: user } = useSWR(userId && `/api/users/${userId}`, fetcher);
+  const { data: user } = useSWR(userId && `/api/users/${userId}`);
   const [sort, setSort] = useState("score");
 
   // TODO(kosi): Input spinner + skeleton cards.

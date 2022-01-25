@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import useSWR from 'swr';
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 
-import fetcher from "../utils/fetcher";
 import { auth, googleProvider } from "../utils/firebase";
 import axios from "axios";
 
 const useAuth = () => {
   const [token, setToken] = useState(null);
-  const { data: userId, error } = useSWR(token ? ["/api/auth/me", token] : null, fetcher);
+  const { data: userId, error } = useSWR(token ? ["/api/auth/me", token] : null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {

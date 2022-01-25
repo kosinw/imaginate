@@ -63,6 +63,13 @@ router.post(
   })
 );
 
+router.delete("/:id", AuthMiddleware.guard, asyncMiddleware(async (req, res, next) => {
+  const { id } = req.params;
+  const user = req.user._id;
+  await AnimationsController.delete({ id, user });
+  return res.status(204).send(false);
+}));
+
 router.post(
   "/:id/upvote",
   AuthMiddleware.guard,
@@ -73,5 +80,11 @@ router.post(
     return res.status(201).json(result);
   })
 );
+
+router.get("/:id/history", asyncMiddleware(async (req, res, next) => {
+  const { id } = req.params;
+  const result = await AnimationsController.getHistory({ id });
+  return res.status(201).json(result);
+}));
 
 module.exports = router;

@@ -36,7 +36,7 @@ const Index = () => {
   return (
     <main className="Page Page--Index">
       <div className="Page--Index__header">
-        <h1 className="Page--Index__title">Discover Animations</h1>
+        <h1 className="Page--Index__title hidden lg:block">Discover Animations</h1>
         <div className="Page--Index__options">
           <SearchInput handleSearchChange={handleSearchChange} />
           <SortPicker handleSortChange={handleSortChange} />

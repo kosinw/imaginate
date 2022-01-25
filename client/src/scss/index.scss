@@ -5,12 +5,14 @@
   @apply items-center;
   @apply mb-7;
   @apply h-5;
+  @apply w-full;
 }
 
 .Page--Index__title {
   @apply font-poppins;
   @apply text-base;
   @apply font-bold;
+  @apply flex-auto;
 }
 
 .Page--Index__options {
@@ -18,7 +20,8 @@
   @apply flex-row;
   @apply justify-between;
   @apply items-center;
-  @apply space-x-4;
+  @apply space-x-0;
+  @apply md:space-x-4;
 }
 
 .Paginator {
@@ -32,6 +35,7 @@
   @apply space-x-4;
   @apply font-public;
   @apply font-bold;
+  @apply w-[130px];
 }
 
 .Paginator__content {
@@ -49,7 +53,11 @@
 
 .SortPicker-container {
   @apply flex flex-row;
-  gap: 4px;
+  @apply items-center;
+  @apply flex-shrink;
+  @apply space-x-2;
+  @apply hidden;
+  @apply md:flex;
 }
 
 .SortPicker-select {
@@ -70,13 +78,18 @@
   @apply p-4;
   @apply font-public;
   @apply font-bold;
-  color: white;
+  @apply text-foreground;
+  @apply z-50;
   // TODO: for some reason text does not appear in box
 }
 
 .SearchInput-container {
   @apply flex flex-row;
-  gap: 4px;
+  @apply items-center;
+  @apply flex-shrink;
+  @apply space-x-2;
+  @apply hidden;
+  @apply md:flex;
 }
 
 .SearchInput-input {
@@ -85,4 +98,5 @@
   @apply bg-secondary-600;
   @apply p-4;
   @apply font-public;
+  @apply text-foreground;
 }

@@ -1,24 +1,23 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+import { navigate } from "@reach/router";
 import useSWR from "swr";
 import axios from "axios";
 import produce from "immer";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import cuid from "cuid";
 
-import fetcher from "../utils/fetcher";
 import { storage } from "../utils/firebase";
 
 import useAuth from "./useAuth";
 
 const useAnimation = (id) => {
   const prefix = `/api/animations/${id}`;
-  const { mutate, data, error } = useSWR(prefix, fetcher);
+  const { mutate, data, error } = useSWR(prefix);
   const { userId } = useAuth();
   const [uploading, setUploading] = useState(false);
 
   const insertFrame = async (canvas) => {
-    mutate();
-
     const imageRef = ref(storage, `frames/${cuid()}.webp`);
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', 1));
 
@@ -28,8 +27,35 @@ const useAnimation = (id) => {
     const animation = await axios.post(prefix, { data: imageUrl });
     setUploading(false);
 
+    mutate();
+
     return animation;
   }
+
+  const forkAnimation = async (values) => {
+    const { title, frame } = values;
+    const parent = data;
+
+    const body = {
+      title: title,
+      framerate: parent.framerate,
+      resolution: parent.resolution,
+      parent: parent._id,
+      frames: parent.frames.slice(0, parseInt(frame)),
+    };
+
+    await toast.promise(
+      axios
+        .post("/api/animations", body)
+        .then((response) => { mutate(); return response; })
+        .then((response) => navigate(`/edit/${response.data._id}`)),
+      {
+        loading: 'Forking animation...',
+        success: <b>Animation successfully forked!</b>,
+        error: <b>There was an error while forking this animation.</b>
+      }
+    )
+  };
 
   const updateUpvoters = (animation, userId) => {
     return produce(animation, draft => {
@@ -51,13 +77,27 @@ const useAnimation = (id) => {
     }
   };
 
+  const deleteAnimation = async () => {
+    mutate(null, false);
+    await toast.promise(
+      axios.delete(prefix).then(() => mutate()).then(() => navigate("/")),
+      {
+        loading: 'Deleting animation...',
+        success: <b>Animation deleted!</b>,
+        error: <b>There was an error while deleting your animation.</b>
+      }
+    );
+  };
+
   return {
     animation: data,
     userUpvoted: data && data.upvoters.includes(userId),
     upvote,
     error,
     uploading,
-    insertFrame
+    insertFrame,
+    deleteAnimation,
+    forkAnimation
   };
 }
 

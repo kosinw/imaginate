@@ -46,6 +46,7 @@
 
 .AnimationPreview__thumbnail.AnimationPreview__thumbnail--Skeleton {
   @apply bg-secondary-600;
+  @apply hover:outline-none;
 }
 
 .AnimationPreview__info.AnimationPreview__info--Skeleton {
