@@ -16,6 +16,17 @@ router.get(
     } else {
       animations = await UsersController.getAnimations(id);
     }
+
+    const { limit, skip } = req.query;
+
+    if (!!skip) {
+      animations = animations.slice(skip);
+    }
+
+    if (!!limit) {
+      animations = animations.slice(0, limit);
+    }
+
     return res.status(200).json(animations);
   })
 );

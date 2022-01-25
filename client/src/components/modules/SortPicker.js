@@ -11,7 +11,7 @@ const SortPicker = ({ handleSortChange }) => {
   return (
     <div className="SortPicker-container">
       <label>Order:</label>
-      <select className="SortPicker-select" onChange={handleChange}>
+      <select value={sort} className="SortPicker-select" onChange={handleChange}>
         <option className="SortPicker-option" value="score">
           Score
         </option>
@@ -21,6 +21,6 @@ const SortPicker = ({ handleSortChange }) => {
       </select>
     </div>
   );
-};
+}
 
 export default SortPicker;

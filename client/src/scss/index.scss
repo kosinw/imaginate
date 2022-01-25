@@ -24,33 +24,6 @@
   @apply md:space-x-4;
 }
 
-.Paginator {
-  @apply h-7;
-  @apply rounded-xl;
-  @apply bg-secondary-600;
-  @apply p-4;
-  @apply flex flex-row;
-  @apply justify-between;
-  @apply items-center;
-  @apply space-x-4;
-  @apply font-public;
-  @apply font-bold;
-  @apply w-[130px];
-}
-
-.Paginator__content {
-  @apply select-none;
-}
-
-.Paginator__icon {
-  @apply inline-block;
-  @apply select-none;
-
-  &:disabled {
-    @apply opacity-30;
-  }
-}
-
 .SortPicker-container {
   @apply flex flex-row;
   @apply items-center;
@@ -62,24 +35,29 @@
 
 .SortPicker-select {
   @apply h-7;
-  @apply rounded-xl;
-  @apply bg-secondary-600;
-  @apply p-4;
+  @apply rounded-lg;
+  @apply bg-foreground;
+  @apply border border-secondary-700;
+  // @apply p-4;
   @apply font-public;
   @apply font-bold;
-  color: white;
+  @apply text-background;
+  // @apply appearance-none;
+  padding: 5px;
+  padding-left: 7px;
   // TODO: for some reason text does not appear in box
 }
 
 .SortPicker-option {
   @apply h-7;
-  @apply rounded-xl;
-  @apply bg-secondary-600;
-  @apply p-4;
+  @apply rounded-lg;
+  @apply bg-foreground;
+  // @apply p-4
   @apply font-public;
   @apply font-bold;
-  @apply text-foreground;
-  @apply z-50;
+  @apply text-background;
+  padding: 5px;
+  // @apply relative;
   // TODO: for some reason text does not appear in box
 }
 
@@ -94,9 +72,10 @@
 
 .SearchInput-input {
   @apply h-7;
-  @apply rounded-xl;
-  @apply bg-secondary-600;
+  @apply rounded-lg;
+  @apply border border-secondary-700;
+  @apply bg-foreground;
   @apply p-4;
   @apply font-public;
-  @apply text-foreground;
+  @apply text-background;
 }

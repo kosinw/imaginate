@@ -20,6 +20,12 @@ router.get(
     } else {
       animations = await AnimationsController.getAll();
     }
+
+    const limit = req.query.limit || 12;
+    const skip = req.query.skip || 0;
+
+    animations = animations.splice(skip, skip+limit)
+
     return res.status(200).json(animations);
   })
 );

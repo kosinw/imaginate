@@ -89,8 +89,8 @@ const useAnimation = (id) => {
     mutate(_update(data), false);
 
     const body = {
-      title: data.title,
-      framerate: data.framerate
+      title,
+      framerate
     };
 
     await toast.promise(

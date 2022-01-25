@@ -6,7 +6,7 @@ const Boom = require("@hapi/boom");
 
 class AnimationsController {
   static async getAll() {
-    const animations = await Animation.find({})
+    const animations = await Animation.find()
       .populate({
         path: "creator",
         model: User,
@@ -258,14 +258,18 @@ class AnimationsController {
     }];
 
     while (!!animation.parent) {
-      animation = await AnimationsController.getLean(animation.parent);
-      result.push({
-        id: animation.creator._id,
-        title: animation.title,
-        name: animation.creator.name,
-        time: animation.creationTime,
-        animationId: animation._id
-      });
+      try {
+        animation = await AnimationsController.getLean(animation.parent);
+        result.push({
+          id: animation.creator._id,
+          title: animation.title,
+          name: animation.creator.name,
+          time: animation.creationTime,
+          animationId: animation._id
+        });
+      } catch (err) {
+        break;
+      }
     }
 
     return result;

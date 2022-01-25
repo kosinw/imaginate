@@ -68,6 +68,11 @@ const AnimationCanvas = ({
 
   const setup = (p5, parent) => {
     setLoading(false);
+
+    if (!sketchWrapper.current) {
+      return;
+    }
+
     const rect = sketchWrapper.current.getBoundingClientRect();
     p5.createCanvas(rect.width, rect.width * scaleFactor).parent(parent);
     _frameBuffer = p5.createGraphics(frameWidth, frameHeight);
@@ -75,12 +80,12 @@ const AnimationCanvas = ({
   };
 
   const draw = (p5) => {
-    const { width, height } = sketchWrapper.current.getBoundingClientRect();
-    let _paused = false;
-
-    if (_frameData.length === 0) {
+    if (!sketchWrapper.current) {
       return;
     }
+
+    const { width, height } = sketchWrapper.current.getBoundingClientRect();
+    let _paused = false;
 
     if (frameCount >= _frameData.length) {
       if (looping) {
@@ -180,7 +185,7 @@ AnimationPlayerControls.defaultProps = {
   onNextFrameClicked: function () { },
   onPrevFrameClicked: function () { },
   onLoopClicked: function () { },
-  onSettingsClicked: function () {},
+  onSettingsClicked: function () { },
   currentFrame: 1,
   totalFrames: 1,
   paused: true,
