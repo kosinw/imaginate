@@ -9,18 +9,26 @@ const AnimationPreviewGridView = ({ resource }) => {
   if (!animations) {
     return (
       <div className="AnimationPreviewGridView">
-        {[...Array(12).keys()].map((x) => <AnimationPreviewSkeleton key={x} />)}
+        {[...Array(12).keys()].map((x) => (
+          <AnimationPreviewSkeleton key={x} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!animations.length) {
+    return (
+      <div className="AnimationPreviewGridView">
+        <p className="AnimationPreviewGridView__center-text">No Animations</p>
       </div>
     );
   }
 
   return (
     <div className="AnimationPreviewGridView">
-      {animations.map(animation =>
-        <AnimationPreview
-          key={animation._id}
-          animation={animation}
-        />)}
+      {animations.map((animation) => (
+        <AnimationPreview key={animation._id} animation={animation} />
+      ))}
     </div>
   );
 };

@@ -6,6 +6,10 @@
   @apply gap-4;
 }
 
+.AnimationPreviewGridView__center-text {
+  @apply text-lg;
+}
+
 .AnimationPreview {
   @apply space-y-2;
 }
