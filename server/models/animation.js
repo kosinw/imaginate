@@ -12,16 +12,15 @@ const AnimationSchema = new mongoose.Schema({
   },
   frames: [{ type: mongoose.Schema.Types.ObjectId, ref: "frame", default: [], required: true }],
   upvoters: [{ type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }],
+  score: { type: Number, default: 0, required: true },
   parent: { type: mongoose.Schema.Types.ObjectId, ref: "animation" },
-});
-
-AnimationSchema.virtual("score").get(function () {
-  return this.upvoters.length;
 });
 
 AnimationSchema.virtual("thumbnail").get(function () {
   return this.frames.length > 0 ? this.frames[0].data : null;
 });
+
+AnimationSchema.index({ title: "text" });
 
 // compile model from schema
 module.exports = mongoose.model("animation", AnimationSchema);
