@@ -1,11 +1,10 @@
 import React from "react";
+import { HiArrowDown } from "react-icons/hi";
 
+import Spinner from "./Spinner";
 import AnimationPreview, { AnimationPreviewSkeleton } from "./AnimationPreview";
-import useAnimations from "../../lib/hooks/useAnimations";
 
-const AnimationPreviewGridView = ({ resource }) => {
-  const { animations } = useAnimations(resource);
-
+const AnimationPreviewGridView = ({ animations, infinite }) => {
   if (!animations) {
     return (
       <div className="AnimationPreviewGridView">
@@ -25,12 +24,32 @@ const AnimationPreviewGridView = ({ resource }) => {
   }
 
   return (
-    <div className="AnimationPreviewGridView">
-      {animations.map((animation) => (
-        <AnimationPreview key={animation._id} animation={animation} />
-      ))}
+    <div className="AnimationPreviewGridViewContainer">
+      <div className="AnimationPreviewGridView">
+        {animations.map((animation) => (
+          <AnimationPreview key={animation._id} animation={animation} />
+        ))}
+      </div>
+      {
+        !!infinite && !infinite.isReachingEnd &&
+        <>
+          <button
+            disabled={infinite.isLoadingMore || infinite.isReachingEnd}
+            onClick={() => infinite.setSize(infinite.size + 1)}
+            title="Load more"
+            className="text-foreground hover:text-primary py-1 p-4 self-center transition-colors"
+          >
+            {infinite.isLoadingMore ? <Spinner className="w-5 h-5" /> : <HiArrowDown className="w-5 h-5 animate-bounce" />}
+          </button>
+        </>
+      }
     </div>
   );
+};
+
+AnimationPreviewGridView.defaultProps = {
+  animations: [],
+  infinite: null
 };
 
 export default AnimationPreviewGridView;

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const AnimationsController = require("../controllers/animations");
 const AuthMiddleware = require("../middlewares/auth");
 const { asyncMiddleware } = require("../middlewares/error");
+const paginate = require("../utils/paginate");
 
 router.get(
   "/",
@@ -21,10 +22,7 @@ router.get(
       animations = await AnimationsController.getAll();
     }
 
-    const limit = req.query.limit || 12;
-    const skip = req.query.skip || 0;
-
-    animations = animations.splice(skip, skip+limit)
+    animations = paginate(req.query, animations, 12);
 
     return res.status(200).json(animations);
   })

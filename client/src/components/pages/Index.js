@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 
+import { useAnimationsInfinite } from "../../lib/hooks/useAnimations";
+
 import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";
 import SortPicker from "../modules/SortPicker";
 import SearchInput from "../modules/SearchInput";
 
 const Index = () => {
-  const resource = "/api/animations";
   const [sort, setSort] = useState("score");
   const [search, setSearch] = useState("");
+
+  const { animations, infinite } = useAnimationsInfinite(`/api/animations?order=${sort}` + (!!search ? `&search=${search}` : ""));
 
   const handleSortChange = (newSort) => {
     setSort(newSort);
@@ -27,7 +30,8 @@ const Index = () => {
         </div>
       </div>
       <AnimationPreviewGridView
-        resource={resource + `?order=${sort}` + (search ? `&search=${search}` : "")}
+        infinite={infinite}
+        animations={animations}
       />
     </main>
   );

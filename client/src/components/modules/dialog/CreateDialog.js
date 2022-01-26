@@ -8,7 +8,7 @@ export default function CreateDialog(props) {
   const { open, setOpen } = props;
   const { onSubmit } = props;
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -100,6 +100,7 @@ export default function CreateDialog(props) {
                     </div>
                     <div className="py-3 sm:space-x-3 mt-2 sm:flex sm:flex-row">
                       <button
+                        disabled={isSubmitting}
                         type="submit"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-500 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:w-auto sm:text-sm"
                       >

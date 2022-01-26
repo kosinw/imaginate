@@ -3,6 +3,7 @@ const router = express.Router();
 const UsersController = require("../controllers/users");
 
 const { asyncMiddleware } = require("../middlewares/error");
+const paginate = require("../utils/paginate");
 
 router.get(
   "/:id/animations",
@@ -17,15 +18,7 @@ router.get(
       animations = await UsersController.getAnimations(id);
     }
 
-    const { limit, skip } = req.query;
-
-    if (!!skip) {
-      animations = animations.slice(skip);
-    }
-
-    if (!!limit) {
-      animations = animations.slice(0, limit);
-    }
+    animations = paginate(req.query, animations, 12);
 
     return res.status(200).json(animations);
   })

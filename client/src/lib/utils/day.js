@@ -10,6 +10,7 @@ dayjs.updateLocale('en', {
     future: "in %s",
     past: "%s ago",
     s: '1s',
+    ss: '%ds',
     m: "1m",
     mm: "%dm",
     h: "1h",

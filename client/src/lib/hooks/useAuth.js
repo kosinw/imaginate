@@ -12,7 +12,7 @@ const useAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!!user) {
-        const _token = await user.getIdToken(true);
+        const _token = await user.getIdToken(false);
         axios.defaults.headers.common["Authorization"] = `Bearer ${_token}`;
         setToken(_token);
       } else {

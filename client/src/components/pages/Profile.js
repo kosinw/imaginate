@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import useSWR from "swr";
 
+import { useAnimationsInfinite } from "../../lib/hooks/useAnimations";
+
+import Spinner from "../modules/Spinner";
 import SortPicker from "../modules/SortPicker";
 import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";
 
@@ -13,10 +16,10 @@ import AnimationPreviewGridView from "../modules/AnimationPreviewGridView";
 const Profile = ({ userId }) => {
   const { data: user } = useSWR(userId && `/api/users/${userId}`);
   const [sort, setSort] = useState("score");
+  const { animations, infinite } = useAnimationsInfinite(`/api/users/${userId}/animations` + `?order=${sort}`);
 
-  // TODO(kosi): Input spinner + skeleton cards.
   if (!user) {
-    return <div>Loading...</div>;
+    return <div className="Page Page--Loading"><Spinner /></div>;
   }
 
   const handleSortChange = (newSort) => {
@@ -33,7 +36,7 @@ const Profile = ({ userId }) => {
           <SortPicker handleSortChange={handleSortChange} />
         </div>
       </div>
-      <AnimationPreviewGridView resource={`/api/users/${userId}/animations` + `?order=${sort}`} />
+      <AnimationPreviewGridView animations={animations} infinite={infinite} />
     </main>
   );
 };

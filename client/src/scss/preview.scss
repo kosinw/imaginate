@@ -1,3 +1,9 @@
+.AnimationPreviewGridViewContainer {
+  @apply flex;
+  @apply flex-col;
+  @apply space-y-8;
+}
+
 .AnimationPreviewGridView {
   @apply grid;
   @apply grid-cols-2;
