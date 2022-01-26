@@ -15,6 +15,7 @@
 .AnimationCanvas {
   @apply w-full;
   @apply aspect-[16/9];
+  @apply rounded-md;
   @apply hover:cursor-pointer;
   background-color: #797979;
   background-image: repeating-linear-gradient(
