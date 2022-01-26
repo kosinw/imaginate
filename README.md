@@ -22,3 +22,6 @@ Currently deployed [here](https://imaginate0.herokuapp.com).
 - Tailwind
 - React Hot Toast
 - SWR, SWRInfinite
+- Sass
+- HeadlessUI
+- day.js
