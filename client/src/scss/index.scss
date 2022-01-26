@@ -1,6 +1,5 @@
 .Page--Index__header {
-  @apply hidden;
-  @apply md:flex;
+  @apply flex;
   @apply flex-row;
   @apply justify-between;
   @apply items-center;

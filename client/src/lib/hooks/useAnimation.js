@@ -15,22 +15,30 @@ const useAnimation = (id) => {
   const prefix = `/api/animations/${id}`;
   const { mutate, data, error } = useSWR(prefix);
   const { userId } = useAuth();
-  const [uploading, setUploading] = useState(false);
 
-  const insertFrame = async (canvas) => {
+  const _insertFrame = async (canvas) => {
     const imageRef = ref(storage, `frames/${cuid()}.webp`);
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', 1));
 
-    setUploading(true);
     const snapshot = await uploadBytes(imageRef, blob)
     const imageUrl = await getDownloadURL(snapshot.ref);
     const animation = await axios.post(prefix, { data: imageUrl });
-    setUploading(false);
-
-    mutate();
 
     return animation;
   }
+
+  const insertFrame = async (canvas) => {
+    return await toast.promise(
+      _insertFrame(canvas)
+        .then(() => mutate())
+        .then(() => navigate(`/watch/${data._id}`)),
+      {
+        loading: 'Creating new frame...',
+        success: <b>Frame successfully created!</b>,
+        error: <b>There was an error while creating this frame.</b>
+      }
+    )
+  };
 
   const forkAnimation = async (values) => {
     const { title, frame } = values;
@@ -120,7 +128,6 @@ const useAnimation = (id) => {
     userUpvoted: data && data.upvoters.includes(userId),
     upvote,
     error,
-    uploading,
     insertFrame,
     deleteAnimation,
     forkAnimation,

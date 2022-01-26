@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { HiPencil } from "react-icons/hi";
-import { BsEraserFill } from "react-icons/bs";
+import { BsEraserFill, BsBucketFill } from "react-icons/bs";
 
 const BrushPicker = ({ handleBrush }) => {
   const [brush, setBrush] = useState("Pencil");

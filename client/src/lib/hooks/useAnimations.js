@@ -14,7 +14,7 @@ export const useAnimationsInfinite = (collection, PAGE_SIZE = 12) => {
 
   const { data, error, isValidating, size, setSize } = useSWRInfinite(getKey);
 
-  const animations = !!data ? [].concat(...data) : [];
+  const animations = !!data ? [].concat(...data) : null;
   const isLoadingInitialData = !data && !error;
   const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isEmpty = !!data && !!data[0] && data[0].length === 0;

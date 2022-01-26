@@ -8,6 +8,7 @@ const Slider = (props) => {
     value,
     onChange,
     onBeforeChange,
+    round,
     onAfterChange,
     className
   } = props;
@@ -23,7 +24,7 @@ const Slider = (props) => {
     const dist = Math.max(Math.min(point.clientX - bounds.left, bounds.width), 0);
     const percent = (1 / bounds.width) * dist;
     const newValue = ((props.max - props.min) * percent) - props.min;
-    onChange(newValue);
+    onChange(round ? Math.round(newValue) : newValue);
   }
 
   const handleMouseUp = (e) => {
@@ -66,6 +67,7 @@ Slider.defaultProps = {
   min: 0,
   max: 100,
   value: 50,
+  round: false,
   onChange: function () { },
   onBeforeChange: function () { },
   onAfterChange: function () { },

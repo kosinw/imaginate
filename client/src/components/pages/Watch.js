@@ -47,7 +47,12 @@ const Watch = ({ id }) => {
   return (
     <main className="Page Page--Watch">
       <section className="Watch__section Watch__section--left">
-        <AnimationPlayer owner={owner} updateSettings={updateSettings} onFrameChanged={(value) => setFrame(value)} animation={animation} />
+        <AnimationPlayer
+          owner={owner}
+          updateSettings={updateSettings}
+          onFrameChanged={(value) => setFrame(value)}
+          animation={animation}
+        />
         <div className="Watch__info">
           <h4 className="Watch__title">
             "{animation.title}"{" "}by{" "}
@@ -58,7 +63,6 @@ const Watch = ({ id }) => {
           <ButtonGroup />
         </div>
         <div className="Watch__TagsContainer">
-          {/* <TagsGroup tags={tags} /> */}
         </div>
       </section>
       <section className="Watch__section Watch__section--right">
@@ -71,7 +75,7 @@ const Watch = ({ id }) => {
           setOpen={setOpenDelete}
         />
         <ForkDialog
-          defaultValues={{frame: defaultFrame + 1}}
+          defaultValues={{ frame: defaultFrame + 1 }}
           onSubmit={(values) => forkAnimation(values).then(() => setOpenFork(false))}
           min={1}
           max={animation.frames.length}

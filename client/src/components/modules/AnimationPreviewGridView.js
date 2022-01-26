@@ -37,7 +37,7 @@ const AnimationPreviewGridView = ({ animations, infinite }) => {
             disabled={infinite.isLoadingMore || infinite.isReachingEnd}
             onClick={() => infinite.setSize(infinite.size + 1)}
             title="Load more"
-            className="text-foreground hover:text-primary py-1 p-4 self-center transition-colors"
+            className="text-secondary-200 hover:text-primary py-1 p-4 self-center transition-colors"
           >
             {infinite.isLoadingMore ? <Spinner className="w-5 h-5" /> : <HiArrowDown className="w-5 h-5 animate-bounce" />}
           </button>

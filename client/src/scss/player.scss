@@ -16,9 +16,22 @@
   @apply w-full;
   @apply aspect-[16/9];
   @apply hover:cursor-pointer;
+  background-color: #797979;
+  background-image: repeating-linear-gradient(
+      45deg,
+      #c0c0c0 25%,
+      transparent 25%,
+      transparent 75%,
+      #c0c0c0 75%,
+      #c0c0c0
+    ),
+    repeating-linear-gradient(45deg, #c0c0c0 25%, #797979 25%, #797979 75%, #c0c0c0 75%, #c0c0c0);
+  background-position: 0 0, 28px 28px;
+  background-size: 56px 56px;
 }
 
-.AnimationCanvas--Skeleton {
+.AnimationCanvas.AnimationCanvas--Skeleton {
+  @apply bg-none;
   @apply bg-secondary-600;
   @apply rounded-md;
   @apply animate-pulse;
@@ -59,7 +72,7 @@
   @apply w-8 h-8;
   @apply fill-current;
 
-  &:hover {
+  &:hover:enabled {
     @apply text-red-700;
   }
 }

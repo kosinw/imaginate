@@ -1,94 +1,188 @@
 import React from "react";
-import { navigate } from "@reach/router";
 import Sketch from "react-p5";
 
-import useMeasure from "react-use/lib/useMeasure";
+import { calculateFrame } from "../../../lib/utils/aspect";
+import useAuth from "../../../lib/hooks/useAuth";
 
 import WeightTool from "./WeightTool";
 import BrushPicker from "./BrushPicker";
 import ColorPicker from "./ColorPicker";
+import UpdateDialog from "../dialog/UpdateDialog";
+import ButtonWithIcon from "../ButtonWithIcon";
+
+import { CgShapeCircle } from "react-icons/cg";
+import { HiCog, HiSave } from "react-icons/hi";
 
 let cnv;
-let p5Instance;
+let _p5;
 let _frameData = [];
 
-let _buffer;
+let layer0;
+let layer1;
 
-const AnimationEditor = ({ animation, insertFrame }) => {
+const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
   // TODO(kosi): Change this hard coding of frameCount to actually selecting it
   const { frames } = animation;
   const { width, height } = animation.resolution;
   const [frameCount] = React.useState(animation.frames.length);
-  const [onionSkin] = React.useState(true);
+  const [onionSkin, setOnionSkin] = React.useState(true);
+  const viewportRef = React.useRef(null);
+  const [open, setOpen] = React.useState(false);
+  const { userId } = useAuth();
+
+  const owner = userId === animation.creator._id;
+
+  const getRect = () => viewportRef.current && viewportRef.current.getBoundingClientRect();
+
+  const calculateCanvasSize = () => {
+    const rect = getRect();
+
+    if (!!rect) {
+      return calculateFrame(width, height, rect.width, rect.height);
+    } else {
+      return calculateFrame(width, height, width, height);
+    }
+  }
+
+  React.useLayoutEffect(() => {
+    const resizeCanvas = () => {
+      if (!!_p5 && !!layer0 && !!layer1) {
+        const { virtualWidth: vw, virtualHeight: vh } = calculateCanvasSize();
+        layer0 = _p5.createGraphics(vw, vh);
+        drawOnionSkin(layer0);
+        _p5.resizeCanvas(vw, vh);
+      }
+    };
+
+    resizeCanvas();
+
+    window.addEventListener('resize', resizeCanvas);
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    }
+  }, []);
 
   const preload = (p5) => {
+    _frameData = [];
+    _p5 = p5;
     _frameData = frames.map(frame => p5.loadImage(frame.data));
   }
 
+  const drawOnionSkin = (buffer) => {
+    if (frameCount > 0) {
+      const frame = _frameData[frameCount - 1];
+
+      const { virtualWidth, virtualHeight, x, y } = calculateFrame(frame.width, frame.height, buffer.width, buffer.height);
+
+      buffer.clear();
+      buffer.tint(255, 120);
+      buffer.image(frame, x, y, virtualWidth, virtualHeight);
+      buffer.noTint();
+    }
+  };
+
   const setup = (p5, parent) => {
-    p5Instance = p5;
-    cnv = p5.createCanvas(width, height).parent(parent);
-    cnv.id("sketch-editor");
-    _buffer = p5.createGraphics(width, height);
-    _buffer.background(255, 255, 255, 0);
+    const { virtualWidth: vw, virtualHeight: vh } = calculateCanvasSize();
+
+    p5.pixelDensity(1)
+    cnv = p5.createCanvas(vw, vh).parent(parent);
+    layer0 = p5.createGraphics(vw, vh);
+    layer1 = p5.createGraphics(width, height);
+
     p5.stroke(0);
     p5.strokeWeight(1);
+    p5.frameRate(30);
+
+    drawOnionSkin(layer0);
   };
 
   const draw = (p5) => {
     p5.background(255);
 
-    if (onionSkin && frameCount > 0) {
-      const frame = _frameData[frameCount - 1];
-      p5.tint(255, 128);
-      p5.image(frame, 0, 0, width, height);
-      p5.tint(255, 255);
+    if (onionSkin) {
+      p5.image(layer0, 0, 0, cnv.width, cnv.height);
     }
 
-    if (p5.mouseIsPressed === true) {
-      _buffer.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+    const scaleX = layer1.width / cnv.width;
+    const scaleY = layer1.height / cnv.height;
+
+    const fx = p5.mouseX * scaleX;
+    const fy = p5.mouseY * scaleY;
+    const tx = p5.pmouseX * scaleX;
+    const ty = p5.pmouseY * scaleY;
+
+    if (cnv.mouseIsPressed === true) {
+      layer1.line(fx, fy, tx, ty);
     }
 
-    p5.image(_buffer, 0, 0);
+    p5.image(layer1, 0, 0, cnv.width, cnv.height);
   };
 
-  const save = () => {
-    p5Instance.background(255);
-    p5Instance.image(_buffer, 0, 0);
+  const save = async () => {
+    _p5.background(255);
+    _p5.image(layer1, 0, 0, cnv.width, cnv.height);
+
     const canvas = cnv.elt;
-    insertFrame(canvas).then(() => {
-      navigate(`/watch/${animation._id}`);
-    });
+    await insertFrame(canvas);
   };
 
   const handleWeight = (weight) => {
-    _buffer.strokeWeight(weight);
+    layer1.strokeWeight(weight);
   };
 
   const handleBrush = (brush) => {
+    setBucket(false);
     if (brush === "Pencil") {
-      _buffer.noErase();
+      layer1.noErase();
     } else if (brush === "Eraser") {
-      _buffer.erase();
+      layer1.erase();
     }
   };
 
   const handleColor = (color) => {
-    _buffer.stroke(color);
+    layer1.stroke(color);
   };
 
   return (
-    <div className="AnimationEditor-container aspect-video hover:cursor-crosshair">
-      <Sketch className="AnimationEditor-sketch" preload={preload} setup={setup} draw={draw} />
-      <div className="AnimationEditor-tools-container">
-        <BrushPicker handleBrush={handleBrush} />
-        <WeightTool handleWeight={handleWeight} />
-        <ColorPicker handleColor={handleColor} />
-        <button className="AnimationEditor-submit" onClick={save}>
-          Save
-        </button>
+    <>
+      <div className="AnimationEditor">
+        <section className="AnimationEditor__section AnimationEditor__section--left">
+          <div ref={viewportRef} className="AnimationCanvas AnimationCanvas--editor">
+            <div id="p5_loading" />
+            <Sketch className="AnimationCanvas__container AnimationCanvas__container--editor" preload={preload} setup={setup} draw={draw} />
+          </div>
+          <div className="AnimationPlayerControls AnimationPlayerControls--editor">
+            <div className="AnimationPlayerControls__group">
+              <button onClick={() => setOnionSkin(!onionSkin)} title="Toggle Onion Skin" className="AnimationPlayerControls__button">
+                <CgShapeCircle className="AnimationPlayerControls__icon" />
+              </button>
+            </div>
+            <div className="AnimationPlayerControls__group">
+              <button onClick={() => setOpen(true)} title="Settings" className="AnimationPlayerControls__button">
+                <HiCog className="AnimationPlayerControls__icon" />
+              </button>
+            </div>
+          </div>
+        </section>
+        <section className="AnimationEditor__section AnimationEditor__section--right">
+          <ColorPicker handleColor={handleColor} />
+          <WeightTool handleWeight={handleWeight} />
+          <BrushPicker handleBrush={handleBrush} />
+          {/* <button className="AnimationEditor-submit" onClick={save}>
+            Save
+          </button> */}
+          <ButtonWithIcon className="justify-center" Icon={HiSave} onClick={save} text="Save" />
+        </section>
       </div>
-    </div>
+      <UpdateDialog
+        disabled={!owner}
+        defaultValues={animation}
+        open={open}
+        setOpen={setOpen}
+        onSubmit={(values) => updateSettings(values).then(() => setOpen(false))}
+      />
+    </>
   );
 };
 

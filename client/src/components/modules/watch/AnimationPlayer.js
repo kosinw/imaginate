@@ -76,7 +76,6 @@ const AnimationCanvas = ({
     const rect = sketchWrapper.current.getBoundingClientRect();
     p5.createCanvas(rect.width, rect.width * scaleFactor).parent(parent);
     _frameBuffer = p5.createGraphics(frameWidth, frameHeight);
-    p5.background(0);
   };
 
   const draw = (p5) => {

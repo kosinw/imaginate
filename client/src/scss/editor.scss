@@ -1,27 +1,43 @@
-.AnimationEditor-container {
-  display: flex;
-  flex-flow: column;
-  padding: 16px;
-  gap: 16px;
+.AnimationEditor {
+  @apply flex;
+  @apply flex-col;
+  @apply space-y-8;
+  @apply lg:flex-row;
+  @apply lg:space-x-8;
+  @apply lg:space-y-0;
 }
 
-.Edit {
-  @apply mx-auto;
+.AnimationEditor__section {
+  @apply w-full;
 
-  @screen lg {
-    @apply max-w-4xl;
+  &.AnimationEditor__section--left {
+    @apply lg:max-w-screen-md;
+    @apply flex-shrink-0;
+    @apply flex flex-col;
+  }
+
+  &.AnimationEditor__section--right {
+    @apply flex flex-col;
+    @apply w-full;
+    @apply space-y-8;
   }
 }
 
-.AnimationEditor-sketch #sketch-editor {
-  outline: 2px solid #d4d4d4;
+.AnimationCanvas.AnimationCanvas--editor {
+  @apply flex;
+  @apply hover:cursor-crosshair;
+  @apply items-center justify-center;
+  @apply rounded-md;
 }
 
-.AnimationEditor-sketch {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.AnimationCanvas__container.AnimationCanvas__container--editor canvas {
+  @apply hover:cursor-crosshair;
+  @apply rounded-none;
+  @apply rounded-md;
+}
+
+.AnimationPlayerControls.AnimationPlayerControls--editor {
+  @apply mt-4;
 }
 
 .AnimationEditor-submit {
@@ -44,14 +60,24 @@
   justify-content: space-evenly;
   gap: 16px;
   width: fit-content;
-  margin: auto;
+  // margin: auto;
   align-items: center;
+}
+
+.ColorPicker-container {
+  @apply flex flex-col;
+}
+
+.EditorTool-label {
+  @apply pb-4;
+  @apply font-public;
+  @apply font-bold;
 }
 
 .BrushPicker-radiocontainer {
   display: flex;
-  flex-flow: column;
-  gap: 4px;
+  flex-direction: row;
+  @apply space-x-4;
 }
 
 .BrushPicker-option {
