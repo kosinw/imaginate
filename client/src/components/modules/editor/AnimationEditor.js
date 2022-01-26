@@ -112,7 +112,7 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
     const tx = p5.pmouseX * scaleX;
     const ty = p5.pmouseY * scaleY;
 
-    if (cnv.mouseIsPressed === true) {
+    if (p5.mouseIsPressed === true) {
       layer1.line(fx, fy, tx, ty);
     }
 
@@ -132,7 +132,6 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
   };
 
   const handleBrush = (brush) => {
-    setBucket(false);
     if (brush === "Pencil") {
       layer1.noErase();
     } else if (brush === "Eraser") {
@@ -177,7 +176,12 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
       </div>
       <UpdateDialog
         disabled={!owner}
-        defaultValues={animation}
+        defaultValues={{
+          title: animation.title,
+          width: animation.resolution.width,
+          height: animation.resolution.height,
+          framerate: animation.framerate
+        }}
         open={open}
         setOpen={setOpen}
         onSubmit={(values) => updateSettings(values).then(() => setOpen(false))}

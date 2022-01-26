@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classnames from "classnames";
-import { GithubPicker } from "react-color";
+import { TwitterPicker } from "react-color";
 
 const luma = (c) => {
   let co = c.substring(1);      // strip #
@@ -56,7 +56,7 @@ const ColorPicker = ({ pallete, handleColor }) => {
   return (
     <div className="ColorPicker-container">
       <h4 className="EditorTool-label">Color:{" "}<span className={classnames(luma(color) < 70 && "bg-foreground", "ml-1")} style={{ color }}>{color}</span></h4>
-      <GithubPicker
+      <TwitterPicker
         width="100%"
         triangle="hide"
         colors={pallete || defaultPallete}
