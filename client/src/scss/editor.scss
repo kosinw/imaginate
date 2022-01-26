@@ -40,6 +40,10 @@
   @apply mt-4;
 }
 
+.AnimationPlayerControls__text.AnimationPlayerControls__text--editor {
+  @apply w-auto;
+}
+
 .AnimationEditor-submit {
   background-color: #396dff;
   border: none;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Slider from "../../modules/Slider";
 
 const WeightTool = ({ handleWeight }) => {
-  const [weight, setWeight] = useState(1);
+  const [weight, setWeight] = useState(10);
 
   const handleChange = (value) => {
     setWeight(value);

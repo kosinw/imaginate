@@ -1,5 +1,6 @@
 import React from "react";
 import Sketch from "react-p5";
+import { navigate } from "@reach/router";
 
 import { calculateFrame } from "../../../lib/utils/aspect";
 import useAuth from "../../../lib/hooks/useAuth";
@@ -11,7 +12,8 @@ import UpdateDialog from "../dialog/UpdateDialog";
 import ButtonWithIcon from "../ButtonWithIcon";
 
 import { CgShapeCircle } from "react-icons/cg";
-import { HiCog, HiSave } from "react-icons/hi";
+import { HiCog, HiSave, HiUpload, HiMinus, HiPlay, HiDuplicate } from "react-icons/hi";
+import { toast } from 'react-hot-toast';
 
 let cnv;
 let _p5;
@@ -69,14 +71,14 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
     _frameData = frames.map(frame => p5.loadImage(frame.data));
   }
 
-  const drawOnionSkin = (buffer) => {
+  const drawOnionSkin = (buffer, opacity = 120) => {
     if (frameCount > 0) {
       const frame = _frameData[frameCount - 1];
 
       const { virtualWidth, virtualHeight, x, y } = calculateFrame(frame.width, frame.height, buffer.width, buffer.height);
 
       buffer.clear();
-      buffer.tint(255, 120);
+      buffer.tint(255, opacity);
       buffer.image(frame, x, y, virtualWidth, virtualHeight);
       buffer.noTint();
     }
@@ -91,8 +93,10 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
     layer1 = p5.createGraphics(width, height);
 
     p5.stroke(0);
-    p5.strokeWeight(1);
-    p5.frameRate(30);
+    p5.strokeWeight(10);
+    p5.frameRate(60);
+
+    if (width < 200) { p5.noSmooth(); } // NOTE(kosi): Arbitrary for pixel art
 
     drawOnionSkin(layer0);
   };
@@ -117,6 +121,11 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
     }
 
     p5.image(layer1, 0, 0, cnv.width, cnv.height);
+    p5.line(p5.mouseX, p5.mouseY, p5.mouseX + 1, p5.mouseY + 1);
+  };
+
+  const duplicateLast = () => {
+    drawOnionSkin(layer1, 255);
   };
 
   const save = async () => {
@@ -129,6 +138,7 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
 
   const handleWeight = (weight) => {
     layer1.strokeWeight(weight);
+    _p5.strokeWeight(weight);
   };
 
   const handleBrush = (brush) => {
@@ -141,6 +151,23 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
 
   const handleColor = (color) => {
     layer1.stroke(color);
+    _p5.stroke(color);
+  };
+
+  const handleUpload = (e) => {
+    const file = URL.createObjectURL(e.target.files[0]);
+
+    if (!!layer1) {
+      const drawRoutine = (img) => {
+        const { virtualWidth, virtualHeight, x, y } = calculateFrame(img.width, img.height, layer1.width, layer1.height);
+        layer1.clear();
+        layer1.image(img, x, y, virtualWidth, virtualHeight);
+      };
+
+      const img = _p5.loadImage(file, () => drawRoutine(img));
+    } else {
+      toast.error("Unable to upload file.");
+    }
   };
 
   return (
@@ -152,10 +179,16 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
             <Sketch className="AnimationCanvas__container AnimationCanvas__container--editor" preload={preload} setup={setup} draw={draw} />
           </div>
           <div className="AnimationPlayerControls AnimationPlayerControls--editor">
-            <div className="AnimationPlayerControls__group">
+            <div className="AnimationPlayerControls__group space-x-2">
               <button onClick={() => setOnionSkin(!onionSkin)} title="Toggle Onion Skin" className="AnimationPlayerControls__button">
                 <CgShapeCircle className="AnimationPlayerControls__icon" />
               </button>
+              <button onClick={() => navigate(`/watch/${animation._id}`)} title="Watch" className="AnimationPlayerControls__button">
+                <HiPlay className="AnimationPlayerControls__icon" />
+              </button>
+              <span className="AnimationPlayerControls__text AnimationPlayerControls__text--editor">
+                Currently editing frame {animation.frames.length + 1}
+              </span>
             </div>
             <div className="AnimationPlayerControls__group">
               <button onClick={() => setOpen(true)} title="Settings" className="AnimationPlayerControls__button">
@@ -171,7 +204,20 @@ const AnimationEditor = ({ animation, updateSettings, insertFrame }) => {
           {/* <button className="AnimationEditor-submit" onClick={save}>
             Save
           </button> */}
-          <ButtonWithIcon className="justify-center" Icon={HiSave} onClick={save} text="Save" />
+          <div className="flex flex-col space-y-2">
+            <ButtonWithIcon className="justify-center" Icon={HiMinus} onClick={() => layer1.clear()} text="Clear" />
+            <ButtonWithIcon className="justify-center" Icon={HiSave} onClick={save} text="Save" />
+            <ButtonWithIcon className="justify-center" Icon={HiDuplicate} onClick={duplicateLast} text="Duplicate" /> 
+            <label
+              htmlFor="file-upload"
+              className="border-primary space-x-2 text-primary w-full border rounded-md font-public px-3 py-1 text-base flex items-center justify-center relative hover:bg-primary hover:text-foreground hover:cursor-pointer" >
+              <input onChange={handleUpload} id="file-upload" type="file" className="appearance-none hidden w-full" />
+              <HiUpload className="w-4 h-4" />
+              <span>
+                Upload
+              </span>
+            </label>
+          </div>
         </section>
       </div>
       <UpdateDialog
