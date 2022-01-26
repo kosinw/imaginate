@@ -195,7 +195,7 @@ AnimationPlayerControls.defaultProps = {
 const AnimationPlayer = ({ animation, owner, onFrameChanged, updateSettings }) => {
   const [paused, setPaused] = React.useState(true);
   const [frameCount, setFrameCount] = React.useState(0);
-  const [looping, setLooping] = React.useState(false);
+  const [looping, setLooping] = React.useState(true);
   const [wasPlaying, setWasPlaying] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const prevPaused = usePrevious(paused);
